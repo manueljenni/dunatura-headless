@@ -1,11 +1,11 @@
 "use client";
-import { getCartUrl } from "./api/fetch";
+import { getCheckoutUrl } from "./api/fetch";
 import { useCart } from "./utils/hooks";
 
 export default function CheckOutButton(props: { variantId: string }) {
   const { cartId } = useCart();
   const handleCheckout = async (variantId: string) => {
-    const checkoutData = await getCartUrl(cartId!);
+    const checkoutData = await getCheckoutUrl(cartId!);
     window.open(checkoutData, "_blank");
   };
 

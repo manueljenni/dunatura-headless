@@ -106,7 +106,7 @@ export async function addToCart(cartId: string, variantId: string) {
   return response;
 }
 
-export async function getCartUrl(cartId: string) {
+export async function getCheckoutUrl(cartId: string) {
   const response = await client.request(
     `#graphql
     query GetCartUrl {
@@ -117,4 +117,45 @@ export async function getCartUrl(cartId: string) {
   );
 
   return response.data.cart.checkoutUrl;
+}
+
+export async function clearCart(cartId: string) {
+  const { data, errors } = await client.request(`#graphql
+    query GetCartLines {
+      cart(id: "${cartId}") {
+        lines(first: 250) {
+          edges {
+            node {
+              id
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  console.log(
+    "the data: " + JSON.stringify(data),
+    "the errors: " + JSON.stringify(errors),
+  );
+  const lineIds = data.cart.lines.edges.map((line: any) => line.node.id);
+
+  if (lineIds.length > 0) {
+    const response = await client.request(`#graphql
+      mutation RemoveCartLines {
+        cartLinesRemove(cartId: "${cartId}", lineIds: ${JSON.stringify(lineIds)}) {
+          cart {
+            id
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `);
+    return response;
+  }
+
+  return { message: "Cart is already empty." };
 }
