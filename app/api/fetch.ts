@@ -134,10 +134,6 @@ export async function clearCart(cartId: string) {
     }
   `);
 
-  console.log(
-    "the data: " + JSON.stringify(data),
-    "the errors: " + JSON.stringify(errors),
-  );
   const lineIds = data.cart.lines.edges.map((line: any) => line.node.id);
 
   if (lineIds.length > 0) {
