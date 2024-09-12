@@ -1,7 +1,13 @@
+"use server";
+
 import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 
-const storeDomain = process.env.SHOPIFY_STORE_DOMAIN!;
-const publicAccessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!;
+const storeDomain = process.env.SHOPIFY_STORE_DOMAIN;
+const publicAccessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+if (!storeDomain || !publicAccessToken) {
+  throw new Error("Missing Shopify store domain or public access token");
+}
 
 const client = createStorefrontApiClient({
   storeDomain: storeDomain,
@@ -52,7 +58,7 @@ export async function getAllProducts() {
           }
         }
       `);
-  return data.products.edges.map((edge) => edge.node);
+  return data?.products.edges.map((edge) => edge.node) || [];
 }
 
 export async function createCart() {
@@ -73,13 +79,10 @@ export async function createCart() {
   }
 `;
 
-  const { data } = await client.request(cartCreateMutation, {
-    variables: {
-      input: {},
-      country: "JP",
-      language: "JA",
-    },
-  });
+  const { data } = await client.request(cartCreateMutation);
+  if (!data?.cartCreate?.cart?.id) {
+    throw new Error("Failed to create cart");
+  }
 
   return data.cartCreate.cart.id;
 }
