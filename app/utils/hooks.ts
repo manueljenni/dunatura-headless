@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createCart } from "../api/fetch";
+import { createCart } from "../../api/fetch";
 
 export function useCart() {
   const [cartId, setCartId] = useState<string | null>(null);

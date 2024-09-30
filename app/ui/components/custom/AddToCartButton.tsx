@@ -1,8 +1,8 @@
 "use client";
 
-import { addToCart } from "@/app/api/fetch";
+import { addToCart } from "@/api/fetch";
 import { useCart } from "@/app/utils/hooks";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/primitives/button";
 
 export default function AddToCartButton(props: { variantId: string }) {
   const { cartId } = useCart();

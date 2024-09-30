@@ -1,4 +1,4 @@
-import { getAllProducts } from "../api/fetch";
+import { getAllProducts } from "../../api/fetch";
 import AddToCartButton from "../ui/components/custom/AddToCartButton";
 
 export default async function page() {

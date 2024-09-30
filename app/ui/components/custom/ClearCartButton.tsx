@@ -1,7 +1,8 @@
 "use client";
 
-import { clearCart } from "@/app/api/fetch";
+import { clearCart } from "@/api/fetch";
 import { useCart } from "@/app/utils/hooks";
+import { Button } from "@/components/primitives/button";
 
 export default function ClearCartButton() {
   const { cartId } = useCart();
@@ -12,11 +13,5 @@ export default function ClearCartButton() {
     }
   };
 
-  return (
-    <button
-      onClick={() => handleClearCart()}
-      className="mt-2 bg-blue-500 text-white rounded px-4 py-2">
-      Clear Cart
-    </button>
-  );
+  return <Button onClick={handleClearCart}>Clear Cart</Button>;
 }
