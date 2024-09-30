@@ -1,7 +1,8 @@
 "use client";
 
-import { addToCart } from "./api/fetch";
-import { useCart } from "./utils/hooks";
+import { addToCart } from "@/app/api/fetch";
+import { useCart } from "@/app/utils/hooks";
+import { Button } from "@/components/ui/button";
 
 export default function AddToCartButton(props: { variantId: string }) {
   const { cartId } = useCart();
@@ -12,11 +13,5 @@ export default function AddToCartButton(props: { variantId: string }) {
     }
   };
 
-  return (
-    <button
-      onClick={handleAddToCart}
-      className="bg-blue-500 text-white rounded px-4 py-2">
-      Add to Cart
-    </button>
-  );
+  return <Button onClick={handleAddToCart}>Add to Cart</Button>;
 }

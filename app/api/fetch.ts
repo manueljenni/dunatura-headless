@@ -58,7 +58,12 @@ export async function getAllProducts() {
           }
         }
       `);
-  return data?.products.edges.map((edge) => edge.node) || [];
+  return (
+    data?.products.edges
+      .map((edge) => edge.node)
+      .filter((product) => product.variants.edges[0]?.node.availableForSale)
+      .filter((product) => product.tags.includes("Themenpack")) || []
+  );
 }
 
 export async function createCart() {

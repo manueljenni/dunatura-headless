@@ -1,6 +1,7 @@
 "use client";
-import { clearCart } from "./api/fetch";
-import { useCart } from "./utils/hooks";
+
+import { clearCart } from "@/app/api/fetch";
+import { useCart } from "@/app/utils/hooks";
 
 export default function ClearCartButton() {
   const { cartId } = useCart();
