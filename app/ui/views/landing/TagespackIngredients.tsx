@@ -15,22 +15,22 @@ export default function TagespackIngredients() {
             <div className="flex lg:flex-col flex-row gap-4 items-center justify-start overflow-x-auto no-scrollbar w-full z-50 py-4">
               <div className="h-full w-24"></div>
               <Ingredient
-                image="/images/landing/vitamin-c.png"
+                image="/images/pills/vitamin-c-background.png"
                 title="Vitamin C"
                 text="Stärkt das Immunsystem und fördert die Kollagenbildung."
               />
               <Ingredient
-                image="/images/landing/kalium.png"
+                image="/images/pills/kalium-background.png"
                 title="Kalium"
                 text="Unterstützt die Muskel- und Nervenfunktion."
               />
               <Ingredient
-                image="/images/landing/vitamin-b-komplex.png"
+                image="/images/pills/vitamin-b-komplex-background.png"
                 title="Vitamin B Komplex"
                 text="Fördert den Energiestoffwechsel und die geistige Klarheit."
               />
               <Ingredient
-                image="/images/landing/zink.png"
+                image="/images/pills/zink-background.png"
                 title="Zink"
                 text="Fördert die Hautgesundheit und unterstützt das Immunsystem."
               />
