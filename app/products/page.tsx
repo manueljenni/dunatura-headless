@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getAllProducts } from "../../api/fetch";
 import AddToCartButton from "../ui/components/custom/AddToCartButton";
 
@@ -15,10 +16,12 @@ export default async function page() {
             key={product.id}
             className="bg-white rounded-lg p-6 shadow-md flex flex-col h-full">
             <div className="w-full aspect-square mb-4 flex items-center justify-center">
-              <img
+              <Image
                 src={product.images.edges[0]?.node.originalSrc}
                 alt={product.title}
                 className="max-h-full max-w-full object-contain"
+                width={400}
+                height={400}
               />
             </div>
             <h2 className="text-xl font-semibold mb-2 h-14 overflow-hidden">
