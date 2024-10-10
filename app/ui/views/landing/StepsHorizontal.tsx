@@ -7,27 +7,34 @@ import { useEffect, useRef, useState } from "react";
 
 export default function StepsHorizontal() {
   const [lineTop, setLineTop] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const calculateLinePosition = () => {
-      if (iconRef.current) {
+      if (iconRef.current && containerRef.current) {
         const iconRect = iconRef.current.getBoundingClientRect();
-        const parentRect = iconRef.current.offsetParent?.getBoundingClientRect();
-        if (parentRect) {
-          setLineTop(iconRect.top - parentRect.top + iconRect.height / 2);
-        }
+        const containerRect = containerRef.current.getBoundingClientRect();
+        setLineTop(iconRect.top - containerRect.top + iconRect.height / 2);
       }
     };
+
+    const resizeObserver = new ResizeObserver(calculateLinePosition);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
 
     calculateLinePosition();
     window.addEventListener("resize", calculateLinePosition);
 
-    return () => window.removeEventListener("resize", calculateLinePosition);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", calculateLinePosition);
+    };
   }, []);
 
   return (
-    <div className="flex-col grid grid-cols-3 relative pb-4 w-full">
+    <div ref={containerRef} className="flex-col grid grid-cols-3 relative pb-4 w-full">
       <div className="flex flex-col h-full items-center text-center step-item step-item-1 px-2 mb-8">
         <Image
           src={makeTheTest}
