@@ -27,7 +27,6 @@ const buttonVariants = cva(
         icon: "h-9 w-9",
         pill: "h-8 px-4 py-2",
         "pill-lg": "h-10 px-4 py-2 text-base",
-        "pill-xl": "h-12 px-8 py-4",
         "pill-2xl": "px-8 py-4 text-base md:text-xl",
       },
     },
