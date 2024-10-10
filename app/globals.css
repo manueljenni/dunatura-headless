@@ -2,20 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-} */
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -24,13 +10,14 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 120deg 12.2% 92%;
+    --light-background: 75deg 40% 98%; /* #F8FBF8 */
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 113 14% 23.7%;
+    --primary: 120 13.6% 15.9%; /* #232E23 */
     --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
@@ -83,6 +70,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-lightBackground text-foreground;
   }
 }
