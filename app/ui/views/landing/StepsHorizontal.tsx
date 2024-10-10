@@ -27,8 +27,8 @@ export default function StepsHorizontal() {
   }, []);
 
   return (
-    <div className="hidden flex-col md:grid md:grid-cols-3 relative pb-4 w-full">
-      <div className="flex flex-col h-full items-center text-center step-item step-item-1 px-2 mb-8 md:mb-0">
+    <div className="flex-col grid grid-cols-3 relative pb-4 w-full">
+      <div className="flex flex-col h-full items-center text-center step-item step-item-1 px-2 mb-8">
         <Image
           src={makeTheTest}
           alt="Mache den Test"
@@ -57,7 +57,7 @@ export default function StepsHorizontal() {
         </p>
       </div>
 
-      <div className="flex flex-col h-full items-center text-center step-item step-item-2 px-2 mb-8 md:mb-0">
+      <div className="flex flex-col h-full items-center text-center step-item step-item-2 px-2 mb-0">
         <Image
           src={tailoredToYou}
           alt="Tailored to you"
@@ -115,7 +115,7 @@ export default function StepsHorizontal() {
         </p>
       </div>
       <div
-        className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-[66%] h-[2px] bg-[#D7E0D7] z-0"
+        className="absolute left-1/2 transform -translate-x-1/2 w-[66%] h-[2px] bg-[#D7E0D7] z-0"
         style={{ top: `${lineTop}px` }}></div>
     </div>
   );

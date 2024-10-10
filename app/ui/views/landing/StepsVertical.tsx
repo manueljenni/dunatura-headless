@@ -40,7 +40,7 @@ export default function StepsVertical() {
   }, []);
 
   return (
-    <div ref={containerRef} className="md:hidden flex flex-col relative p-4 w-full">
+    <div ref={containerRef} className="flex flex-col relative p-4 w-full">
       <div
         className="absolute left-[21px] w-[2px] m-4 bg-[#D7E0D7] z-0"
         style={{

@@ -9,8 +9,12 @@ export default function Home() {
         <div className="h-full bg-background rounded-t-[32px]">
           <Hero />
           <div className="container max-w-6xl h-full mx-auto">
-            <StepsHorizontal />
-            <StepsVertical />
+            <div className="hidden md:block">
+              <StepsHorizontal />
+            </div>
+            <div className="md:hidden">
+              <StepsVertical />
+            </div>
           </div>
         </div>
       </div>
