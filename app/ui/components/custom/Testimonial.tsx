@@ -23,9 +23,9 @@ export default function Testimonial({
       <div
         className={`relative rounded-xl border p-4 text-left lg:text-left lg:text-[#807A78] min-h-[350px] flex flex-col justify-between h-full  ${testimonial.className}`}>
         <p className="text-3xl flex-grow">{testimonial.text}</p>
-        <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between w-full text-[#807A78] text-lg">
+        <div className="mt-12 flex items-center justify-between w-full text-[#807A78] text-lg">
           <p className="font-medium w-full">{testimonial.author}</p>
-          <div className="flex items-center space-x-4 w-full">
+          <div className="flex items-center space-x-4 w-fit">
             <Image
               src={checkmark}
               alt="checkmark"
