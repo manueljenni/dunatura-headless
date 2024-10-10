@@ -4,7 +4,7 @@ import TagespackCard from "./TagespackCard";
 
 export default function TagespackWithIngredients() {
   return (
-    <div className="flex justify-center items-center pb-12 relative">
+    <div className="flex justify-center items-center pb-12 relative pt-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-4 max-w-[1200px] w-full">
         <div className="flex justify-center items-center px-4">
           <TagespackCard />
