@@ -1,7 +1,8 @@
 import Hero from "./ui/views/landing/Hero";
+import Reviews from "./ui/views/landing/Reviews";
 import RoundedSectionEnding from "./ui/views/landing/RoundedSectionEnding";
 import Steps from "./ui/views/landing/Steps";
-import TagespackIngredients from "./ui/views/landing/TagespackIngredients";
+import TagespackWithIngredients from "./ui/views/landing/TagespackIngredients";
 
 export default function Home() {
   return (
@@ -12,7 +13,8 @@ export default function Home() {
           <Steps />
         </div>
         <RoundedSectionEnding />
-        <TagespackIngredients />
+        <TagespackWithIngredients />
+        <Reviews />
       </div>
     </div>
   );
