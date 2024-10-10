@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Testimonial from "../../components/custom/Testimonial";
 
-export default function Reviews() {
+export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const testimonialSliderRef = useRef<HTMLDivElement>(null);
 
@@ -73,31 +74,14 @@ export default function Reviews() {
         <div
           id="testimonial-slider"
           ref={testimonialSliderRef}
-          className="flex overflow-x-auto overflow-y-hidden no-scrollbar w-full lg:gap-12 h-full md:py-4">
+          className="flex overflow-x-auto overflow-y-hidden no-scrollbar w-full lg:gap-12 h-full md:py-4 px-2">
           {testimonials.map((testimonial, index) => (
-            <div
+            <Testimonial
               key={index}
-              className={`testimonial flex-shrink-0 lg:flex-shrink lg:w-1/3 w-full ${
-                index !== currentIndex ? "hidden lg:block" : ""
-              }`}>
-              <div
-                className={`relative rounded-xl border p-4 text-left lg:text-left lg:text-[#807A78] min-h-[350px] flex flex-col justify-between h-full ${testimonial.className}`}>
-                <p className="text-3xl flex-grow">{testimonial.text}</p>
-                <div className="mt-12 flex items-center justify-between w-full text-[#807A78] text-lg">
-                  <p className="font-medium">{testimonial.author}</p>
-                  <div className="flex space-x-2 items-center">
-                    <img
-                      src="{{ 'checkmark.png' | file_url }}"
-                      alt="checkmark"
-                      className="w-6 h-6 ml-2 overlay-red"
-                      width="4"
-                      height="4"
-                    />
-                    <span>Verifizierte Bewertung</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+              index={index}
+              currentIndex={currentIndex}
+              testimonial={testimonial}
+            />
           ))}
         </div>
         <div className="flex justify-center space-x-4 mt-12 lg:hidden">
