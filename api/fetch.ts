@@ -74,8 +74,6 @@ export async function getThemenpacksWithIngredients(): Promise<Tagespack[]> {
       .filter((product) => product.variants.edges[0]?.node.availableForSale)
       .filter((product) => product.tags.includes("Themenpack")) || [];
 
-  console.log(products.map((pack) => pack.ingredients));
-
   const themenpacks = await Promise.all(
     products.map(async (product) => {
       let ingredientIds = [];
@@ -93,7 +91,7 @@ export async function getThemenpacksWithIngredients(): Promise<Tagespack[]> {
         description: product.shortDescription?.value || null,
         price: product.priceRange.minVariantPrice.amount,
         pricePer100g:
-          product.variants.edges[0]?.node.unitPriceMeasurement?.quantityValue || null,
+          product.variants.edges[0]?.node.unitPriceMeasurement?.quantityValue || 0,
         ingredients: ingredients,
       };
     }),
