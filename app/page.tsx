@@ -1,3 +1,4 @@
+import Experts from "./ui/views/landing/Experts";
 import Hero from "./ui/views/landing/Hero";
 import PreconfiguredView from "./ui/views/landing/PreconfiguredView";
 import RoundedSectionEnding from "./ui/views/landing/RoundedSectionEnding";
@@ -19,6 +20,7 @@ export default function Home() {
           <Testimonials />
         </div>
         <PreconfiguredView />
+        <Experts />
       </div>
     </div>
   );
