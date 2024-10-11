@@ -16,10 +16,8 @@ export default function Ingredient(props: {
         height={72}
       />
       <div className="p-0 m-0">
-        <p className="text-[#2B382B] font-medium text-xl">Vitamin C</p>
-        <p className="text-[#555F54]">
-          Stärkt das Immunsystem und fördert die Kollagenbildung.
-        </p>
+        <p className="text-primary font-medium text-xl">{props.title}</p>
+        <p className="text-secondary">{props.text}</p>
       </div>
     </div>
   );
