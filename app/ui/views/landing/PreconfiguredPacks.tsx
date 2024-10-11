@@ -1,52 +1,161 @@
-import { Button } from "@/components/primitives/button";
-import leaf from "@/public/images/icons/leaf.png";
-import tree from "@/public/images/icons/tree.png";
+"use client";
+
+import { getThemenpacksWithIngredients } from "@/api/fetch";
+import { Ingredient, Tagespack } from "@/api/types";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function PreconfiguredPacks() {
-  return (
-    <div
-      className="relative w-full md:min-h-[900px] pb-4 bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/landing/landscape.png')" }}>
-      <div className="absolute inset-0 bg-gradient-to-b from-[#FBFCF8] to-transparent"></div>
+  const [themenpacks, setThemenpacks] = useState<Tagespack[]>([]);
 
-      <div className="relative z-10 top-0 right-0 m-4 md:m-12 left-0 space-y-12 pt-8">
-        <div className="p-6 md:p-12 z-10 bg-white shadow-xl rounded-[32px] border border-[#E7E9D8] space-y-8 max-w-[1200px] mx-auto">
-          <div className="bg-[#E8EDE8] px-3 py-1 rounded-full inline-flex text-center">
-            <p className="text-primary font-medium whitespace-normal">
-              Oder doch einfach schnell ausprobieren?
-            </p>
-          </div>
-          <h1 className="text-4xl font-semibold w-full lg:w-2/3 text-primary">
-            Für bestimmte Ziele haben wir uns&shy; um die Kombination gekümmert
-          </h1>
-          <div
-            id="category-container"
-            className="flex flex-row space-x-4 text-[#324132]"></div>
+  useEffect(() => {
+    async function fetchThemenpacks() {
+      try {
+        const packs = await getThemenpacksWithIngredients();
+        setThemenpacks(packs);
+        console.log(packs);
+      } catch (error) {
+        console.error("Error fetching themenpacks:", error);
+      }
+    }
+
+    fetchThemenpacks();
+  }, []);
+
+  function CategoryItem({
+    category,
+    onClick,
+    isSelected,
+  }: {
+    category: Tagespack;
+    onClick: (category: Tagespack) => void;
+    isSelected: boolean;
+  }) {
+    let cleanedTitle = category.title.replace("Tagespacks ", "");
+    return (
+      <div
+        className={`rounded-full px-4 py-2 border border-[#324132] cursor-pointer whitespace-nowrap ${
+          isSelected ? "bg-[#324132] text-white" : "bg-white text-[#324132]"
+        }`}
+        onClick={() => onClick(category)}>
+        <p>{cleanedTitle}</p>
+      </div>
+    );
+  }
+
+  function PillItem({ pill }: { pill: Ingredient }) {
+    return (
+      <div className="relative p-4 border rounded-2xl flex flex-col justify-end items-center min-w-[250px] w-full aspect-square overflow-hidden h-full">
+        <Image
+          src={pill.image}
+          alt="pill"
+          layout="fill"
+          objectFit="cover"
+          className="z-0"
+        />
+        <div className="relative z-10 text-left text-white w-full rounded-lg flex flex-col justify-end text-[#324132]">
+          <p className="font-medium text-xl text-[#324132] mb-2">
+            {pill.title.replace("(Vegan)", "")}
+          </p>
         </div>
-        <div className="flex justify-center items-center">
-          <div className="flex justify-around items-center flex-col space-y-4 md:space-y-0 md:flex-row text-white lg:w-1/2 text-xl space-x-4 font-medium">
-            <div className="flex justify-center items-center space-x-4">
-              <Image src={tree} alt="Icon 1" className="w-8 h-8" />
-              <p>Natürliche Inhaltsstoffe</p>
-            </div>
-            <div className="flex justify-center items-center space-x-4">
-              <Image src={leaf} alt="Icon 1" className="w-8 h-8" />
-              <p>Alle Produkte vegan</p>
-            </div>
-          </div>
+      </div>
+    );
+  }
+
+  const addToCart = (productId: string) => {
+    const formData = new FormData();
+    formData.append("form_type", "product");
+    formData.append("utf8", "✓");
+    formData.append("id", productId);
+    formData.append("sections", "cart-drawer,cart-icon-bubble");
+    formData.append("sections_url", "/");
+
+    fetch("https://www.dunatura.com/cart/add", {
+      method: "POST",
+      headers: {
+        accept: "application/javascript",
+        "accept-language": "de,en;q=0.9",
+        "x-requested-with": "XMLHttpRequest",
+      },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Product added to cart", data);
+      })
+      .catch((error) => {
+        console.error("Error adding product to cart", error);
+      });
+  };
+
+  function Pricing({ category: pack }: { category: Tagespack }) {
+    const formatPrice = (price: number) => {
+      return new Intl.NumberFormat("de-DE", {
+        style: "currency",
+        currency: "EUR",
+      }).format(price);
+    };
+
+    return (
+      <div className="text-[#324132] space-y-2 w-full flex-shrink-0 lg:w-[300px]">
+        <p className="text-2xl font-medium">{pack.title}</p>
+        <p className="text-lg text-[#5B685B]">{pack.description}</p>
+        <div className="flex space-x-2 items-baseline pb-4">
+          <p className="text-2xl font-medium">{formatPrice(pack.price)}</p>
+          <p className="text-sm font-medium">{formatPrice(pack.price / 100)} / 100g</p>
         </div>
-        <div className="flex justify-center items-center pb-12">
-          <div className="px-12 py-8 bg-[#E7EAD7] rounded-[32px] lg:w-5/6 shadow-xl flex justify-between md:items-center flex-col md:flex-row space-y-6 md:space-y-0 max-w-[1000px]">
-            <p className="text-3xl font-medium text-primary hyphens-auto">
-              Lieber doch selber zusammenstellen?
-            </p>
-            <Button variant="pill" size={"pill-xl"}>
-              Erstelle dein persönliches Tagespack
-            </Button>
+        <div>
+          <button
+            className="rounded-full bg-[#232E23] text-center py-2 px-1 w-full text-white"
+            onClick={() => addToCart(pack.shopifyId)}>
+            Jetzt kaufen
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  function PacksContent() {
+    const [selectedCategory, setSelectedCategory] = useState(themenpacks[0]);
+
+    return (
+      <div className="overflow-x-scroll no-scrollbar w-full h-full">
+        <div className="flex flex-row overflow-x-scroll space-x-4 text-[#324132] w-full no-scrollbar">
+          {themenpacks.map((pack) => (
+            <CategoryItem
+              key={pack.shopifyId}
+              category={pack}
+              onClick={setSelectedCategory}
+              isSelected={pack === selectedCategory}
+            />
+          ))}
+        </div>
+        <div className="relative flex md:flex-col justify-between h-full lg:flex-row pt-8 gap-12 w-full flex-col-reverse">
+          {selectedCategory && <Pricing category={selectedCategory} />}
+          <div className="vitamin-scroll-container w-full flex overflow-x-scroll">
+            <div className="flex gap-4">
+              {selectedCategory &&
+                selectedCategory.ingredients?.map((ingredient) => (
+                  <PillItem key={ingredient.shopifyId} pill={ingredient} />
+                ))}
+            </div>
           </div>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="p-6 md:p-12 z-10 bg-white shadow-xl rounded-[32px] border border-[#E7E9D8] space-y-8 max-w-[1200px] mx-auto">
+      <div className="bg-[#E8EDE8] px-3 py-1 rounded-full inline-flex text-center">
+        <p className="text-primary font-medium whitespace-normal">
+          Oder doch einfach schnell ausprobieren?
+        </p>
+      </div>
+      <h1 className="text-4xl font-semibold w-full lg:w-2/3 text-primary">
+        Für bestimmte Ziele haben wir uns&shy; um die Kombination gekümmert
+      </h1>
+      <PacksContent />
     </div>
   );
 }

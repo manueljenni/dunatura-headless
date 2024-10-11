@@ -1,5 +1,5 @@
 import Hero from "./ui/views/landing/Hero";
-import PreconfiguredPacks from "./ui/views/landing/PreconfiguredPacks";
+import PreconfiguredView from "./ui/views/landing/PreconfiguredView";
 import RoundedSectionEnding from "./ui/views/landing/RoundedSectionEnding";
 import Steps from "./ui/views/landing/Steps";
 import TagespackWithIngredients from "./ui/views/landing/TagespackIngredients";
@@ -18,7 +18,7 @@ export default function Home() {
           <TagespackWithIngredients />
           <Testimonials />
         </div>
-        <PreconfiguredPacks />
+        <PreconfiguredView />
       </div>
     </div>
   );
