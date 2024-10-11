@@ -62,11 +62,11 @@ export default function Testimonials() {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4 w-full bg-[#FBFCF8]">
+    <div className="flex flex-col items-center space-y-4 w-full">
       <div className="bg-[#EDE8E8] px-3 py-1 rounded-full w-fit">
         <span className="text-[#2E2323] font-medium">4.7 von 5 Sternen</span>
       </div>
-      <h1 className="text-[#232E23] text-5xl font-semibold leading-tight text-center max-w-4xl px-4">
+      <h1 className="text-primary text-5xl font-semibold leading-tight text-center max-w-4xl px-4">
         Unsere Mission bei <span className="underline underline-offset-4">du</span>natura:
         Gesundheit täglich und praktisch fördern
       </h1>

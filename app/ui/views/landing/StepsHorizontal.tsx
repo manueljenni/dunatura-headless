@@ -43,7 +43,7 @@ export default function StepsHorizontal() {
           width="350"
           height="350"
         />
-        <h3 className="text-[20px] text-[#232E23] font-semibold mb-2">Mache den Test</h3>
+        <h3 className="text-[20px] text-primary font-semibold mb-2">Mache den Test</h3>
         <div
           ref={iconRef}
           className="step-icon w-[42px] h-[42px] bg-white rounded-full flex justify-center items-center relative z-10">
@@ -59,7 +59,7 @@ export default function StepsHorizontal() {
             />
           </svg>
         </div>
-        <p className="text-[18px] text-[#4A544A] mt-4">
+        <p className="text-[18px] text-secondary mt-4">
           Erzähle uns über Dich, deine Ziele und deinen Lifestyle.
         </p>
       </div>
@@ -72,7 +72,7 @@ export default function StepsHorizontal() {
           width="350"
           height="350"
         />
-        <h3 className="text-[20px] text-[#232E23] font-semibold mb-2">
+        <h3 className="text-[20px] text-primary font-semibold mb-2">
           Konfiguriert für dich
         </h3>
         <div className="step-icon w-[42px] h-[42px] bg-white rounded-full flex justify-center items-center relative z-10">
@@ -88,7 +88,7 @@ export default function StepsHorizontal() {
             />
           </svg>
         </div>
-        <p className="text-[18px] text-[#4A544A] mt-4">
+        <p className="text-[18px] text-secondary mt-4">
           Wir erstellen ein Tagespack, das auf Dich und deine Ziele zugeschnitten ist.
         </p>
       </div>
@@ -101,7 +101,7 @@ export default function StepsHorizontal() {
           width="350"
           height="350"
         />
-        <h3 className="text-[20px] text-[#232E23] font-semibold mb-2">
+        <h3 className="text-[20px] text-primary font-semibold mb-2">
           Flexible Anpassung
         </h3>
         <div className="step-icon w-[42px] h-[42px] bg-white rounded-full flex justify-center items-center relative z-10">
@@ -117,7 +117,7 @@ export default function StepsHorizontal() {
             />
           </svg>
         </div>
-        <p className="text-[18px] text-[#4A544A] mt-4">
+        <p className="text-[18px] text-secondary mt-4">
           Ändere jederzeit deine Kombination, wie es für dich passt.
         </p>
       </div>

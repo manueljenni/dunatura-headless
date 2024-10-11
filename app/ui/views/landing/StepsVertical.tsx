@@ -73,9 +73,9 @@ export default function StepsVertical() {
               />
             </svg>
           </div>
-          <h3 className="text-[20px] text-[#232E23] font-semibold">Mache den Test</h3>
+          <h3 className="text-[20px] text-primary font-semibold">Mache den Test</h3>
         </div>
-        <p className="text-[18px] text-[#4A544A] mt-4">
+        <p className="text-[18px] text-secondary mt-4">
           Erzähle uns über Dich, deine Ziele und deinen Lifestyle.
         </p>
       </div>
@@ -103,11 +103,11 @@ export default function StepsVertical() {
               />
             </svg>
           </div>
-          <h3 className="text-[20px] text-[#232E23] font-semibold">
+          <h3 className="text-[20px] text-primary font-semibold">
             Konfiguriert für dich
           </h3>
         </div>
-        <p className="text-[18px] text-[#4A544A] mt-4">
+        <p className="text-[18px] text-secondary mt-4">
           Wir erstellen ein Vitamin- & Mikronährstoff-Tagespack, das auf Dich und deine
           Ziele zugeschnitten ist.
         </p>
@@ -138,9 +138,9 @@ export default function StepsVertical() {
               />
             </svg>
           </div>
-          <h3 className="text-[20px] text-[#232E23] font-semibold">Flexible Anpassung</h3>
+          <h3 className="text-[20px] text-primary font-semibold">Flexible Anpassung</h3>
         </div>
-        <p className="text-[18px] text-[#4A544A] mt-4">
+        <p className="text-[18px] text-secondary mt-4">
           Ändere jederzeit deine Kombination, wie es für dich passt.
         </p>
       </div>
