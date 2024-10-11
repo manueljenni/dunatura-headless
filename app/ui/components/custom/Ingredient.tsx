@@ -4,9 +4,11 @@ export default function Ingredient(props: {
   image: string;
   title: string;
   text: string;
+  className?: string;
 }) {
   return (
-    <div className="p-4 border rounded-2xl flex space-x-4 justify-center items-center min-w-[22rem] max-w-md w-full">
+    <div
+      className={`p-4 border rounded-2xl flex space-x-4 justify-center items-center min-w-[22rem] max-w-md w-full ${props.className}`}>
       <Image
         src={props.image}
         alt="pill"

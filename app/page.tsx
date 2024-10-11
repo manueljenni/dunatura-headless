@@ -1,5 +1,6 @@
 import Experts from "./ui/views/landing/Experts";
 import Hero from "./ui/views/landing/Hero";
+import Mission from "./ui/views/landing/Mission";
 import PreconfiguredView from "./ui/views/landing/PreconfiguredView";
 import RoundedSectionEnding from "./ui/views/landing/RoundedSectionEnding";
 import Steps from "./ui/views/landing/Steps";
@@ -21,6 +22,7 @@ export default function Home() {
         </div>
         <PreconfiguredView />
         <Experts />
+        <Mission />
       </div>
     </div>
   );
