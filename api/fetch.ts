@@ -1,6 +1,9 @@
 "use server";
 
 import { createStorefrontApiClient } from "@shopify/storefront-api-client";
+import axios from "axios";
+import fs from "fs/promises";
+import path from "path";
 import { Ingredient, Tagespack } from "./types";
 
 const storeDomain = process.env.SHOPIFY_STORE_DOMAIN;
@@ -117,10 +120,33 @@ export async function getIngredients(ingredientsString: string): Promise<Ingredi
     }
   `);
 
+  const imageSrc = data.product.images.edges[0]?.node.originalSrc;
+  let localImagePath = null;
+
+  if (imageSrc) {
+    const fileName = `${data.product.id.split("/").pop()}.jpg`;
+    const localPath = path.join(
+      process.cwd(),
+      "public",
+      "images",
+      "ingredients",
+      fileName,
+    );
+
+    try {
+      const response = await axios.get(imageSrc, { responseType: "arraybuffer" });
+      await fs.mkdir(path.dirname(localPath), { recursive: true });
+      await fs.writeFile(localPath, response.data);
+      localImagePath = `/images/ingredients/${fileName}`;
+    } catch (error) {
+      console.error(`Error downloading image for product ${data.product.id}:`, error);
+    }
+  }
+
   return {
     shopifyId: data.product.id,
     title: data.product.title,
-    image: data.product.images.edges[0]?.node.originalSrc,
+    image: localImagePath || imageSrc, // Use local path if available, otherwise fallback to original URL
   };
 }
 
