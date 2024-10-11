@@ -34,9 +34,9 @@ export default function PacksContent(props: { themenpacks: Tagespack[] }) {
         <Image
           src={pill.image}
           alt="pill"
-          layout="fill"
           objectFit="cover"
           className="z-0"
+          layout="fill"
         />
         <div className="relative z-10 text-left text-red-200 w-full rounded-lg flex flex-col justify-end">
           <p className="font-medium text-xl text-[#324132] mb-2">
