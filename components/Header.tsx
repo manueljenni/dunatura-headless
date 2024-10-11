@@ -15,9 +15,9 @@ export default function Header() {
               className="object-contain"
             />
           </Link>
-          <Link href="/configure">Jetzt konfigurieren</Link>
+          <Link href="/">Jetzt konfigurieren</Link>
           <Link href="/products">Alle Produkte</Link>
-          <Link href="/about">Über uns</Link>
+          <Link href="/">Über uns</Link>
         </div>
         <div className="flex items-center gap-4">
           <Link href="/">
