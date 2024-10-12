@@ -72,12 +72,6 @@ export default function PacksContent(props: { themenpacks: Tagespack[] }) {
   return (
     <div className="w-full h-full">
       <div className="relative overflow-x-auto no-scrollbar w-full">
-        <div
-          className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none opacity-0 transition-opacity duration-300 ease-in-out"
-          id="leftGradient"></div>
-        <div
-          className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none opacity-0 transition-opacity duration-300 ease-in-out"
-          id="rightGradient"></div>
         <div className="flex flex-row space-x-4 text-[#324132] w-max pb-4">
           {props.themenpacks.map((pack) => (
             <CategoryItem
