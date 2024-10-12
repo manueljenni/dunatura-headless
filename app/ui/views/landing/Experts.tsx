@@ -52,26 +52,23 @@ function ExpertSlider() {
 
   return (
     <div
-      className="scroll-container no-scrollbar bg-lightBackground overflow-hidden w-full"
+      className="scroll-container no-scrollbar bg-[#FBFCF8] overflow-x-hidden whitespace-nowrap pb-20"
       ref={scrollContainerRef}>
-      <div className="scroll-content flex animate-scroll">
+      <div className="scroll-content flex gap-0.5 animate-scroll">
         {experts.map((expert, idx) => (
           <div
             key={idx}
-            className="scroll-item relative w-80 h-[400px] rounded-[24px] overflow-hidden flex-shrink-0 mx-1 pointer-events-none">
+            className="scroll-item relative w-72 rounded-[24px] overflow-hidden flex-shrink-0 mx-1 flex flex-col justify-end">
             <Image
               src={expert.imgSrc}
               alt={expert.name}
-              className="w-full h-full object-cover"
-              style={{
-                maxWidth: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
+              className="w-full h-[400px] object-cover"
             />
-            <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.75)] to-transparent">
-              <p className="text-white text-lg mb-1">{expert.name}</p>
-              <p className="text-sm text-[#D1D1D1] mb-2">{expert.title}</p>
+            <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.75)] to-transparent flex flex-col justify-start h-[45%]">
+              <p className="text-white text-lg mb-1 mt-auto">{expert.name}</p>
+              <p className="text-sm whitespace-normal text-[#D1D1D1] mb-2">
+                {expert.title}
+              </p>
             </div>
           </div>
         ))}
