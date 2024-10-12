@@ -1,18 +1,18 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 export default function Ingredient(props: {
-  image: string;
+  image: string | StaticImageData;
   title: string;
   text: string;
   className?: string;
 }) {
   return (
     <div
-      className={`p-4 border rounded-2xl flex space-x-4 justify-center items-center min-w-[22rem] max-w-md w-full ${props.className}`}>
+      className={`p-4 border rounded-2xl flex space-x-4 justify-start items-center min-w-[22rem] max-w-md w-full ${props.className}`}>
       <Image
         src={props.image}
         alt="pill"
-        className="h-18 w-18 object-contain rounded-full"
+        className="h-16 w-16 object-contain rounded-full"
         style={{ height: "72px", width: "72px" }}
         width={72}
         height={72}

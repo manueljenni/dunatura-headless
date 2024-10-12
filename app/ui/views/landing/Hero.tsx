@@ -4,6 +4,7 @@ import pillHyaluron from "@/public/images/pills/pill-hyaluron.png";
 import pillOmega from "@/public/images/pills/pill-omega.png";
 import pillOrange from "@/public/images/pills/pill-orange.png";
 import pillVitc from "@/public/images/pills/pill-vitc.png";
+import pillWhite from "@/public/images/pills/pill-white.png";
 import pillYellow from "@/public/images/pills/pill-yellow.png";
 import Image from "next/image";
 
@@ -18,8 +19,8 @@ export default function Hero() {
           Jetzt Test starten
         </Button>
       </div>
-      <img
-        src="/images/pills/pill-white.png"
+      <Image
+        src={pillWhite}
         alt="Pill 1"
         className="absolute top-[50%] lg:top-[17%] left-[-30px] lg:left-[8%] w-20 md:w-28 h-auto z-0"
       />
