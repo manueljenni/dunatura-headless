@@ -52,7 +52,7 @@ function ExpertSlider() {
 
   return (
     <div
-      className="scroll-container no-scrollbar bg-[#FBFCF8] overflow-hidden w-full"
+      className="scroll-container no-scrollbar bg-lightBackground overflow-hidden w-full"
       ref={scrollContainerRef}>
       <div className="scroll-content flex animate-scroll">
         {experts.map((expert, idx) => (
