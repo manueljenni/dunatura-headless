@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { getAllProducts } from "../../api/fetch";
 import AddToCartButton from "../ui/components/custom/AddToCartButton";
 
@@ -22,7 +22,10 @@ export default async function page() {
                 className="max-h-full max-w-full object-contain"
                 width={400}
                 height={400}
-              />
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }} />
             </div>
             <h2 className="text-xl font-semibold mb-2 h-14 overflow-hidden">
               {product.title}

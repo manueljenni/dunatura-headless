@@ -1,5 +1,5 @@
 import tagespack from "@/public/images/landing/tagespack.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export default function TagespackCard() {
   return (
@@ -9,7 +9,10 @@ export default function TagespackCard() {
           src={tagespack}
           alt="tagespack"
           className="transform w-full object-contain md:pb-6 z-20 h-fit -translate-y-[12vh] mb-[-12vh]"
-        />
+          style={{
+            maxWidth: "100%",
+            height: "auto"
+          }} />
         <div className="space-y-4 z-40">
           <p className="text-5xl font-medium">
             Keine unnötigen Füllstoffe und möglichst natürlich.

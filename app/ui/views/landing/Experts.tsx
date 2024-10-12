@@ -5,7 +5,7 @@ import christianeSauret from "@/public/images/experts/christiane-sauret.png";
 import nataliaBelaiche from "@/public/images/experts/natatalia-belaiche.png";
 import stefanRhein from "@/public/images/experts/stefan-rhein.jpg";
 import drThomasKlein from "@/public/images/experts/thomas-klein.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 import { useEffect, useRef } from "react";
 
@@ -63,7 +63,10 @@ function ExpertSlider() {
               src={expert.imgSrc}
               alt={expert.name}
               className="w-full h-full object-cover"
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
             <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.75)] to-transparent">
               <p className="text-white text-lg mb-1">{expert.name}</p>
               <p className="text-sm text-[#D1D1D1] mb-2">{expert.title}</p>

@@ -1,6 +1,6 @@
 "use client";
 import { Ingredient, Tagespack } from "@/api/types";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useState } from "react";
 import AddToCartButton from "../../components/custom/AddToCartButton";
 
@@ -31,7 +31,7 @@ export default function PacksContent(props: { themenpacks: Tagespack[] }) {
   function PillItem({ pill }: { pill: Ingredient }) {
     return (
       <div className="relative p-4 border rounded-2xl flex flex-col justify-end items-center min-w-[250px] w-full aspect-square overflow-hidden h-full">
-        <Image src={pill.image} alt="pill" className="z-0" layout="fill" />
+        <Image src={pill.image} alt="pill" className="z-0" fill sizes="100vw" />
         <div className="relative z-10 text-left text-red-200 w-full rounded-lg flex flex-col justify-end">
           <p className="font-medium text-xl text-[#324132] mb-2">
             {pill.title.replace("(Vegan)", "")}

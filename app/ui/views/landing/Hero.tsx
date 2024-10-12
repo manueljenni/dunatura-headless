@@ -6,7 +6,7 @@ import pillOrange from "@/public/images/pills/pill-orange.png";
 import pillVitc from "@/public/images/pills/pill-vitc.png";
 import pillWhite from "@/public/images/pills/pill-white.png";
 import pillYellow from "@/public/images/pills/pill-yellow.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export default function Hero() {
   return (
@@ -23,37 +23,58 @@ export default function Hero() {
         src={pillWhite}
         alt="Pill 1"
         className="absolute top-[50%] lg:top-[17%] left-[-30px] lg:left-[8%] w-20 md:w-28 h-auto z-0"
-      />
+        style={{
+          maxWidth: "100%",
+          height: "auto"
+        }} />
       <Image
         src={pillYellow}
         alt="Pill 2"
         className="absolute top-[38%] right-[-40px] md:right-[-25px] lg:top-[20%] lg:right-[2%] w-20 md:w-24 h-auto z-0"
-      />
+        style={{
+          maxWidth: "100%",
+          height: "auto"
+        }} />
       <Image
         src={pillOrange}
         alt="Pill 3"
         className="absolute hidden lg:block bottom-[15%] left-[-5%] lg:left-[25%] w-22 h-auto z-0"
-      />
+        style={{
+          maxWidth: "100%",
+          height: "auto"
+        }} />
       <Image
         src={pillHyaluron}
         alt="Pill 4"
         className="absolute hidden lg:block bottom-[27%] right-[0%] lg:right-[0%] w-30 h-auto z-0"
-      />
+        style={{
+          maxWidth: "100%",
+          height: "auto"
+        }} />
       <Image
         src={pillBrown}
         alt="Pill 5"
         className="absolute top-[10%] left-[-1%] lg:top-[48%] lg:left-[2%] w-24 md:w-32 h-auto z-0"
-      />
+        style={{
+          maxWidth: "100%",
+          height: "auto"
+        }} />
       <Image
         src={pillVitc}
         alt="Pill 6"
         className="absolute hidden lg:block top-[40%] right-[-10%] lg:right-[10%] w-28 h-auto z-0"
-      />
+        style={{
+          maxWidth: "100%",
+          height: "auto"
+        }} />
       <Image
         src={pillOmega}
         alt="Pill 7"
         className="absolute top-[15%] lg:top-[15%] right-[20%] lg:right-[40%] w-20 md:w-28 h-auto z-0"
-      />
+        style={{
+          maxWidth: "100%",
+          height: "auto"
+        }} />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 import alwaysByYourSide from "@/public/images/landing/always-by-your-side.png";
 import makeTheTest from "@/public/images/landing/quiz-image.png";
 import tailoredToYou from "@/public/images/landing/tailored-image.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export default function StepsVertical() {
@@ -56,7 +56,10 @@ export default function StepsVertical() {
           className="w-[85%] object-contain mb-4"
           width="192"
           height="192"
-        />
+          style={{
+            maxWidth: "100%",
+            height: "auto"
+          }} />
         <div className="flex items-center mb-2 relative">
           <div
             className="step-icon w-[42px] h-[42px] bg-white rounded-full flex justify-center items-center absolute -left-16 z-10"
@@ -88,7 +91,10 @@ export default function StepsVertical() {
           className="w-[85%] object-contain mb-4"
           width="192"
           height="192"
-        />
+          style={{
+            maxWidth: "100%",
+            height: "auto"
+          }} />
         <div className="flex items-center mb-2 relative">
           <div className="step-icon w-[42px] h-[42px] bg-white rounded-full flex justify-center items-center absolute -left-16 z-10">
             <svg
@@ -121,7 +127,10 @@ export default function StepsVertical() {
           className="w-[85%] object-contain mb-4"
           width="192"
           height="192"
-        />
+          style={{
+            maxWidth: "100%",
+            height: "auto"
+          }} />
         <div className="flex items-center mb-2 relative">
           <div
             ref={lastIconRef}

@@ -2,7 +2,7 @@
 import alwaysByYourSide from "@/public/images/landing/always-by-your-side.png";
 import makeTheTest from "@/public/images/landing/quiz-image.png";
 import tailoredToYou from "@/public/images/landing/tailored-image.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export default function StepsHorizontal() {
@@ -42,7 +42,10 @@ export default function StepsHorizontal() {
           className="w-[350px] object-cover rounded-[24px] mb-4"
           width="350"
           height="350"
-        />
+          style={{
+            maxWidth: "100%",
+            height: "auto"
+          }} />
         <h3 className="text-[20px] text-primary font-semibold mb-2">Mache den Test</h3>
         <div
           ref={iconRef}
@@ -71,7 +74,10 @@ export default function StepsHorizontal() {
           className="w-[350px] object-cover rounded-[24px] mb-4"
           width="350"
           height="350"
-        />
+          style={{
+            maxWidth: "100%",
+            height: "auto"
+          }} />
         <h3 className="text-[20px] text-primary font-semibold mb-2">
           Konfiguriert für dich
         </h3>
@@ -100,7 +106,10 @@ export default function StepsHorizontal() {
           className="w-[350px] object-cover rounded-[24px] mb-4"
           width="350"
           height="350"
-        />
+          style={{
+            maxWidth: "100%",
+            height: "auto"
+          }} />
         <h3 className="text-[20px] text-primary font-semibold mb-2">
           Flexible Anpassung
         </h3>

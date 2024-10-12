@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./primitives/button";
 export default function Header() {
@@ -13,7 +13,10 @@ export default function Header() {
               width={120}
               height={24}
               className="object-contain"
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
           </Link>
           <Link href="/">Jetzt konfigurieren</Link>
           <Link href="/products">Alle Produkte</Link>

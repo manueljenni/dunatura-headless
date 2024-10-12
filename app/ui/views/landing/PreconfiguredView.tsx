@@ -1,7 +1,7 @@
 import { Button } from "@/components/primitives/button";
 import leaf from "@/public/images/icons/leaf.png";
 import tree from "@/public/images/icons/tree.png";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import PreconfiguredPacks from "./PreconfiguredPacks";
 
 export default function PreconfiguredView() {
@@ -16,11 +16,25 @@ export default function PreconfiguredView() {
         <div className="flex justify-center items-center">
           <div className="flex justify-around items-center flex-col space-y-4 md:space-y-0 md:flex-row text-white lg:w-1/2 text-xl space-x-4 font-medium">
             <div className="flex justify-center items-center space-x-4">
-              <Image src={tree} alt="Icon 1" className="w-8 h-8" />
+              <Image
+                src={tree}
+                alt="Icon 1"
+                className="w-8 h-8"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }} />
               <p>Natürliche Inhaltsstoffe</p>
             </div>
             <div className="flex justify-center items-center space-x-4">
-              <Image src={leaf} alt="Icon 1" className="w-8 h-8" />
+              <Image
+                src={leaf}
+                alt="Icon 1"
+                className="w-8 h-8"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto"
+                }} />
               <p>Alle Produkte vegan</p>
             </div>
           </div>

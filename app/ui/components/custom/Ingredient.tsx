@@ -1,4 +1,4 @@
-import Image, { StaticImageData } from "next/legacy/image";
+import Image, { StaticImageData } from "next/image";
 
 export default function Ingredient(props: {
   image: string | StaticImageData;
@@ -13,10 +13,14 @@ export default function Ingredient(props: {
         src={props.image}
         alt="pill"
         className="h-16 w-16 object-contain rounded-full"
-        style={{ height: "72px", width: "72px" }}
         width={72}
         height={72}
-      />
+        style={{
+          height: "72px",
+          width: "72px",
+          maxWidth: "100%",
+          height: "auto"
+        }} />
       <div className="p-0 m-0">
         <p className="text-primary font-medium text-xl">{props.title}</p>
         <p className="text-secondary">{props.text}</p>

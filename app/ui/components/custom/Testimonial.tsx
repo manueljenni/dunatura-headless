@@ -1,5 +1,5 @@
 import checkmark from "@/public/images/icons/checkmark.svg";
-import Image from "next/legacy/image";
+import Image from "next/image";
 
 export default function Testimonial({
   index,
@@ -39,7 +39,10 @@ export default function Testimonial({
               className="w-6 h-6"
               width={24}
               height={24}
-            />
+              style={{
+                maxWidth: "100%",
+                height: "auto"
+              }} />
             <span>Verifizierte Bewertung</span>
           </div>
         </div>
