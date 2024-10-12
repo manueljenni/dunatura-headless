@@ -24,7 +24,7 @@ export default function AddToCartButton(props: {
       variant={props.variant ?? "default"}
       size={props.size ?? "default"}
       className={props.className}>
-      Add to Cart
+      In den Warenkorb
     </Button>
   );
 }

@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
 export default function Experts() {
   return (
     <div className="flex flex-col justify-center items-center pt-24 pb-12">
-      <div className="text-center max-w-4xl space-y-8 mb-12">
+      <div className="text-center max-w-5xl space-y-8 mb-12 px-4 w-full">
         <div className="flex justify-center items-center">
           <div className="bg-[#E8EDE8] px-3 py-1 rounded-full inline-flex">
             <p className="text-[#232E23] font-medium whitespace-normal">

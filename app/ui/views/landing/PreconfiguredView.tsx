@@ -41,13 +41,13 @@ export default function PreconfiguredView() {
             </div>
           </div>
         </div>
-        <div className="flex justify-center items-center pb-12">
+        <div className="flex justify-center items-center pb-12 px-4">
           <div className="px-12 py-8 bg-[#E7EAD7] rounded-[32px] lg:w-5/6 shadow-xl flex justify-between md:items-center flex-col md:flex-row space-y-6 md:space-y-0 max-w-[1000px]">
             <p className="text-3xl font-medium text-primary hyphens-auto">
               Lieber doch selber zusammenstellen?
             </p>
             <Button variant="pill" size={"pill-xl"}>
-              Erstelle dein persönliches Tagespack
+              Erstelle dein Tagespack
             </Button>
           </div>
         </div>
