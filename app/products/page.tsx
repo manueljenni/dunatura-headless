@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { getAllProducts } from "../../api/fetch";
 import AddToCartButton from "../ui/components/custom/AddToCartButton";
 

@@ -1,6 +1,6 @@
 "use client";
 import { Ingredient, Tagespack } from "@/api/types";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useState } from "react";
 import AddToCartButton from "../../components/custom/AddToCartButton";
 

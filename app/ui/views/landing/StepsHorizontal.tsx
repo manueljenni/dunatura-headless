@@ -2,7 +2,7 @@
 import alwaysByYourSide from "@/public/images/landing/always-by-your-side.png";
 import makeTheTest from "@/public/images/landing/quiz-image.png";
 import tailoredToYou from "@/public/images/landing/tailored-image.png";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useEffect, useRef, useState } from "react";
 
 export default function StepsHorizontal() {

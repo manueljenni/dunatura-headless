@@ -5,7 +5,7 @@ import christianeSauret from "@/public/images/experts/christiane-sauret.png";
 import nataliaBelaiche from "@/public/images/experts/natatalia-belaiche.png";
 import stefanRhein from "@/public/images/experts/stefan-rhein.jpg";
 import drThomasKlein from "@/public/images/experts/thomas-klein.png";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 import { useEffect, useRef } from "react";
 

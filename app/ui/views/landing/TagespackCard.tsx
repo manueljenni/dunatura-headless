@@ -1,5 +1,5 @@
 import tagespack from "@/public/images/landing/tagespack.png";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export default function TagespackCard() {
   return (

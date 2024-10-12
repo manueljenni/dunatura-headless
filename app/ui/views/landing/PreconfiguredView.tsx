@@ -1,7 +1,7 @@
 import { Button } from "@/components/primitives/button";
 import leaf from "@/public/images/icons/leaf.png";
 import tree from "@/public/images/icons/tree.png";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import PreconfiguredPacks from "./PreconfiguredPacks";
 
 export default function PreconfiguredView() {

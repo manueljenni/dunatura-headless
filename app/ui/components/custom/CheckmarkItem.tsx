@@ -1,5 +1,5 @@
 import checkmark from "@/public/images/icons/checkmark-empty.svg";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export default function CheckmarkItem(props: { text: string }) {
   return (

@@ -6,7 +6,7 @@ import pillOrange from "@/public/images/pills/pill-orange.png";
 import pillVitc from "@/public/images/pills/pill-vitc.png";
 import pillWhite from "@/public/images/pills/pill-white.png";
 import pillYellow from "@/public/images/pills/pill-yellow.png";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export default function Hero() {
   return (
