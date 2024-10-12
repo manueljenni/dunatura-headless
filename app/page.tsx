@@ -2,6 +2,7 @@ import Experts from "./ui/views/landing/Experts";
 import FAQ from "./ui/views/landing/FAQ";
 import Hero from "./ui/views/landing/Hero";
 import Mission from "./ui/views/landing/Mission";
+import PreconfiguredView from "./ui/views/landing/PreconfiguredView";
 import RoundedSectionEnding from "./ui/views/landing/RoundedSectionEnding";
 import Steps from "./ui/views/landing/Steps";
 import TagespackWithIngredients from "./ui/views/landing/TagespackIngredients";
@@ -20,7 +21,7 @@ export default function Home() {
           <TagespackWithIngredients />
           <Testimonials />
         </div>
-        {/* <PreconfiguredView /> */}
+        <PreconfiguredView />
         <Experts />
         <Mission />
         <FAQ />
