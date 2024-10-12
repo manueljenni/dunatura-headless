@@ -83,12 +83,16 @@ export default function PacksContent(props: { themenpacks: Tagespack[] }) {
       </div>
       <div className="relative flex md:flex-col justify-between h-full lg:flex-row pt-8 gap-12 w-full flex-col-reverse">
         {selectedCategory && <Pricing category={selectedCategory} />}
-        <div className="vitamin-scroll-container w-full flex overflow-x-scroll">
-          <div className="flex gap-4">
-            {selectedCategory &&
-              selectedCategory.ingredients?.map((ingredient) => (
-                <PillItem key={ingredient.shopifyId} pill={ingredient} />
-              ))}
+        <div className="vitamin-scroll-container w-full relative">
+          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+          <div className="overflow-x-scroll no-scrollbar">
+            <div className="flex gap-4">
+              {selectedCategory &&
+                selectedCategory.ingredients?.map((ingredient) => (
+                  <PillItem key={ingredient.shopifyId} pill={ingredient} />
+                ))}
+            </div>
           </div>
         </div>
       </div>

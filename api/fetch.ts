@@ -75,7 +75,8 @@ export async function getThemenpacksWithIngredients(): Promise<Tagespack[]> {
     data?.products.edges
       .map((edge) => edge.node)
       .filter((product) => product.variants.edges[0]?.node.availableForSale)
-      .filter((product) => product.tags.includes("Themenpack")) || [];
+      .filter((product) => product.tags.includes("Themenpack"))
+      .filter((product) => !product.title.includes("Barber Shop")) || [];
 
   const themenpacks = await Promise.all(
     products.map(async (product) => {
