@@ -1,3 +1,4 @@
+import { Button } from "@/components/primitives/button";
 import Ingredient from "../../components/custom/Ingredient";
 
 export default function Mission() {
@@ -12,17 +13,13 @@ export default function Mission() {
             Mache den ersten Schritt mit unserem fünfminütigen Test und erhalte Deine
             persönliche Empfehlung von Vitaminen und Mikronährstoffen.
           </p>
-          <button className="pt-2 pb-4">
-            <a
-              data-link="questionnaire"
-              className="bg-[#232E23] text-white font-semibold px-6 py-3 rounded-full">
-              Jetzt Test starten
-            </a>
-          </button>
+          <Button variant="pill" size={"pill-lg"}>
+            Jetzt Test starten
+          </Button>
         </div>
         <div className="flex justify-start items-start w-full">
           <div className="relative w-full z-50">
-            <div className="flex md:flex-col flex-row gap-4 items-center justify-start overflow-x-auto no-scrollbar w-full z-50 h-full">
+            <div className="flex md:flex-col flex-row gap-4 items-center justify-start overflow-x-auto no-scrollbar w-full z-50 h-full py-2">
               <Ingredient
                 image=""
                 title="2x Vitamin C"
@@ -40,8 +37,6 @@ export default function Mission() {
                 text="Der Elektrolyt für die Muskelfunktion."
                 className="md:rotate-2"
               />
-
-              <div className="h-full w-8 md:w-24 z-10"></div>
             </div>
           </div>
         </div>

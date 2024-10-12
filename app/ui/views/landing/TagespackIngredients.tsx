@@ -13,7 +13,6 @@ export default function TagespackWithIngredients() {
         <div className="flex justify-center items-center w-full">
           <div className="relative w-full z-50 justify-end">
             <div className="flex lg:flex-col flex-row gap-4 items-center justify-start overflow-x-auto no-scrollbar w-full z-50 py-4">
-              <div className="h-full w-24"></div>
               <Ingredient
                 image="/images/pills/vitamin-c-background.png"
                 title="Vitamin C"
