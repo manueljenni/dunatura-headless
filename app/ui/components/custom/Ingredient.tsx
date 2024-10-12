@@ -5,6 +5,7 @@ export default function Ingredient(props: {
   title: string;
   text: string;
   className?: string;
+  roundedImage?: boolean;
 }) {
   return (
     <div
@@ -12,7 +13,7 @@ export default function Ingredient(props: {
       <Image
         src={props.image}
         alt="pill"
-        className="h-16 w-16 object-contain rounded-full"
+        className={`h-16 w-16 object-contain ${props.roundedImage ? "rounded-full" : ""}`}
         width={72}
         height={72}
       />

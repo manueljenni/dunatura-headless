@@ -1,6 +1,8 @@
+import logoBlack from "@/public/images/logos/logo-black.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./primitives/button";
+
 export default function Header() {
   return (
     <div className="max-w-6xl mx-auto bg-lightBackground">
@@ -8,15 +10,16 @@ export default function Header() {
         <div className="flex items-center gap-6">
           <Link href="/">
             <Image
-              src="/images/logos/logo-black.webp"
+              src={logoBlack}
               alt="logo"
               width={120}
               height={24}
               className="object-contain"
               style={{
                 maxWidth: "100%",
-                height: "auto"
-              }} />
+                height: "auto",
+              }}
+            />
           </Link>
           <Link href="/">Jetzt konfigurieren</Link>
           <Link href="/products">Alle Produkte</Link>

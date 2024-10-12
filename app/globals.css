@@ -92,6 +92,23 @@
   width: 18rem;
 }
 
+#footer-overlay-content {
+  width: 150%;
+  height: 100%;
+  background-color: #232e23;
+  border-radius: 100%;
+  top: 40%;
+  left: -25%;
+  right: 0;
+  position: relative;
+}
+#footer-overlay-wrapper {
+  transform: translateY(70px);
+  height: 100px;
+  background-color: #fbfcf8;
+  overflow: hidden;
+}
+
 @keyframes scroll {
   0% {
     transform: translateX(0);

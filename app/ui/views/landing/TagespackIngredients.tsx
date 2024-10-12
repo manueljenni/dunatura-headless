@@ -17,21 +17,25 @@ export default function TagespackWithIngredients() {
                 image="/images/pills/vitamin-c-background.png"
                 title="Vitamin C"
                 text="Stärkt das Immunsystem und fördert die Kollagenbildung."
+                roundedImage
               />
               <Ingredient
                 image="/images/pills/kalium-background.png"
                 title="Kalium"
                 text="Unterstützt die Muskel- und Nervenfunktion."
+                roundedImage
               />
               <Ingredient
                 image="/images/pills/vitamin-b-komplex-background.png"
                 title="Vitamin B Komplex"
                 text="Fördert den Energiestoffwechsel und die geistige Klarheit."
+                roundedImage
               />
               <Ingredient
                 image="/images/pills/zink-background.png"
                 title="Zink"
                 text="Fördert die Hautgesundheit und unterstützt das Immunsystem."
+                roundedImage
               />
             </div>
             <div className="justify-center flex pt-6">

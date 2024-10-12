@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className={cn(inter.className, "h-full w-full")}>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

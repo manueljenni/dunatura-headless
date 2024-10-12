@@ -1,6 +1,6 @@
 import { Button } from "@/components/primitives/button";
-import leaf from "@/public/images/icons/leaf.png";
-import tree from "@/public/images/icons/tree.png";
+import leaf from "@/public/images/icons/leaf.svg";
+import tree from "@/public/images/icons/tree.svg";
 import Image from "next/image";
 import PreconfiguredPacks from "./PreconfiguredPacks";
 
@@ -22,8 +22,9 @@ export default function PreconfiguredView() {
                 className="w-8 h-8"
                 style={{
                   maxWidth: "100%",
-                  height: "auto"
-                }} />
+                  height: "auto",
+                }}
+              />
               <p>Natürliche Inhaltsstoffe</p>
             </div>
             <div className="flex justify-center items-center space-x-4">
@@ -33,8 +34,9 @@ export default function PreconfiguredView() {
                 className="w-8 h-8"
                 style={{
                   maxWidth: "100%",
-                  height: "auto"
-                }} />
+                  height: "auto",
+                }}
+              />
               <p>Alle Produkte vegan</p>
             </div>
           </div>
