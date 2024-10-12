@@ -20,7 +20,7 @@ export default function Footer() {
             height: "100%",
             backgroundColor: "#232e23",
             borderRadius: "100%",
-            top: "40%",
+            top: "15%",
             left: "-25%",
             right: 0,
             position: "relative",
