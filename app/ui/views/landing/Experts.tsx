@@ -65,8 +65,10 @@ function ExpertSlider() {
               className="w-full h-full object-cover"
               style={{
                 maxWidth: "100%",
-                height: "auto"
-              }} />
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
             <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.75)] to-transparent">
               <p className="text-white text-lg mb-1">{expert.name}</p>
               <p className="text-sm text-[#D1D1D1] mb-2">{expert.title}</p>
