@@ -8,9 +8,9 @@ import OpenLetter from "../../components/custom/OpenLetter";
 export default function Mission() {
   return (
     <div className="flex flex-col justify-center items-center bg-lightBackground pb-12 mt-18 px-6 lg:px-12 space-y-16">
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center w-full">
         <div className="flex flex-col md:flex-row justify-between max-w-6xl w-full space-y-8 md:space-y-0 md:space-x-4">
-          <div className="space-y-4 text-center md:text-left max-w-4xl">
+          <div className="space-y-4 text-center md:text-left md:max-w-xl">
             <h1 className="text-[#232E23] text-5xl font-semibold md:leading-tight">
               Unsere Mission ist es, Dir zu einem gesünderen Lebensstil zu verhelfen
             </h1>
@@ -22,7 +22,7 @@ export default function Mission() {
               Jetzt Test starten
             </Button>
           </div>
-          <div className="flex justify-start items-start w-full">
+          <div className="flex justify-start items-start w-full md:w-auto overflow-x-auto">
             <div className="relative w-full z-50">
               <div className="flex md:flex-col flex-row gap-4 items-center justify-start overflow-x-auto no-scrollbar w-full z-50 h-full py-2">
                 <Ingredient
