@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export default function OpenLetter() {
   return (
-    <div className="flex items-center justify-between w-full max-w-2xl space-x-4 bg-white rounded-3xl px-6 py-3 shadow-lg border">
+    <div className="flex items-start md:items-center flex-col md:flex-row justify-between w-full max-w-2xl space-y-2 md:space-y-0 md:space-x-4 bg-white rounded-3xl px-6 py-3 shadow-lg border">
       <div className="flex items-center space-x-4">
         <Image src={heart} alt="heart" width={24} height={24} />
         <span className="text-lg font-medium">Mehr über unsere Mission erfahren</span>
