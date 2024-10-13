@@ -15,12 +15,12 @@ export default function Experts() {
       <div className="text-center max-w-5xl space-y-8 mb-12 px-4 w-full">
         <div className="flex justify-center items-center">
           <div className="bg-[#E8EDE8] px-3 py-1 rounded-full inline-flex">
-            <p className="text-[#232E23] font-medium whitespace-normal">
+            <p className="text-primary font-medium whitespace-normal">
               Basierend auf den aktuellen wissenschaftlichen Erkennt&shy;nissen
             </p>
           </div>
         </div>
-        <h1 className="text-[#232E23] text-5xl font-semibold leading-tight">
+        <h1 className="text-primary text-5xl font-semibold leading-tight">
           Unser&nbsp;Team&nbsp;von Ernährungs&shy;experten
         </h1>
         <p className="text-lg">
@@ -52,7 +52,7 @@ function ExpertSlider() {
 
   return (
     <div
-      className="scroll-container no-scrollbar bg-[#FBFCF8] overflow-x-hidden whitespace-nowrap pb-20"
+      className="scroll-container no-scrollbar overflow-x-hidden whitespace-nowrap pb-20"
       ref={scrollContainerRef}>
       <div className="scroll-content flex gap-0.5 animate-scroll">
         {experts.map((expert, idx) => (
@@ -66,7 +66,7 @@ function ExpertSlider() {
             />
             <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.75)] to-transparent flex flex-col justify-start h-[45%]">
               <p className="text-white text-lg mb-1 mt-auto">{expert.name}</p>
-              <p className="text-sm whitespace-normal text-[#D1D1D1] mb-2">
+              <p className="text-sm whitespace-normal text-neutral-400 mb-2">
                 {expert.title}
               </p>
             </div>

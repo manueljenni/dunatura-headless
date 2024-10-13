@@ -19,8 +19,8 @@ export default function PacksContent(props: { themenpacks: Tagespack[] }) {
     let cleanedTitle = category.title.replace("Tagespacks ", "");
     return (
       <div
-        className={`rounded-full px-4 py-2 border border-[#324132] cursor-pointer whitespace-nowrap transition-all duration-300 hover:bg-primary hover:text-white ${
-          isSelected ? "bg-[#324132] text-white" : "bg-white text-[#324132]"
+        className={`rounded-full px-4 py-2 border border-primary cursor-pointer whitespace-nowrap transition-all duration-300 hover:bg-primary hover:text-white ${
+          isSelected ? "bg-primary text-white" : "bg-white text-primary"
         }`}
         onClick={() => onClick(category)}>
         <p>{cleanedTitle}</p>

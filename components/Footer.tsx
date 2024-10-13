@@ -26,7 +26,7 @@ export default function Footer() {
             position: "relative",
           }}></div>
       </div>
-      <div className="bg-[#232E23] text-white py-12 w-full block z-20">
+      <div className="bg-primary text-white py-12 w-full block z-20">
         <div className="flex justify-center items-center w-full">
           <div className="max-w-[1200px] w-full px-6 lg:px-12">
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-8 font-medium z-20">

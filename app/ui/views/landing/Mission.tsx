@@ -11,7 +11,7 @@ export default function Mission() {
       <div className="flex flex-col justify-center items-center w-full">
         <div className="flex flex-col lg:flex-row justify-between max-w-6xl w-full space-y-8 lg:space-y-0 lg:space-x-4">
           <div className="space-y-4 text-center lg:text-left max-w-2xl mx-auto">
-            <h1 className="text-[#232E23] text-5xl font-semibold lg:leading-tight ">
+            <h1 className="text-primary text-5xl font-semibold lg:leading-tight ">
               Unsere Mission ist es, Dir zu einem gesünderen Lebensstil zu verhelfen
             </h1>
             <p className="pb-4 text-lg">

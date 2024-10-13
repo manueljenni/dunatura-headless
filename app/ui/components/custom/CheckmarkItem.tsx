@@ -13,11 +13,12 @@ export default function CheckmarkItem(props: { text: string }) {
             className="w-4 h-4"
             style={{
               maxWidth: "100%",
-              height: "auto"
-            }} />
+              height: "auto",
+            }}
+          />
         </div>
       </div>
-      <p className="text-lg text-[#232E23]">{props.text}</p>
+      <p className="text-lg text-primary">{props.text}</p>
     </div>
   );
 }
