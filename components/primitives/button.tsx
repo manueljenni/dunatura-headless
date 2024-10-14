@@ -17,7 +17,8 @@ const buttonVariants = cva(
         pill: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/80 rounded-full font-medium w-fit",
         pillSecondary:
           "bg-[#EBEDE9] text-black shadow-sm hover:bg-secondary/40 rounded-full font-medium w-fit",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        ghost:
+          "hover:underline hover:underline-offset-4 transition-all hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -28,9 +29,9 @@ const buttonVariants = cva(
         "2xl": "px-8 py-4 text-base md:text-xl",
         icon: "h-9 w-9",
         pill: "h-8 px-4 py-2",
-        "pill-lg": "h-10 px-4 py-2 text-base",
-        "pill-xl": "h-12 px-6 py-3 text-base md:text-lg",
-        "pill-2xl": "px-8 py-4 text-base md:text-xl",
+        "pill-lg": "h-10 px-4 py-2 text-base rounded-full",
+        "pill-xl": "h-12 px-6 py-3 text-base md:text-lg rounded-full",
+        "pill-2xl": "px-8 py-4 text-base md:text-xl rounded-full",
       },
     },
     defaultVariants: {

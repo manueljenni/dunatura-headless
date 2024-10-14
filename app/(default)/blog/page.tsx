@@ -1,6 +1,6 @@
 import RoundedContainer from "@/components/custom/RoundedContainer";
 import { Route } from "next";
-import ArticlePreview from "../../components/custom/ArticlePreview";
+import ArticlePreview from "../../../components/custom/ArticlePreview";
 
 export default function BlogPage() {
   return (
