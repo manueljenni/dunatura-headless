@@ -7,8 +7,8 @@ import { Button } from "./primitives/button";
 
 export default function Header() {
   return (
-    <div className="max-w-6xl mx-auto bg-lightBackground">
-      <nav className="flex justify-between items-center p-4 h-18 font-medium">
+    <div className="max-w-6xl mx-auto bg-lightBackground w-full">
+      <nav className="flex justify-between items-center py-4 h-18 font-medium">
         <div className="flex items-center gap-6">
           <Link href="/">
             <Image

@@ -7,8 +7,8 @@ export default function Footer() {
       <div
         id="footer-overlay-wrapper"
         style={{
-          transform: "translateY(70px)",
-          height: "100px",
+          transform: "translateY(35px)",
+          height: "50px",
           backgroundColor: "#fbfcf8",
           overflow: "hidden",
         }}
@@ -20,7 +20,7 @@ export default function Footer() {
             height: "100%",
             backgroundColor: "#232e23",
             borderRadius: "100%",
-            top: "15%",
+            top: "30%",
             left: "-25%",
             right: 0,
             position: "relative",
