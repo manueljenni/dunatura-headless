@@ -4,31 +4,32 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <div>
+    <div className="relative overflow-hidden">
       <div
         id="footer-overlay-wrapper"
         style={{
-          transform: "translateY(35px)",
-          height: "50px",
-          backgroundColor: "#fbfcf8",
+          position: "absolute",
+          top: "-70px",
+          left: 0,
+          right: 0,
+          height: "70px",
           overflow: "hidden",
         }}
-        className="block z-10">
+        className="z-10">
         <div
           id="footer-overlay-content"
           style={{
-            width: "150%",
-            height: "100%",
-            backgroundColor: "#232e23",
-            borderRadius: "100%",
-            top: "30%",
-            left: "-25%",
-            right: 0,
-            position: "relative",
+            position: "absolute",
+            bottom: "-50px",
+            left: "-5%",
+            width: "110%",
+            height: "100px",
+            backgroundColor: "primary",
+            borderRadius: "50%",
           }}></div>
       </div>
-      <div className="bg-primary text-white py-12 w-full block z-20">
-        <div className="flex justify-center items-center w-full">
+      <div className="text-white w-full block z-20 overflow-hidden">
+        <div className="bg-primary py-24 flex justify-center items-center w-full">
           <div className="max-w-[1200px] w-full px-6 lg:px-12">
             <div className="grid grid-cols-2 lg:grid-cols-5 gap-8 font-medium z-20">
               <div className="flex flex-col space-y-4 col-span-2 w-full z-20">
