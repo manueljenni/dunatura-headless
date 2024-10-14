@@ -26,7 +26,7 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-6">
             <Link href="/">Jetzt konfigurieren</Link>
             <Link href="/products">Alle Produkte</Link>
-            <Link href="/">Über uns</Link>
+            {/* <Link href="/">Über uns</Link> */}
           </div>
         </div>
         <div className="flex items-center gap-4">

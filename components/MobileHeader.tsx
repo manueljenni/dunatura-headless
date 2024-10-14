@@ -79,11 +79,11 @@ export default function MobileHeader({ onToggle }: MobileHeaderProps) {
               className="block text-lg font-medium text-black hover:text-gray-700">
               Alle Produkte
             </Link>
-            <Link
+            {/* <Link
               href="/"
               className="block text-lg font-medium text-black hover:text-gray-700">
               Über uns
-            </Link>
+            </Link> */}
           </nav>
         </div>
       </div>

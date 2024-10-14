@@ -1,5 +1,6 @@
 import logoWhite from "@/public/images/logos/logo-white.svg";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -60,9 +61,9 @@ export default function Footer() {
               </div>
               <div className="flex flex-col space-y-2 w-full z-20">
                 <h3 className="text-lg font-semibold">Erfahre mehr</h3>
-                <a data-link="about" className="text-gray-400">
+                <Link href="/about" className="text-gray-400">
                   Über uns
-                </a>
+                </Link>
                 <a data-link="imprint" className="text-gray-400">
                   Impressum
                 </a>
