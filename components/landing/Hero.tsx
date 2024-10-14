@@ -7,12 +7,12 @@ import pillVitc from "@/public/images/pills/pill-vitc.png";
 import pillWhite from "@/public/images/pills/pill-white.png";
 import pillYellow from "@/public/images/pills/pill-yellow.png";
 import Image from "next/image";
-import OpenLetter from "../../components/custom/OpenLetter";
+import OpenLetter from "../custom/OpenLetter";
 
 export default function Hero() {
   return (
     <div className="relative flex justify-center items-center flex-col pt-12 min-h-[400px] h-[45svh] lg:h-[80svh] max-w-7xl mx-auto">
-      <div className="absolute top-0 mt-4 lg:mt-8 z-20 w-full flex justify-center">
+      <div className="absolute top-0 mt-4 px-4 lg:mt-4 z-20 w-full justify-center hidden md:flex">
         <OpenLetter />
       </div>
       <div className="flex flex-col items-center justify-center h-full w-full space-y-12 relative z-10 mt-[200px] mb-[150px]">

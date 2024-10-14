@@ -1,4 +1,4 @@
-import CheckmarkItem from "../../components/custom/CheckmarkItem";
+import CheckmarkItem from "../custom/CheckmarkItem";
 
 export default function FAQ() {
   return (

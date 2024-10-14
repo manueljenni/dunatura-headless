@@ -2,7 +2,7 @@
 import { Ingredient, Tagespack } from "@/api/types";
 import Image from "next/image";
 import { useState } from "react";
-import AddToCartButton from "../../components/custom/AddToCartButton";
+import AddToCartButton from "../custom/button/AddToCartButton";
 
 export default function PacksContent(props: { themenpacks: Tagespack[] }) {
   const [selectedCategory, setSelectedCategory] = useState(props.themenpacks[0]);

@@ -2,8 +2,8 @@ import { Button } from "@/components/primitives/button";
 import magnesium from "@/public/images/pills/magnesium-pumpkin-seeds.png";
 import omega3 from "@/public/images/pills/omega-3-chia-seeds.png";
 import vitaminC from "@/public/images/pills/vitamin-c-orange-juice.png";
-import Ingredient from "../../components/custom/Ingredient";
-import OpenLetter from "../../components/custom/OpenLetter";
+import Ingredient from "../custom/Ingredient";
+import OpenLetter from "../custom/OpenLetter";
 
 export default function Mission() {
   return (

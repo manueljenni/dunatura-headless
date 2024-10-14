@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getAllProducts } from "../../api/fetch";
-import AddToCartButton from "../ui/components/custom/AddToCartButton";
+import AddToCartButton from "../../components/custom/button/AddToCartButton";
 
 export default async function page() {
   const products = await getAllProducts();

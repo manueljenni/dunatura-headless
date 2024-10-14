@@ -1,12 +1,12 @@
-import Experts from "./ui/views/landing/Experts";
-import FAQ from "./ui/views/landing/FAQ";
-import Hero from "./ui/views/landing/Hero";
-import Mission from "./ui/views/landing/Mission";
-import PreconfiguredView from "./ui/views/landing/PreconfiguredView";
-import RoundedSectionEnding from "./ui/views/landing/RoundedSectionEnding";
-import Steps from "./ui/views/landing/Steps";
-import TagespackWithIngredients from "./ui/views/landing/TagespackIngredients";
-import Testimonials from "./ui/views/landing/Testimonials";
+import Experts from "../components/landing/Experts";
+import FAQ from "../components/landing/FAQ";
+import Hero from "../components/landing/Hero";
+import Mission from "../components/landing/Mission";
+import PreconfiguredView from "../components/landing/PreconfiguredView";
+import RoundedSectionEnding from "../components/landing/RoundedSectionEnding";
+import Steps from "../components/landing/Steps";
+import TagespackWithIngredients from "../components/landing/TagespackIngredients";
+import Testimonials from "../components/landing/Testimonials";
 
 export default function Home() {
   return (

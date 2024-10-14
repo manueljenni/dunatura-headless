@@ -1,5 +1,5 @@
 import { Button } from "@/components/primitives/button";
-import Ingredient from "../../components/custom/Ingredient";
+import Ingredient from "../custom/Ingredient";
 import TagespackCard from "./TagespackCard";
 
 export default function TagespackWithIngredients() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Testimonial from "../../components/custom/Testimonial";
+import Testimonial from "../custom/Testimonial";
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
