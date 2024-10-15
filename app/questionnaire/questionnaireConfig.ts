@@ -157,28 +157,6 @@ export const vitaminIdToKey: { [key in VitaminId]: VitaminKey } = Object.fromEnt
   Object.entries(vitamins).map(([key, value]) => [value.id, key as VitaminKey]),
 ) as { [key in VitaminId]: VitaminKey };
 
-// Define the base question type
-type BaseQuestion = {
-  id: number;
-  text: string;
-  subtitle?: string;
-  type: QuestionType;
-  variables?: {
-    [key: string]: string;
-  };
-  answers: {
-    value: {
-      text: string;
-      value: string;
-    };
-    scores:
-      | Partial<{
-          [K in VitaminId]: number | 0;
-        }>
-      | undefined;
-  }[];
-};
-
 // Define the questionnaire data
 export const questionnaireData = [
   {
@@ -194,7 +172,8 @@ export const questionnaireData = [
   {
     id: 2,
     text: "Meine Gesundheitsziele beinhalten...",
-    type: QuestionType.MultiSelect,
+    type: QuestionType.Select,
+    maxSteps: 3,
     answers: [
       {
         value: { text: "Gesundheit allgemein verbessern", value: "overall_health" },
@@ -226,6 +205,7 @@ export const questionnaireData = [
     subtitle: "Wir möchten dein Alter für die Dosisberechnung verwenden.",
     variables: { name: "name" },
     type: QuestionType.Select,
+    maxSteps: 1,
     answers: [
       {
         value: { text: "Jünger als 20", value: "under_20" },
@@ -276,6 +256,7 @@ export const questionnaireData = [
     subtitle:
       "Auch wenn Männer und Frauen viele Gemeinsamkeiten haben, gibt es doch biologisch bedingte Unterschiede. Beispielsweise tritt ein Eisenmangel bei Frauen häufiger auf als bei Männern.",
     type: QuestionType.Select,
+    maxSteps: 1,
     answers: [
       {
         value: { text: "Männlich", value: "male" },

@@ -3,13 +3,6 @@
 import { Button } from "@/components/primitives/button";
 import { Input } from "@/components/primitives/input";
 import { Label } from "@/components/primitives/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/primitives/select";
 import { useState } from "react";
 import { AnswerType, QuestionId, questionnaireData } from "./questionnaireConfig";
 import { Question, QuestionnaireEngine, QuestionType } from "./questionnaireEngine";
@@ -32,8 +25,6 @@ export default function Questionnaire() {
   const handleAnswer = <T extends QuestionId>(questionId: T, answer: AnswerType<T>) => {
     const { nextQuestion, newScores } = engine.answerQuestion(questionId, answer);
 
-    console.warn("Answered - got new scores ", newScores);
-
     setCurrentQuestion(nextQuestion);
     setScores((prevScores) => ({
       ...prevScores,
@@ -47,12 +38,16 @@ export default function Questionnaire() {
     setSelectedAnswers(null);
   };
 
-  const handleMultiSelectChange = (value: AnswerType<QuestionId>) => {
+  const handleMultiSelectChange = (value: AnswerType<QuestionId>, maxSteps?: number) => {
     setSelectedAnswers((prev) => {
       if (Array.isArray(prev)) {
-        return prev.includes(value)
-          ? prev.filter((item) => item !== value)
-          : [...prev, value];
+        if (prev.includes(value)) {
+          return prev.filter((item) => item !== value);
+        }
+        if (maxSteps && prev.length >= maxSteps) {
+          return prev;
+        }
+        return [...prev, value];
       }
       return [value];
     });
@@ -61,22 +56,7 @@ export default function Questionnaire() {
   const renderQuestion = () => {
     if (!currentQuestion) return null;
 
-    const {
-      id,
-      text,
-      subtitle,
-      type,
-      answers,
-    }: {
-      id: QuestionId;
-      text: string;
-      subtitle?: string;
-      type: QuestionType;
-      answers: ReadonlyArray<{
-        value: { text: string; value: string };
-        scores?: Record<string, number>;
-      }>;
-    } = currentQuestion;
+    const { id, text, subtitle, maxSteps, type, answers } = currentQuestion;
 
     switch (type) {
       case QuestionType.ConsentScreen:
@@ -102,24 +82,41 @@ export default function Questionnaire() {
           </div>
         );
 
-      case QuestionType.MultiSelect:
+      case QuestionType.Select:
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-semibold">{text}</h2>
             {subtitle && <p className="text-gray-600">{subtitle}</p>}
+            {maxSteps && maxSteps > 1 && (
+              <p className="text-gray-600">Wähle bis zu {maxSteps} Ziele aus</p>
+            )}
             <div className="space-y-2">
               {answers.map((answer) => (
                 <Label
                   key={answer.value.value}
                   className="flex items-center space-x-2 cursor-pointer">
                   <Input
-                    type="checkbox"
+                    type={maxSteps && maxSteps > 1 ? "checkbox" : "radio"}
                     value={answer.value.value as AnswerType<QuestionId>}
-                    checked={selectedAnswers?.includes(
-                      answer.value.value as AnswerType<QuestionId>,
-                    )}
+                    checked={
+                      Array.isArray(selectedAnswers)
+                        ? selectedAnswers.includes(
+                            answer.value.value as AnswerType<QuestionId>,
+                          )
+                        : selectedAnswers === answer.value.value
+                    }
                     onChange={() =>
                       handleMultiSelectChange(
+                        answer.value.value as AnswerType<QuestionId>,
+                        maxSteps,
+                      )
+                    }
+                    disabled={
+                      !!maxSteps &&
+                      maxSteps > 1 &&
+                      Array.isArray(selectedAnswers) &&
+                      selectedAnswers.length >= maxSteps &&
+                      !selectedAnswers.includes(
                         answer.value.value as AnswerType<QuestionId>,
                       )
                     }
@@ -127,18 +124,26 @@ export default function Questionnaire() {
                   />
                   <div
                     className={`flex-1 p-3 rounded-lg border ${
-                      selectedAnswers?.includes(
-                        answer.value.value as AnswerType<QuestionId>,
-                      )
+                      Array.isArray(selectedAnswers)
+                        ? selectedAnswers.includes(
+                            answer.value.value as AnswerType<QuestionId>,
+                          )
+                          ? "bg-primary text-white"
+                          : "bg-white"
+                        : selectedAnswers === answer.value.value
                         ? "bg-primary text-white"
                         : "bg-white"
                     }`}>
                     {answer.value.text}
                   </div>
                   <span className="text-xl">
-                    {selectedAnswers?.includes(
-                      answer.value.value as AnswerType<QuestionId>,
-                    )
+                    {Array.isArray(selectedAnswers)
+                      ? selectedAnswers.includes(
+                          answer.value.value as AnswerType<QuestionId>,
+                        )
+                        ? "×"
+                        : "+"
+                      : selectedAnswers === answer.value.value
                       ? "×"
                       : "+"}
                   </span>
@@ -147,30 +152,12 @@ export default function Questionnaire() {
             </div>
             <Button
               onClick={() => handleAnswer(id, selectedAnswers as AnswerType<QuestionId>)}
-              disabled={!selectedAnswers || selectedAnswers.length === 0}>
+              disabled={
+                !selectedAnswers ||
+                (Array.isArray(selectedAnswers) && selectedAnswers.length === 0)
+              }>
               Continue
             </Button>
-          </div>
-        );
-
-      case QuestionType.Select:
-        return (
-          <div className="space-y-6">
-            <h2 className="texit-2xl font-semibold">{text}</h2>
-            {subtitle && <p className="text-gray-600">{subtitle}</p>}
-            <Select
-              onValueChange={(value) => handleAnswer(id, value as AnswerType<typeof id>)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select an option" />
-              </SelectTrigger>
-              <SelectContent>
-                {answers.map((answer) => (
-                  <SelectItem key={answer.value.value} value={answer.value.value}>
-                    {answer.value.text}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
         );
 

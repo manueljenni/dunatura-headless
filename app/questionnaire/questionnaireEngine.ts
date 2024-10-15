@@ -3,7 +3,6 @@ import { AnswerType, QuestionId, QuestionnaireData } from "./questionnaireConfig
 export enum QuestionType {
   Select = "select",
   Number = "number",
-  MultiSelect = "multi_select",
   TextInput = "text_input",
   // Special types
   ConsentScreen = "consent",
@@ -16,12 +15,17 @@ export type Answers = {
   [K in QuestionId]?: AnswerType<K>;
 };
 
-export type Question = QuestionnaireData[number];
-
-type Answer = {
-  value: { text: string; value: string };
-  scores?: Partial<Record<VitaminId, number>>;
-};
+export interface Question {
+  id: QuestionId;
+  text: string;
+  subtitle?: string;
+  type: QuestionType;
+  answers: ReadonlyArray<{
+    value: { text: string; value: string };
+    scores?: Record<string, number>;
+  }>;
+  maxSteps?: number;
+}
 
 export class QuestionnaireEngine {
   private data: QuestionnaireData;
@@ -67,13 +71,13 @@ export class QuestionnaireEngine {
   ): Partial<Record<VitaminId, number>> {
     let totalScores: Partial<Record<VitaminId, number>> = {};
 
-    if (question.type === QuestionType.MultiSelect && Array.isArray(answer)) {
+    if (Array.isArray(answer)) {
       answer.forEach((selectedValue) => {
         const selectedAnswer = question.answers.find(
           (a) => a.value.value === selectedValue,
         );
         if (selectedAnswer?.value) {
-          this.updateScores(totalScores, selectedAnswer.scores);
+          this.updateScores(totalScores, selectedAnswer.scores ?? {});
         }
       });
     } else {
