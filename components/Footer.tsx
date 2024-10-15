@@ -53,35 +53,31 @@ export default function Footer() {
                 <Link href="/questionnaire" className="text-gray-400">
                   Starte den Test
                 </Link>
-                <a data-link="customizer" className="text-gray-400">
+                <p data-link="customizer" className="text-gray-400">
                   Konfigurator
-                </a>
-                <a data-link="allProducts" className="text-gray-400">
+                </p>
+                <p data-link="allProducts" className="text-gray-400">
                   Alle Produkte
-                </a>
+                </p>
               </div>
               <div className="flex flex-col space-y-2 w-full z-20">
                 <h3 className="text-lg font-semibold">Erfahre mehr</h3>
                 <Link href="/about" className="text-gray-400">
                   Über uns
                 </Link>
-                <a data-link="imprint" className="text-gray-400">
+                <p data-link="imprint" className="text-gray-400">
                   Impressum
-                </a>
-                <a data-link="tcs" className="text-gray-400">
+                </p>
+                <p data-link="tcs" className="text-gray-400">
                   AGB
-                </a>
+                </p>
               </div>
               <div className="flex flex-col space-y-2 w-full z-20">
                 <h3 className="text-lg font-semibold">Kontakt</h3>
-                <a href="mailto:hello@dunatura.com" className="text-gray-400">
-                  Schreib uns jederzeit
-                </a>
-                <a
-                  href="mailto:hello@dunatura.com"
-                  className="text-white underline underline-offset-4">
+                <p className="text-gray-400">Schreib uns jederzeit</p>
+                <p className="text-white underline underline-offset-4">
                   hello@dunatura.com
-                </a>
+                </p>
               </div>
             </div>
             <div className="mt-12 text-center text-gray-400 flex justify-between items-center">
