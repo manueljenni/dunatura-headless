@@ -23,9 +23,9 @@ const StepContainer: React.FC<{
 }> = ({ children, onNext, onPrevious, currentStep, totalSteps, nextButtonText }) => (
   <div className="flex justify-center">
     <div className="w-full max-w-2xl space-y-16">
-      <div className="text-center">
+      {/* <div className="text-center">
         Step {currentStep + 1} of {totalSteps}
-      </div>
+      </div> */}
       {children}
       <div className="flex justify-start space-x-4">
         <Button variant={"pill"} size={"pill-lg"} onClick={onNext}>

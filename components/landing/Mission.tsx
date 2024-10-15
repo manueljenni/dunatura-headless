@@ -2,6 +2,7 @@ import { Button } from "@/components/primitives/button";
 import magnesium from "@/public/images/pills/magnesium-pumpkin-seeds.png";
 import omega3 from "@/public/images/pills/omega-3-chia-seeds.png";
 import vitaminC from "@/public/images/pills/vitamin-c-orange-juice.png";
+import Link from "next/link";
 import Ingredient from "../custom/Ingredient";
 import OpenLetter from "../custom/OpenLetter";
 
@@ -18,9 +19,11 @@ export default function Mission() {
               Mache den ersten Schritt mit unserem fünfminütigen Test und erhalte Deine
               persönliche Empfehlung von Vitaminen und Mikronährstoffen.
             </p>
-            <Button variant="pill" size={"pill-xl"}>
-              Jetzt Test starten
-            </Button>
+            <Link href="/questionnaire">
+              <Button variant="pill" size={"pill-xl"}>
+                Jetzt Test starten
+              </Button>
+            </Link>
           </div>
           <div className="flex justify-start items-start w-full lg:w-auto overflow-x-auto">
             <div className="relative w-full z-50">

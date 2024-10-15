@@ -7,6 +7,7 @@ import pillVitc from "@/public/images/pills/pill-vitc.png";
 import pillWhite from "@/public/images/pills/pill-white.png";
 import pillYellow from "@/public/images/pills/pill-yellow.png";
 import Image from "next/image";
+import Link from "next/link";
 import OpenLetter from "../custom/OpenLetter";
 
 export default function Hero() {
@@ -19,9 +20,11 @@ export default function Hero() {
         <h1 className="text-primary text-[40px] md:text-[50px] lg:text-[78px] font-semibold leading-none text-center lg:px-4 max-w-[800px]">
           Mikronährstoffe & Vitamine, für dich zusammengestellt
         </h1>
-        <Button variant="pill" size="pill-2xl">
-          Jetzt Test starten
-        </Button>
+        <Link href="/questionnaire">
+          <Button variant="pill" size="pill-2xl">
+            Jetzt Test starten
+          </Button>
+        </Link>
       </div>
       <Image
         src={pillWhite}

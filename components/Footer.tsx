@@ -50,9 +50,9 @@ export default function Footer() {
               </div>
               <div className="flex flex-col space-y-2 w-full z-20">
                 <h3 className="text-lg font-semibold">Produkt</h3>
-                <a data-link="questionnaire" className="text-gray-400">
+                <Link href="/questionnaire" className="text-gray-400">
                   Starte den Test
-                </a>
+                </Link>
                 <a data-link="customizer" className="text-gray-400">
                   Konfigurator
                 </a>
