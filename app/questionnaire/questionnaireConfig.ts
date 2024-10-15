@@ -157,7 +157,8 @@ export const vitaminIdToKey: { [key in VitaminId]: VitaminKey } = Object.fromEnt
   Object.entries(vitamins).map(([key, value]) => [value.id, key as VitaminKey]),
 ) as { [key in VitaminId]: VitaminKey };
 
-export const questionnaireData: {
+// Define the base question type
+type BaseQuestion = {
   id: number;
   text: string;
   subtitle?: string;
@@ -168,7 +169,6 @@ export const questionnaireData: {
   answers: {
     value: {
       text: string;
-      // Identifier for the answer
       value: string;
     };
     scores:
@@ -177,13 +177,19 @@ export const questionnaireData: {
         }>
       | undefined;
   }[];
-}[] = [
+};
+
+// Define the questionnaire data
+export const questionnaireData = [
   {
     id: 1,
     text: "Bevor es losgeht",
     subtitle: "Dürfen wir deine Informationen verarbeiten?",
     type: QuestionType.ConsentScreen,
-    answers: [],
+    answers: [
+      { value: { text: "Ich stimme zu", value: "consent" }, scores: {} },
+      { value: { text: "Nein, zurück", value: "decline" }, scores: {} },
+    ],
   },
   {
     id: 2,
@@ -191,19 +197,10 @@ export const questionnaireData: {
     type: QuestionType.MultiSelect,
     answers: [
       {
-        value: {
-          text: "Gesundheit allgemein verbessern",
-          value: "overall_health",
-        },
+        value: { text: "Gesundheit allgemein verbessern", value: "overall_health" },
         scores: {},
       },
-      {
-        value: {
-          text: "Mehr Energie während des Tages",
-          value: "energy",
-        },
-        scores: {},
-      },
+      { value: { text: "Mehr Energie während des Tages", value: "energy" }, scores: {} },
       {
         value: {
           text: "Konzentration während der Arbeit steigern",
@@ -212,58 +209,26 @@ export const questionnaireData: {
         scores: {},
       },
       {
-        value: {
-          text: "Bessere Performance im Sport",
-          value: "performance",
-        },
+        value: { text: "Bessere Performance im Sport", value: "performance" },
         scores: {},
       },
+      { value: { text: "Höhere Ausdauer", value: "endurance" }, scores: {} },
+      { value: { text: "Natürliche Schönheit", value: "beauty" }, scores: {} },
       {
-        value: {
-          text: "Höhere Ausdauer",
-          value: "endurance",
-        },
-        scores: {},
-      },
-      {
-        value: {
-          text: "Natürliche Schönheit",
-          value: "beauty",
-        },
-        scores: {},
-      },
-      {
-        value: {
-          text: "Höhere Immunität während des ganzen Jahres",
-          value: "immunity",
-        },
+        value: { text: "Höhere Immunität während des ganzen Jahres", value: "immunity" },
         scores: {},
       },
     ],
   },
-  // TODO - Add intermediary placeholder steps
-  /*
-  {
-    id: 3,
-    text: "Zuerst, lass uns deinen Namen zu deinem Tagespack hinzufügen.",
-    subtitle: "Wie sollen wir dich nennen?",
-    type: QuestionType.NameInput,
-    answers: [],
-  },*/
   {
     id: 4,
     text: "Hey ${name}, wie alt bist du?",
     subtitle: "Wir möchten dein Alter für die Dosisberechnung verwenden.",
-    variables: {
-      name: "name",
-    },
+    variables: { name: "name" },
     type: QuestionType.Select,
     answers: [
       {
-        value: {
-          text: "Jünger als 20",
-          value: "under_20",
-        },
+        value: { text: "Jünger als 20", value: "under_20" },
         scores: {
           [vitamins.VIT_D3_K2.id]: 5,
           [vitamins.ZINK.id]: 5,
@@ -271,10 +236,7 @@ export const questionnaireData: {
         },
       },
       {
-        value: {
-          text: "20 - 30",
-          value: "20_30",
-        },
+        value: { text: "20 - 30", value: "20_30" },
         scores: {
           [vitamins.COENZYM_Q10.id]: 2,
           [vitamins.VIT_D3_K2.id]: 6,
@@ -283,10 +245,7 @@ export const questionnaireData: {
         },
       },
       {
-        value: {
-          text: "31 - 40",
-          value: "31_40",
-        },
+        value: { text: "31 - 40", value: "31_40" },
         scores: {
           [vitamins.COENZYM_Q10.id]: 6,
           [vitamins.OMEGA_3.id]: 3,
@@ -298,10 +257,7 @@ export const questionnaireData: {
         },
       },
       {
-        value: {
-          text: "Älter als 40",
-          value: "over_40",
-        },
+        value: { text: "Älter als 40", value: "over_40" },
         scores: {
           [vitamins.COENZYM_Q10.id]: 8,
           [vitamins.OMEGA_3.id]: 6,
@@ -322,10 +278,7 @@ export const questionnaireData: {
     type: QuestionType.Select,
     answers: [
       {
-        value: {
-          text: "Männlich",
-          value: "male",
-        },
+        value: { text: "Männlich", value: "male" },
         scores: {
           [vitamins.L_ARGININ.id]: 5,
           [vitamins.COENZYM_Q10.id]: 5,
@@ -338,10 +291,7 @@ export const questionnaireData: {
         },
       },
       {
-        value: {
-          text: "Weiblich",
-          value: "female",
-        },
+        value: { text: "Weiblich", value: "female" },
         scores: {
           [vitamins.L_ARGININ.id]: 5,
           [vitamins.OPC_TRAUBENKERNEXTKRAKT.id]: 5,
@@ -353,13 +303,31 @@ export const questionnaireData: {
           [vitamins.VIT_B12_KOMPLEX.id]: 5,
         },
       },
-      {
-        value: {
-          text: "Andere",
-          value: "other",
-        },
-        scores: {},
-      },
+      { value: { text: "Andere", value: "other" }, scores: {} },
     ],
   },
-];
+] as const;
+
+// Derive types from the questionnaireData
+export type QuestionnaireData = typeof questionnaireData;
+export type QuestionId = QuestionnaireData[number]["id"];
+
+// Helper type to get the answer type for a specific question
+export type AnswerType<T extends QuestionId> = Extract<
+  QuestionnaireData[number],
+  { id: T }
+>["answers"][number]["value"]["value"];
+
+// Example usage:
+type Question1Answers = AnswerType<1>; // "consent" | "decline"
+type Question2Answers = AnswerType<2>; // "overall_health" | "energy" | "concentration" | ...
+type Question4Answers = AnswerType<4>; // "under_20" | "20_30" | "31_40" | "over_40"
+type Question5Answers = AnswerType<5>; // "male" | "female" | "other"
+
+// Type-safe function to select an answer
+export const selectAnswer = <T extends QuestionId>(
+  questionId: T,
+  answer: AnswerType<T>,
+) => {
+  // Implementation here
+};
