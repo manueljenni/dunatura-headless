@@ -317,17 +317,3 @@ export type AnswerType<T extends QuestionId> = Extract<
   QuestionnaireData[number],
   { id: T }
 >["answers"][number]["value"]["value"];
-
-// Example usage:
-type Question1Answers = AnswerType<1>; // "consent" | "decline"
-type Question2Answers = AnswerType<2>; // "overall_health" | "energy" | "concentration" | ...
-type Question4Answers = AnswerType<4>; // "under_20" | "20_30" | "31_40" | "over_40"
-type Question5Answers = AnswerType<5>; // "male" | "female" | "other"
-
-// Type-safe function to select an answer
-export const selectAnswer = <T extends QuestionId>(
-  questionId: T,
-  answer: AnswerType<T>,
-) => {
-  // Implementation here
-};

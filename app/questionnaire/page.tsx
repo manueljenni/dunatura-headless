@@ -11,12 +11,7 @@ import {
   SelectValue,
 } from "@/components/primitives/select";
 import { useState } from "react";
-import {
-  AnswerType,
-  QuestionId,
-  questionnaireData,
-  selectAnswer,
-} from "./questionnaireConfig";
+import { AnswerType, QuestionId, questionnaireData } from "./questionnaireConfig";
 import { Question, QuestionnaireEngine, QuestionType } from "./questionnaireEngine";
 
 export default function Questionnaire() {
@@ -35,7 +30,6 @@ export default function Questionnaire() {
   >(null);
 
   const handleAnswer = <T extends QuestionId>(questionId: T, answer: AnswerType<T>) => {
-    selectAnswer(questionId, answer);
     const { nextQuestion, newScores } = engine.answerQuestion(questionId, answer);
 
     console.warn("Answered - got new scores ", newScores);
