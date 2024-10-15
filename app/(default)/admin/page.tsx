@@ -91,104 +91,219 @@ export default function QuestionnaireEditor() {
   };
 
   return (
-    <div className="w-full">
-      <RoundedContainer title="Questionnaire Editor">
+    <RoundedContainer title="Questionnaire Editor">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {questions.map((question, questionIndex) => (
-          <div key={question.id} className="mb-8 p-4 border rounded w-full bg-[#FBFCF8]">
-            <h2 className="text-xl font-semibold mb-2">Question {question.id}</h2>
-            <div className="mb-2 space-y-2">
-              <Label>Text</Label>
+          <QuestionCard
+            key={question.id}
+            question={question}
+            questionIndex={questionIndex}
+            handleQuestionChange={handleQuestionChange}
+            handleAnswerChange={handleAnswerChange}
+            handleScoreChange={handleScoreChange}
+            addNewIngredient={addNewIngredient}
+          />
+        ))}
+      </div>
+    </RoundedContainer>
+  );
+}
+
+type QuestionCardProps = {
+  question: (typeof questionnaireData)[0];
+  questionIndex: number;
+  handleQuestionChange: (
+    index: number,
+    field: string,
+    value: string | QuestionType,
+  ) => void;
+  handleAnswerChange: (
+    questionIndex: number,
+    answerIndex: number,
+    field: string,
+    value: string,
+  ) => void;
+  handleScoreChange: (
+    questionIndex: number,
+    answerIndex: number,
+    vitaminId: VitaminId,
+    score: number,
+  ) => void;
+  addNewIngredient: (
+    questionIndex: number,
+    answerIndex: number,
+    vitaminId: VitaminId,
+  ) => void;
+};
+
+function QuestionCard({
+  question,
+  questionIndex,
+  handleQuestionChange,
+  handleAnswerChange,
+  handleScoreChange,
+  addNewIngredient,
+}: QuestionCardProps) {
+  return (
+    <div className="p-4 border rounded bg-[#FBFCF8]">
+      <h2 className="text-xl font-semibold mb-2">Question {question.id}</h2>
+      <QuestionInput
+        question={question}
+        questionIndex={questionIndex}
+        handleQuestionChange={handleQuestionChange}
+      />
+      <div className="mt-4 space-y-4">
+        {question.answers.map((answer, answerIndex) => (
+          <AnswerCard
+            key={answerIndex}
+            answer={answer}
+            questionIndex={questionIndex}
+            answerIndex={answerIndex}
+            handleAnswerChange={handleAnswerChange}
+            handleScoreChange={handleScoreChange}
+            addNewIngredient={addNewIngredient}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+type QuestionInputProps = {
+  question: (typeof questionnaireData)[0];
+  questionIndex: number;
+  handleQuestionChange: (
+    index: number,
+    field: string,
+    value: string | QuestionType,
+  ) => void;
+};
+
+function QuestionInput({
+  question,
+  questionIndex,
+  handleQuestionChange,
+}: QuestionInputProps) {
+  return (
+    <div className="space-y-2">
+      <div>
+        <Label>Text</Label>
+        <Input
+          type="text"
+          value={question.text}
+          onChange={(e) => handleQuestionChange(questionIndex, "text", e.target.value)}
+          className="w-full"
+        />
+      </div>
+      <div>
+        <Label>Type</Label>
+        <Select
+          value={question.type}
+          onValueChange={(value) =>
+            handleQuestionChange(questionIndex, "type", value as QuestionType)
+          }>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select question type" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.values(QuestionType).map((type) => (
+              <SelectItem key={type} value={type}>
+                {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </div>
+  );
+}
+
+type AnswerCardProps = {
+  answer: (typeof questionnaireData)[0]["answers"][0];
+  questionIndex: number;
+  answerIndex: number;
+  handleAnswerChange: (
+    questionIndex: number,
+    answerIndex: number,
+    field: string,
+    value: string,
+  ) => void;
+  handleScoreChange: (
+    questionIndex: number,
+    answerIndex: number,
+    vitaminId: VitaminId,
+    score: number,
+  ) => void;
+  addNewIngredient: (
+    questionIndex: number,
+    answerIndex: number,
+    vitaminId: VitaminId,
+  ) => void;
+};
+
+function AnswerCard({
+  answer,
+  questionIndex,
+  answerIndex,
+  handleAnswerChange,
+  handleScoreChange,
+  addNewIngredient,
+}: AnswerCardProps) {
+  return (
+    <div className="p-2 border rounded">
+      <Input
+        type="text"
+        value={answer.value.text}
+        onChange={(e) =>
+          handleAnswerChange(questionIndex, answerIndex, "text", e.target.value)
+        }
+        className="w-full mb-2"
+      />
+      <h4 className="font-semibold mt-2 mb-1">Scores:</h4>
+      <div className="grid grid-cols-2 gap-2">
+        {Object.entries(answer.scores || {}).map(([vitaminIdString, score]) => {
+          const vitaminId = Number(vitaminIdString) as VitaminId;
+          const vitaminKey = vitaminIdToKey[vitaminId];
+          if (!vitaminKey) return null;
+          return (
+            <div key={vitaminIdString} className="flex items-center space-x-2">
+              <span className="w-2/3 truncate text-primary text-sm font-medium">
+                {vitamins[vitaminKey].name}
+              </span>
               <Input
-                type="text"
-                value={question.text}
+                type="number"
+                value={score}
                 onChange={(e) =>
-                  handleQuestionChange(questionIndex, "text", e.target.value)
+                  handleScoreChange(
+                    questionIndex,
+                    answerIndex,
+                    vitaminId,
+                    Number(e.target.value),
+                  )
                 }
-                className="w-full p-2 border rounded"
+                className="w-1/4"
               />
             </div>
-            <div className="mb-2 space-y-2">
-              <Label>Type</Label>
-              <Select
-                value={question.type}
-                onValueChange={(value) =>
-                  handleQuestionChange(questionIndex, "type", value as QuestionType)
-                }>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select question type" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.values(QuestionType).map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {type}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <h3 className="text-lg font-semibold mt-4 mb-2"></h3>
-            {question.answers.map((answer, answerIndex) => (
-              <div key={answerIndex} className="mb-4 p-2 border rounded">
-                <Input
-                  type="text"
-                  value={answer.value.text}
-                  onChange={(e) =>
-                    handleAnswerChange(questionIndex, answerIndex, "text", e.target.value)
-                  }
-                  className="w-full p-2 border rounded mb-2"
-                />
-                <h4 className="font-semibold mt-2 mb-1">Scores:</h4>
-                {Object.entries(answer.scores || {}).map(([vitaminIdString, score]) => {
-                  const vitaminId = Number(vitaminIdString) as VitaminId;
-                  const vitaminKey = vitaminIdToKey[vitaminId];
-
-                  if (!vitaminKey) return null; // or some error handling
-
-                  return (
-                    <div key={vitaminIdString} className="flex items-center mb-1">
-                      <span className="w-1/3">{vitamins[vitaminKey].name}:</span>
-                      <Input
-                        type="number"
-                        value={score}
-                        onChange={(e) =>
-                          handleScoreChange(
-                            questionIndex,
-                            answerIndex,
-                            vitaminId,
-                            Number(e.target.value),
-                          )
-                        }
-                        className="w-16 p-1 border rounded mr-2"
-                      />
-                    </div>
-                  );
-                })}
-                <div className="mt-2">
-                  <Select
-                    onValueChange={(value) =>
-                      addNewIngredient(
-                        questionIndex,
-                        answerIndex,
-                        Number(value) as VitaminId,
-                      )
-                    }>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Add new ingredient" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.values(vitamins).map((vitamin) => (
-                        <SelectItem key={vitamin.id} value={vitamin.id.toString()}>
-                          {vitamin.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+          );
+        })}
+      </div>
+      <div className="mt-2">
+        <Select
+          onValueChange={(value) =>
+            addNewIngredient(questionIndex, answerIndex, Number(value) as VitaminId)
+          }>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Add new ingredient" />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.values(vitamins).map((vitamin) => (
+              <SelectItem key={vitamin.id} value={vitamin.id.toString()}>
+                {vitamin.name}
+              </SelectItem>
             ))}
-          </div>
-        ))}
-      </RoundedContainer>
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 }
