@@ -40,6 +40,9 @@ export default function Questionnaire() {
 
   const handleMultiSelectChange = (value: AnswerType<QuestionId>, maxSteps?: number) => {
     setSelectedAnswers((prev) => {
+      if (maxSteps === 1 || maxSteps === undefined) {
+        return prev === value ? null : value;
+      }
       if (Array.isArray(prev)) {
         if (prev.includes(value)) {
           return prev.filter((item) => item !== value);
@@ -136,17 +139,19 @@ export default function Questionnaire() {
                     }`}>
                     {answer.value.text}
                   </div>
-                  <span className="text-xl">
-                    {Array.isArray(selectedAnswers)
-                      ? selectedAnswers.includes(
-                          answer.value.value as AnswerType<QuestionId>,
-                        )
+                  {maxSteps && maxSteps > 1 && (
+                    <span className="text-xl">
+                      {Array.isArray(selectedAnswers)
+                        ? selectedAnswers.includes(
+                            answer.value.value as AnswerType<QuestionId>,
+                          )
+                          ? "×"
+                          : "+"
+                        : selectedAnswers === answer.value.value
                         ? "×"
-                        : "+"
-                      : selectedAnswers === answer.value.value
-                      ? "×"
-                      : "+"}
-                  </span>
+                        : "+"}
+                    </span>
+                  )}
                 </Label>
               ))}
             </div>
@@ -155,7 +160,9 @@ export default function Questionnaire() {
               disabled={
                 !selectedAnswers ||
                 (Array.isArray(selectedAnswers) && selectedAnswers.length === 0)
-              }>
+              }
+              variant={"pill"}
+              size={"pill-lg"}>
               Continue
             </Button>
           </div>
@@ -196,6 +203,6 @@ export default function Questionnaire() {
     //     {currentQuestion.id} of {questionnaireData.length}
     //   </div>
     //   <Separator className="my-4" />
-    <div>{renderQuestion()}</div>
+    <div className="max-w-2xl mx-auto p-6 space-y-6">{renderQuestion()}</div>
   );
 }
