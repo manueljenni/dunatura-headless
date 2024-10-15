@@ -274,11 +274,18 @@ function AnswerCard({
               const vitaminId = Number(vitaminIdString) as VitaminId;
               const vitaminKey = vitaminIdToKey[vitaminId];
               if (!vitaminKey) return null;
+              const vitamin = vitamins[vitaminKey];
               return (
                 <div key={vitaminIdString} className="flex items-center space-x-2">
-                  <span className="w-2/3 truncate text-primary text-sm font-medium">
-                    {vitamins[vitaminKey].name}
-                  </span>
+                  <div className="w-2/3 flex items-center">
+                    <div
+                      className="w-3 h-3 mr-2 rounded"
+                      style={{ backgroundColor: vitamin.color }}
+                    />
+                    <span className="truncate text-primary text-sm font-medium">
+                      {vitamin.name}
+                    </span>
+                  </div>
                   <Input
                     type="number"
                     value={score}
@@ -309,7 +316,13 @@ function AnswerCard({
           <SelectContent>
             {Object.values(vitamins).map((vitamin) => (
               <SelectItem key={vitamin.id} value={vitamin.id.toString()}>
-                {vitamin.name}
+                <div className="flex items-center">
+                  <div
+                    className="w-4 h-4 mr-2 rounded"
+                    style={{ backgroundColor: vitamin.color }}
+                  />
+                  {vitamin.name}
+                </div>
               </SelectItem>
             ))}
           </SelectContent>
