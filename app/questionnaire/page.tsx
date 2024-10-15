@@ -1,127 +1,84 @@
 "use client";
 
-import { Button } from "@/components/primitives/button";
-import { useEffect, useState } from "react";
-
-// Update the StepProps type
-type StepProps = {
-  onNext: () => void;
-  onPrevious: () => void;
-  currentStep: number;
-  totalSteps: number;
-  nextButtonText?: string;
-};
-
-// Update the StepContainer to include buttons
-const StepContainer: React.FC<{
-  children: React.ReactNode;
-  onNext: () => void;
-  onPrevious: () => void;
-  currentStep: number;
-  totalSteps: number;
-  nextButtonText?: string;
-}> = ({ children, onNext, onPrevious, currentStep, totalSteps, nextButtonText }) => (
-  <div className="flex justify-center">
-    <div className="w-full max-w-2xl space-y-16">
-      {/* <div className="text-center">
-        Step {currentStep + 1} of {totalSteps}
-      </div> */}
-      {children}
-      <div className="flex justify-start space-x-4">
-        <Button variant={"pill"} size={"pill-lg"} onClick={onNext}>
-          {nextButtonText || "Weiter"}
-        </Button>
-        {currentStep > 0 && (
-          <Button variant={"ghost"} size={"lg"} onClick={onPrevious}>
-            Back
-          </Button>
-        )}
-      </div>
-    </div>
-  </div>
-);
-
-const Step1: React.FC<StepProps> = (props) => (
-  <div className="space-y-1">
-    <h1 className="text-4xl font-medium">Befor es losgeht...</h1>
-    <p className="text-lg text-secondary">Dürfen wir deine Informationen bearbeiten?</p>
-  </div>
-);
-
-const Step2: React.FC<StepProps> = (props) => (
-  <div className="space-y-1">
-    <h1 className="text-4xl font-medium">Erzähle uns etwas über dich</h1>
-    <p className="text-lg text-secondary">Wie alt bist du?</p>
-  </div>
-);
-
-// Update the Step type
-type Step = {
-  component: React.FC<StepProps>;
-  props: {
-    nextButtonText?: string;
-  };
-};
-
-const steps: Step[] = [
-  { component: Step1, props: { nextButtonText: "Ja, weiter" } },
-  { component: Step2, props: {} },
-  { component: Step1, props: {} },
-];
+import { useState } from "react";
+import { questionnaireData } from "./questionnaireConfig";
+import {
+  AnswerValue,
+  Question,
+  QuestionnaireEngine,
+  QuestionType,
+} from "./questionnaireEngine";
 
 export default function Questionnaire() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [engine] = useState(
+    () => new QuestionnaireEngine({ questions: questionnaireData }),
+  );
+  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(
+    engine.getCurrentQuestion(),
+  );
+  const [scores, setScores] = useState<Record<string, number>>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+  const handleAnswer = (answer: AnswerValue) => {
+    const { nextQuestion, newScores } = engine.answerQuestion(answer);
+    setCurrentQuestion(nextQuestion);
+    setScores((prevScores) => ({
+      ...prevScores,
+      ...Object.fromEntries(
+        Object.entries(newScores).map(([vitamin, score]) => [
+          vitamin,
+          (prevScores[vitamin] ?? 0) + (score || 0),
+        ]),
+      ),
+    }));
+    setSelectedAnswers([]);
   };
 
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
+  const handleMultiSelectChange = (value: string) => {
+    setSelectedAnswers((prev) =>
+      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value],
+    );
   };
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      switch (event.key) {
-        case "ArrowRight":
-        case "Enter":
-          handleNext();
-          break;
-        case "ArrowLeft":
-          handlePrevious();
-          break;
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [currentStep]); // Add currentStep as a dependency
-
-  const { component: CurrentStepComponent, props: currentStepProps } = steps[currentStep];
+  if (!currentQuestion) {
+    return (
+      <div>
+        <h2>Questionnaire Complete</h2>
+        <h3>Vitamin Recommendations:</h3>
+        <ul>
+          {Object.entries(scores).map(([vitamin, score]) => (
+            <li key={vitamin}>
+              {vitamin}: {score}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mx-auto px-4">
-      <StepContainer
-        onNext={handleNext}
-        onPrevious={handlePrevious}
-        currentStep={currentStep}
-        totalSteps={steps.length}
-        nextButtonText={currentStepProps.nextButtonText}>
-        <CurrentStepComponent
-          onNext={handleNext}
-          onPrevious={handlePrevious}
-          currentStep={currentStep}
-          totalSteps={steps.length}
-          nextButtonText={currentStepProps.nextButtonText}
-        />
-      </StepContainer>
+    <div>
+      <h2>{currentQuestion.text}</h2>
+      {currentQuestion.subtitle && <p>{currentQuestion.subtitle}</p>}
+      {currentQuestion.type === QuestionType.ConsentScreen && (
+        <button onClick={() => handleAnswer("consent")}>Ich stimme zu</button>
+      )}
+      {currentQuestion.type === QuestionType.MultiSelect && (
+        <>
+          {currentQuestion.answers.map((answer) => (
+            <label key={answer.value.value}>
+              <input
+                type="checkbox"
+                value={answer.value.value}
+                checked={selectedAnswers.includes(answer.value.value)}
+                onChange={() => handleMultiSelectChange(answer.value.value)}
+              />
+              {answer.value.text}
+            </label>
+          ))}
+          <button onClick={() => handleAnswer(selectedAnswers)}>Weiter</button>
+        </>
+      )}
     </div>
   );
 }
