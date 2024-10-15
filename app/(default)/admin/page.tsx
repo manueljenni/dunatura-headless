@@ -145,24 +145,25 @@ function QuestionCard({
   addNewIngredient,
 }: QuestionCardProps) {
   return (
-    <div className="p-4 border rounded bg-[#FBFCF8]">
+    <div className="p-4 border rounded-lg bg-[#FBFCF8]">
       <h2 className="text-xl font-semibold mb-2">Question {question.id}</h2>
       <QuestionInput
         question={question}
         questionIndex={questionIndex}
         handleQuestionChange={handleQuestionChange}
       />
-      <div className="mt-4 space-y-4">
+      <div className="mt-4 space-y-12">
         {question.answers.map((answer, answerIndex) => (
-          <AnswerCard
-            key={answerIndex}
-            answer={answer}
-            questionIndex={questionIndex}
-            answerIndex={answerIndex}
-            handleAnswerChange={handleAnswerChange}
-            handleScoreChange={handleScoreChange}
-            addNewIngredient={addNewIngredient}
-          />
+          <div key={answerIndex}>
+            <AnswerCard
+              answer={answer}
+              questionIndex={questionIndex}
+              answerIndex={answerIndex}
+              handleAnswerChange={handleAnswerChange}
+              handleScoreChange={handleScoreChange}
+              addNewIngredient={addNewIngredient}
+            />
+          </div>
         ))}
       </div>
     </div>
@@ -250,44 +251,49 @@ function AnswerCard({
   addNewIngredient,
 }: AnswerCardProps) {
   return (
-    <div className="p-2 border rounded">
-      <Input
-        type="text"
-        value={answer.value.text}
-        onChange={(e) =>
-          handleAnswerChange(questionIndex, answerIndex, "text", e.target.value)
-        }
-        className="w-full mb-2"
-      />
-      <h4 className="font-semibold mt-2 mb-1">Scores:</h4>
-      <div className="grid grid-cols-2 gap-2">
-        {Object.entries(answer.scores || {}).map(([vitaminIdString, score]) => {
-          const vitaminId = Number(vitaminIdString) as VitaminId;
-          const vitaminKey = vitaminIdToKey[vitaminId];
-          if (!vitaminKey) return null;
-          return (
-            <div key={vitaminIdString} className="flex items-center space-x-2">
-              <span className="w-2/3 truncate text-primary text-sm font-medium">
-                {vitamins[vitaminKey].name}
-              </span>
-              <Input
-                type="number"
-                value={score}
-                onChange={(e) =>
-                  handleScoreChange(
-                    questionIndex,
-                    answerIndex,
-                    vitaminId,
-                    Number(e.target.value),
-                  )
-                }
-                className="w-1/4"
-              />
-            </div>
-          );
-        })}
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <h4 className="font-semibold mt-2 mb-1">Answer</h4>
+        <Input
+          type="text"
+          value={answer.value.text}
+          onChange={(e) =>
+            handleAnswerChange(questionIndex, answerIndex, "text", e.target.value)
+          }
+          className="w-full"
+        />
       </div>
-      <div className="mt-2">
+      <div className="space-y-2">
+        <h4 className="font-semibold">Scores</h4>
+        <div className="grid grid-cols-2 gap-2">
+          {Object.entries(answer.scores || {}).map(([vitaminIdString, score]) => {
+            const vitaminId = Number(vitaminIdString) as VitaminId;
+            const vitaminKey = vitaminIdToKey[vitaminId];
+            if (!vitaminKey) return null;
+            return (
+              <div key={vitaminIdString} className="flex items-center space-x-2">
+                <span className="w-2/3 truncate text-primary text-sm font-medium">
+                  {vitamins[vitaminKey].name}
+                </span>
+                <Input
+                  type="number"
+                  value={score}
+                  onChange={(e) =>
+                    handleScoreChange(
+                      questionIndex,
+                      answerIndex,
+                      vitaminId,
+                      Number(e.target.value),
+                    )
+                  }
+                  className="w-1/4"
+                />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div>
         <Select
           onValueChange={(value) =>
             addNewIngredient(questionIndex, answerIndex, Number(value) as VitaminId)
