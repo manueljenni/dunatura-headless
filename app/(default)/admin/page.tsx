@@ -26,7 +26,7 @@ type QuestionCardProps = {
 
 function QuestionCard({ question }: QuestionCardProps) {
   return (
-    <div className="p-4 border rounded-lg bg-[#FBFCF8]">
+    <div className="p-4 border rounded-lg bg-lightBackground">
       <h2 className="text-xl font-semibold mb-2">Question {question.id}</h2>
       <p className="mb-4">{question.text}</p>
       <div className="mt-4 space-y-4">
@@ -48,7 +48,7 @@ type AnswerCardProps = {
 };
 
 function AnswerCard({ answer, answerIndex }: AnswerCardProps) {
-  const bgColor = answerIndex % 2 === 0 ? "bg-neutral-100" : "bg-[#FBFCF8]";
+  const bgColor = answerIndex % 2 === 0 ? "bg-neutral-100" : "bg-lightBackground";
   const hasScores = Object.keys(answer.scores || {}).length > 0;
 
   return (

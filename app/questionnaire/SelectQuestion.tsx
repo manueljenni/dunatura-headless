@@ -49,20 +49,22 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
 
   return (
     <div className="space-y-6 p-12">
-      <h2 className="text-2xl font-semibold">{text}</h2>
-      {subtitle && <p className="text-gray-600">{subtitle}</p>}
-      {maxSteps && maxSteps > 1 && (
-        <p className="text-sm text-gray-500">Select up to {maxSteps} options</p>
-      )}
+      <div className="space-y-2">
+        <h2 className="text-4xl">{text}</h2>
+        {subtitle && <p className="text-lg">{subtitle}</p>}
+        {maxSteps && maxSteps > 1 && (
+          <p className="text-lg">Select up to {maxSteps} options</p>
+        )}
+      </div>
       <div className="space-y-2">
         {answers.map((answer) => (
           <button
             key={answer.value.value}
             onClick={() => handleSelect(answer.value.value as AnswerType<QuestionId>)}
-            className={`w-full p-4 text-left rounded-2xl transition-colors ${
+            className={`w-full px-4 py-3 text-lg text-left rounded-2xl border border-[#E2E9E2] font-medium ${
               selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
-                ? "bg-primary text-white hover:bg-primary/90"
-                : "bg-[#EDEFE7] text-primary hover:bg-primary/20"
+                ? "bg-selectedBackground hover:bg-primary/20"
+                : "hover:bg-selectedBackground"
             } ${wigglingAnswer === answer.value.value ? "animate-wiggle" : ""}`}>
             {answer.value.text}
           </button>

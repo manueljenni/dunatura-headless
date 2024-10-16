@@ -12,7 +12,7 @@ export default function ArticlePreview(props: {
 }) {
   const router = useRouter();
   return (
-    <div className="bg-[#FBFCF8] rounded-xl overflow-hidden shadow">
+    <div className="bg-lightBackground rounded-xl overflow-hidden shadow">
       <div className="relative h-64 w-full">
         <Image src={props.image} alt="Ernährung" layout="fill" objectFit="cover" />
       </div>

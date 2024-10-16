@@ -5,7 +5,7 @@ export default function CheckmarkItem(props: { text: string }) {
   return (
     <div className="flex items-start">
       <div className="relative flex-shrink-0 w-12 h-12 mr-4">
-        <div className="absolute inset-0 bg-[#E8EDE8] rounded-full" />
+        <div className="absolute inset-0 bg-primaryBackground rounded-full" />
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
             src={checkmark}

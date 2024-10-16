@@ -23,6 +23,8 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         lightBackground: "hsl(var(--light-background))",
+        primaryBackground: "hsl(var(--primary-background))",
+        selectedBackground: "hsl(var(--selected-background))",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

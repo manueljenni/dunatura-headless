@@ -19,6 +19,8 @@
     --popover-foreground: 0 0% 3.9%;
     --primary: 120 13.6% 15.9%; /* #232E23 */
     --primary-foreground: 0 0% 98%;
+    --primary-background: 120 12.2% 92%;
+    --selected-background: 120 12.2% 92%;
     --secondary: 120 5.56% 35.3%; /* #2B382B */
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
@@ -46,6 +48,7 @@
     --popover-foreground: 0 0% 98%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
+    --primary-background: 120 12.2% 92%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
