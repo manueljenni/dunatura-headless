@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Button } from "@/components/primitives/button";
+import { useEffect, useState } from "react";
 import { AnswerType, QuestionId } from "./questionnaireConfig";
 import { Question } from "./questionnaireEngine";
 
@@ -10,6 +11,9 @@ type SelectQuestionProps = {
 export default function SelectQuestion({ question, onAnswer }: SelectQuestionProps) {
   const { id, text, subtitle, answers, maxSteps } = question;
   const [selectedAnswers, setSelectedAnswers] = useState<AnswerType<QuestionId>[]>([]);
+  const [wigglingAnswer, setWigglingAnswer] = useState<AnswerType<QuestionId> | null>(
+    null,
+  );
 
   const handleSelect = (answer: AnswerType<QuestionId>) => {
     let newSelectedAnswers: AnswerType<QuestionId>[];
@@ -20,18 +24,31 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
       } else if (selectedAnswers.length < maxSteps) {
         newSelectedAnswers = [...selectedAnswers, answer];
       } else {
-        return; // Max selections reached
+        setWigglingAnswer(answer);
+        return;
       }
     } else {
       newSelectedAnswers = [answer];
     }
 
     setSelectedAnswers(newSelectedAnswers);
-    onAnswer(id, newSelectedAnswers);
   };
 
+  useEffect(() => {
+    if (wigglingAnswer) {
+      const timer = setTimeout(() => setWigglingAnswer(null), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [wigglingAnswer]);
+
+  const handleSubmit = () => {
+    onAnswer(id, selectedAnswers);
+  };
+
+  const isSubmitDisabled = selectedAnswers.length === 0;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-12">
       <h2 className="text-2xl font-semibold">{text}</h2>
       {subtitle && <p className="text-gray-600">{subtitle}</p>}
       {maxSteps && maxSteps > 1 && (
@@ -46,11 +63,18 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
               selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
                 ? "bg-primary text-white hover:bg-primary/90"
                 : "bg-[#EDEFE7] text-primary hover:bg-primary/20"
-            }`}>
+            } ${wigglingAnswer === answer.value.value ? "animate-wiggle" : ""}`}>
             {answer.value.text}
           </button>
         ))}
       </div>
+      <Button
+        variant={"pill"}
+        size={"pill-xl"}
+        onClick={handleSubmit}
+        disabled={isSubmitDisabled}>
+        Weiter
+      </Button>
     </div>
   );
 }
