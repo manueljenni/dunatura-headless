@@ -29,31 +29,28 @@ export default function Questionnaire() {
     const { nextQuestion, newScores } = engine.answerQuestion(questionId, answers);
 
     setCurrentQuestion(nextQuestion);
-    setScores((prevScores) => ({
-      ...prevScores,
-      ...Object.fromEntries(
-        Object.entries(newScores).map(([vitamin, score]) => [
-          vitamin,
-          (prevScores[vitamin] ?? 0) + (score || 0),
-        ]),
-      ),
-    }));
+    setScores((prevScores) => {
+      const updatedScores = { ...prevScores };
+      Object.entries(newScores).forEach(([vitamin, score]) => {
+        updatedScores[vitamin] = (updatedScores[vitamin] || 0) + (score || 0);
+      });
+      return updatedScores;
+    });
   };
 
   const renderQuestion = () => {
     if (!currentQuestion) return null;
 
+    const commonProps = {
+      question: currentQuestion,
+      onAnswer: handleAnswer,
+    };
+
     switch (currentQuestion.type) {
       case QuestionType.ConsentScreen:
-        return <ConsentScreen question={currentQuestion} onAnswer={handleAnswer} />;
+        return <ConsentScreen {...commonProps} />;
       case QuestionType.Select:
-        return (
-          <SelectQuestion
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            variables={{ name: "Max" }}
-          />
-        );
+        return <SelectQuestion {...commonProps} variables={{ name: "Max" }} />;
       default:
         return null;
     }
