@@ -15,10 +15,12 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
     null,
   );
 
+  const isMultiSelect = maxSteps && maxSteps > 1;
+
   const handleSelect = (answer: AnswerType<QuestionId>) => {
     let newSelectedAnswers: AnswerType<QuestionId>[];
 
-    if (maxSteps && maxSteps > 1) {
+    if (isMultiSelect) {
       if (selectedAnswers.includes(answer)) {
         newSelectedAnswers = selectedAnswers.filter((a) => a !== answer);
       } else if (selectedAnswers.length < maxSteps) {
@@ -50,10 +52,12 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
   return (
     <div className="space-y-6 p-12">
       <div className="space-y-2">
-        <h2 className="text-4xl">{text}</h2>
-        {subtitle && <p className="text-lg">{subtitle}</p>}
-        {maxSteps && maxSteps > 1 && (
-          <p className="text-lg">Select up to {maxSteps} options</p>
+        <h2 className="text-4xl text-primary font-semibold">{text}</h2>
+        {subtitle && <p className="text-lg font-medium text-secondary">{subtitle}</p>}
+        {isMultiSelect && (
+          <p className="text-lg font-medium text-secondary">
+            Select up to {maxSteps} options
+          </p>
         )}
       </div>
       <div className="space-y-2">
@@ -61,22 +65,33 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
           <button
             key={answer.value.value}
             onClick={() => handleSelect(answer.value.value as AnswerType<QuestionId>)}
-            className={`w-full px-4 py-3 text-lg text-left rounded-2xl border border-[#E2E9E2] font-medium ${
+            className={`w-full px-4 py-3 text-left rounded-2xl border border-[#E2E9E2] font-medium ${
+              isMultiSelect ? "flex justify-between items-center" : ""
+            } ${
               selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
                 ? "bg-selectedBackground hover:bg-primary/20"
-                : "hover:bg-selectedBackground"
+                : "bg-lightBackground hover:bg-selectedBackground"
             } ${wigglingAnswer === answer.value.value ? "animate-wiggle" : ""}`}>
-            {answer.value.text}
+            <span>{answer.value.text}</span>
+            {isMultiSelect && (
+              <span className="text-2xl">
+                {selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
+                  ? "×"
+                  : "+"}
+              </span>
+            )}
           </button>
         ))}
       </div>
-      <Button
-        variant={"pill"}
-        size={"pill-xl"}
-        onClick={handleSubmit}
-        disabled={isSubmitDisabled}>
-        Weiter
-      </Button>
+      <div className="flex justify-center">
+        <Button
+          variant={"pill"}
+          size={"pill-lg"}
+          onClick={handleSubmit}
+          disabled={isSubmitDisabled}>
+          Weiter
+        </Button>
+      </div>
     </div>
   );
 }
