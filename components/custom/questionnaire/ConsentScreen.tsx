@@ -1,5 +1,6 @@
 import { Button } from "@/components/primitives/button";
 import { AnswerType, Question, QuestionId } from "../../../app/questionnaire/types";
+import QuestionContainer from "./Question";
 
 type ConsentScreenProps = {
   question: Question;
@@ -10,11 +11,15 @@ export default function ConsentScreen({ question, onAnswer }: ConsentScreenProps
   const { id, text, subtitle } = question;
 
   return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-semibold">{text}</h2>
-        {subtitle && <p className="text-gray-600 text-lg">{subtitle}</p>}
-      </div>
+    <QuestionContainer
+      question={question}
+      onSubmit={() => onAnswer(id, ["consent"] as AnswerType<typeof id>[])}
+      showSubmitButton={false}
+      showBackButton={false}
+      onBack={() => {
+        // Navigate back browser history
+        window.history.back();
+      }}>
       <div className="flex space-x-2">
         <Button
           variant="pill"
@@ -24,10 +29,13 @@ export default function ConsentScreen({ question, onAnswer }: ConsentScreenProps
         </Button>
         <Button
           variant="ghost"
-          onClick={() => onAnswer(id, ["decline"] as AnswerType<typeof id>[])}>
+          onClick={() => {
+            // Navigate back browser history
+            window.history.back();
+          }}>
           Nein, zurück
         </Button>
       </div>
-    </div>
+    </QuestionContainer>
   );
 }

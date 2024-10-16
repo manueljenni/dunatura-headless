@@ -5,12 +5,14 @@ import QuestionContainer from "./Question";
 type SelectQuestionProps = {
   question: Question;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
+  onBack: () => void;
   variables?: Record<string, string>;
 };
 
 export default function SelectQuestion({
   question,
   onAnswer,
+  onBack,
   variables = {},
 }: SelectQuestionProps) {
   const { id, text, subtitle, answers, maxSteps } = question;
@@ -58,7 +60,12 @@ export default function SelectQuestion({
       question={question}
       variables={variables}
       onSubmit={handleSubmit}
-      isSubmitDisabled={isSubmitDisabled}>
+      isSubmitDisabled={isSubmitDisabled}
+      showSubmitButton={true}
+      showBackButton={true}
+      onBack={() => {
+        onBack();
+      }}>
       <div className="space-y-2">
         {answers.map((answer) => (
           <button
@@ -83,31 +90,5 @@ export default function SelectQuestion({
         ))}
       </div>
     </QuestionContainer>
-
-    // <div className="space-y-6 p-12">
-    //   <div className="space-y-2">
-    //     <h2 className="text-4xl text-primary font-semibold">{replaceVariables(text)}</h2>
-    //     {subtitle && (
-    //       <p className="text-lg font-medium text-secondary">
-    //         {replaceVariables(subtitle)}
-    //       </p>
-    //     )}
-    //     {isMultiSelect && (
-    //       <p className="text-lg font-medium text-secondary">
-    //         Select up to {maxSteps} options
-    //       </p>
-    //     )}
-    //   </div>
-
-    //   <div className="flex justify-center">
-    //     <Button
-    //       variant={"pill"}
-    //       size={"pill-lg"}
-    //       onClick={handleSubmit}
-    //       disabled={isSubmitDisabled}>
-    //       Weiter
-    //     </Button>
-    //   </div>
-    // </div>
   );
 }

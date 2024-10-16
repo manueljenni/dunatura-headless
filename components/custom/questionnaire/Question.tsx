@@ -5,7 +5,10 @@ export default function QuestionContainer(props: {
   question: Question;
   variables?: Record<string, string>;
   onSubmit: () => void;
-  isSubmitDisabled: boolean;
+  isSubmitDisabled?: boolean;
+  showSubmitButton?: boolean;
+  showBackButton?: boolean;
+  onBack?: () => void;
   children: React.ReactNode;
 }) {
   const replaceVariables = (str: string) => {
@@ -25,14 +28,21 @@ export default function QuestionContainer(props: {
         )}
       </div>
       {props.children}
-      <div className="flex justify-center">
-        <Button
-          variant={"pill"}
-          size={"pill-lg"}
-          onClick={props.onSubmit}
-          disabled={props.isSubmitDisabled}>
-          Weiter
-        </Button>
+      <div className="flex justify-center space-x-2">
+        {props.showSubmitButton && (
+          <Button
+            variant={"pill"}
+            size={"pill-lg"}
+            onClick={props.onSubmit}
+            disabled={props.isSubmitDisabled}>
+            Weiter
+          </Button>
+        )}
+        {props.showBackButton && (
+          <Button variant="ghost" onClick={props.onBack}>
+            Zurück
+          </Button>
+        )}
       </div>
     </div>
   );

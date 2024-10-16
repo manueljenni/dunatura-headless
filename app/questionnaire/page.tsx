@@ -53,7 +53,13 @@ export default function Questionnaire() {
       case QuestionType.ConsentScreen:
         return <ConsentScreen {...commonProps} />;
       case QuestionType.Select:
-        return <SelectQuestion {...commonProps} variables={{ name: "Max" }} />;
+        return (
+          <SelectQuestion
+            {...commonProps}
+            onBack={handleBack}
+            variables={{ name: "Max" }}
+          />
+        );
       default:
         return null;
     }
@@ -65,11 +71,6 @@ export default function Questionnaire() {
         renderQuestion()
       ) : (
         <QuestionnaireComplete scores={engine.calculateFinalScores()} />
-      )}
-      {history.length > 0 && (
-        <button onClick={handleBack} className="mt-4 px-4 py-2 bg-gray-200 rounded">
-          Back
-        </button>
       )}
     </div>
   );
