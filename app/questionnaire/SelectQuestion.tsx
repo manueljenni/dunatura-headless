@@ -1,37 +1,33 @@
-import { Button } from "@/components/primitives/button";
-import { Input } from "@/components/primitives/input";
-import { Label } from "@/components/primitives/label";
 import { useState } from "react";
 import { AnswerType, QuestionId } from "./questionnaireConfig";
 import { Question } from "./questionnaireEngine";
 
 type SelectQuestionProps = {
   question: Question;
-  onAnswer: <T extends QuestionId>(questionId: T, answer: AnswerType<T>) => void;
+  onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 };
 
 export default function SelectQuestion({ question, onAnswer }: SelectQuestionProps) {
-  const { id, text, subtitle, maxSteps, answers } = question;
-  const [selectedAnswers, setSelectedAnswers] = useState<
-    AnswerType<QuestionId>[] | AnswerType<QuestionId> | null
-  >(null);
+  const { id, text, subtitle, answers, maxSteps } = question;
+  const [selectedAnswers, setSelectedAnswers] = useState<AnswerType<QuestionId>[]>([]);
 
-  const handleMultiSelectChange = (value: AnswerType<QuestionId>) => {
-    setSelectedAnswers((prev) => {
-      if (maxSteps === 1 || maxSteps === undefined) {
-        return prev === value ? null : value;
+  const handleSelect = (answer: AnswerType<QuestionId>) => {
+    let newSelectedAnswers: AnswerType<QuestionId>[];
+
+    if (maxSteps && maxSteps > 1) {
+      if (selectedAnswers.includes(answer)) {
+        newSelectedAnswers = selectedAnswers.filter((a) => a !== answer);
+      } else if (selectedAnswers.length < maxSteps) {
+        newSelectedAnswers = [...selectedAnswers, answer];
+      } else {
+        return; // Max selections reached
       }
-      if (Array.isArray(prev)) {
-        if (prev.includes(value)) {
-          return prev.filter((item) => item !== value);
-        }
-        if (maxSteps && prev.length >= maxSteps) {
-          return prev;
-        }
-        return [...prev, value];
-      }
-      return [value];
-    });
+    } else {
+      newSelectedAnswers = [answer];
+    }
+
+    setSelectedAnswers(newSelectedAnswers);
+    onAnswer(id, newSelectedAnswers);
   };
 
   return (
@@ -39,69 +35,22 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
       <h2 className="text-2xl font-semibold">{text}</h2>
       {subtitle && <p className="text-gray-600">{subtitle}</p>}
       {maxSteps && maxSteps > 1 && (
-        <p className="text-gray-600">Wähle bis zu {maxSteps} Ziele aus</p>
+        <p className="text-sm text-gray-500">Select up to {maxSteps} options</p>
       )}
       <div className="space-y-2">
         {answers.map((answer) => (
-          <Label
+          <button
             key={answer.value.value}
-            className="flex items-center space-x-2 cursor-pointer">
-            <Input
-              type={maxSteps && maxSteps > 1 ? "checkbox" : "radio"}
-              value={answer.value.value as AnswerType<QuestionId>}
-              checked={
-                Array.isArray(selectedAnswers)
-                  ? selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
-                  : selectedAnswers === answer.value.value
-              }
-              onChange={() =>
-                handleMultiSelectChange(answer.value.value as AnswerType<QuestionId>)
-              }
-              disabled={
-                !!maxSteps &&
-                maxSteps > 1 &&
-                Array.isArray(selectedAnswers) &&
-                selectedAnswers.length >= maxSteps &&
-                !selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
-              }
-              className="sr-only"
-            />
-            <div
-              className={`flex-1 p-3 rounded-lg border ${
-                Array.isArray(selectedAnswers)
-                  ? selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
-                    ? "bg-primary text-white"
-                    : "bg-white"
-                  : selectedAnswers === answer.value.value
-                  ? "bg-primary text-white"
-                  : "bg-white"
-              }`}>
-              {answer.value.text}
-            </div>
-            {maxSteps && maxSteps > 1 && (
-              <span className="text-xl">
-                {Array.isArray(selectedAnswers)
-                  ? selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
-                    ? "×"
-                    : "+"
-                  : selectedAnswers === answer.value.value
-                  ? "×"
-                  : "+"}
-              </span>
-            )}
-          </Label>
+            onClick={() => handleSelect(answer.value.value as AnswerType<QuestionId>)}
+            className={`w-full p-4 text-left rounded-2xl transition-colors ${
+              selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
+                ? "bg-primary text-white hover:bg-primary/90"
+                : "bg-[#EDEFE7] text-primary hover:bg-primary/20"
+            }`}>
+            {answer.value.text}
+          </button>
         ))}
       </div>
-      <Button
-        onClick={() => onAnswer(id, selectedAnswers as AnswerType<QuestionId>)}
-        disabled={
-          !selectedAnswers ||
-          (Array.isArray(selectedAnswers) && selectedAnswers.length === 0)
-        }
-        variant="pill"
-        size="pill-lg">
-        Continue
-      </Button>
     </div>
   );
 }

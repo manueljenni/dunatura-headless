@@ -4,7 +4,7 @@ import { Question } from "./questionnaireEngine";
 
 type ConsentScreenProps = {
   question: Question;
-  onAnswer: <T extends QuestionId>(questionId: T, answer: AnswerType<T>) => void;
+  onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 };
 
 export default function ConsentScreen({ question, onAnswer }: ConsentScreenProps) {
@@ -20,12 +20,12 @@ export default function ConsentScreen({ question, onAnswer }: ConsentScreenProps
         <Button
           variant="pill"
           size="pill-lg"
-          onClick={() => onAnswer(id, "consent" as AnswerType<typeof id>)}>
+          onClick={() => onAnswer(id, ["consent"] as AnswerType<typeof id>[])}>
           Ich stimme zu
         </Button>
         <Button
           variant="ghost"
-          onClick={() => onAnswer(id, "decline" as AnswerType<typeof id>)}>
+          onClick={() => onAnswer(id, ["decline"] as AnswerType<typeof id>[])}>
           Nein, zurück
         </Button>
       </div>

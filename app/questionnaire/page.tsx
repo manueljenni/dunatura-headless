@@ -16,8 +16,11 @@ export default function Questionnaire() {
   );
   const [scores, setScores] = useState<Record<string, number>>({});
 
-  const handleAnswer = <T extends QuestionId>(questionId: T, answer: AnswerType<T>) => {
-    const { nextQuestion, newScores } = engine.answerQuestion(questionId, answer);
+  const handleAnswer = <T extends QuestionId>(
+    questionId: T,
+    answers: AnswerType<T>[],
+  ) => {
+    const { nextQuestion, newScores } = engine.answerQuestion(questionId, answers);
 
     setCurrentQuestion(nextQuestion);
     setScores((prevScores) => ({

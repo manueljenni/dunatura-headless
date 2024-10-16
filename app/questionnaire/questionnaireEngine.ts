@@ -12,7 +12,7 @@ export enum QuestionType {
 export type VitaminId = number;
 
 export type Answers = {
-  [K in QuestionId]?: AnswerType<K>;
+  [K in QuestionId]?: AnswerType<K>[];
 };
 
 export interface Question {
@@ -47,7 +47,7 @@ export class QuestionnaireEngine {
 
   answerQuestion<T extends QuestionId>(
     questionId: T,
-    answer: AnswerType<T>,
+    answer: AnswerType<T>[],
   ): {
     nextQuestion: Question | null;
     newScores: Partial<Record<VitaminId, number>>;
@@ -67,7 +67,7 @@ export class QuestionnaireEngine {
 
   private calculateScores(
     question: Question,
-    answer: AnswerType<QuestionId>,
+    answer: AnswerType<QuestionId> | AnswerType<QuestionId>[],
   ): Partial<Record<VitaminId, number>> {
     let totalScores: Partial<Record<VitaminId, number>> = {};
 
