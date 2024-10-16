@@ -3,9 +3,10 @@
 import { useState } from "react";
 import ConsentScreen from "./ConsentScreen";
 import QuestionnaireComplete from "./QuestionnaireComplete";
-import { AnswerType, QuestionId, questionnaireData } from "./questionnaireConfig";
-import { Question, QuestionnaireEngine, QuestionType } from "./questionnaireEngine";
+import { questionnaireData } from "./questionnaireConfig";
+import { QuestionnaireEngine } from "./questionnaireEngine";
 import SelectQuestion from "./SelectQuestion";
+import { AnswerType, Question, QuestionId, QuestionType } from "./types";
 
 export default function Questionnaire() {
   const [engine] = useState(

@@ -1,7 +1,6 @@
 import { Button } from "@/components/primitives/button";
 import { useEffect, useState } from "react";
-import { AnswerType, QuestionId } from "./questionnaireConfig";
-import { Question } from "./questionnaireEngine";
+import { AnswerType, Question, QuestionId } from "./types";
 
 type SelectQuestionProps = {
   question: Question;

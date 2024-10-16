@@ -1,4 +1,4 @@
-import { QuestionType } from "./questionnaireEngine";
+import { QuestionType } from "./types";
 
 export const vitamins = {
   OMEGA_3: {
@@ -149,14 +149,6 @@ export const vitamins = {
   },
 } as const;
 
-export type Vitamins = typeof vitamins;
-export type VitaminKey = keyof Vitamins;
-export type VitaminId = Vitamins[VitaminKey]["id"];
-
-export const vitaminIdToKey: { [key in VitaminId]: VitaminKey } = Object.fromEntries(
-  Object.entries(vitamins).map(([key, value]) => [value.id, key as VitaminKey]),
-) as { [key in VitaminId]: VitaminKey };
-
 // Define the questionnaire data
 export const questionnaireData = [
   {
@@ -288,13 +280,3 @@ export const questionnaireData = [
     ],
   },
 ] as const;
-
-// Derive types from the questionnaireData
-export type QuestionnaireData = typeof questionnaireData;
-export type QuestionId = QuestionnaireData[number]["id"];
-
-// Helper type to get the answer type for a specific question
-export type AnswerType<T extends QuestionId> = Extract<
-  QuestionnaireData[number],
-  { id: T }
->["answers"][number]["value"]["value"];

@@ -1,31 +1,11 @@
-import { AnswerType, QuestionId, QuestionnaireData } from "./questionnaireConfig";
-
-export enum QuestionType {
-  Select = "select",
-  Number = "number",
-  TextInput = "text_input",
-  // Special types
-  ConsentScreen = "consent",
-  NameInput = "name_input",
-}
-
-export type VitaminId = number;
-
-export type Answers = {
-  [K in QuestionId]?: AnswerType<K>[];
-};
-
-export interface Question {
-  id: QuestionId;
-  text: string;
-  subtitle?: string;
-  type: QuestionType;
-  answers: ReadonlyArray<{
-    value: { text: string; value: string };
-    scores?: Record<string, number>;
-  }>;
-  maxSteps?: number;
-}
+import {
+  Answers,
+  AnswerType,
+  Question,
+  QuestionId,
+  QuestionnaireData,
+  VitaminId,
+} from "./types";
 
 export class QuestionnaireEngine {
   private data: QuestionnaireData;
