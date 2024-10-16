@@ -5,7 +5,7 @@ import {
   VitaminId,
   vitaminIdToKey,
   vitamins,
-} from "@/app/questionnaire/questionnaireConfig";
+} from "@/app/questionnaire/types";
 import RoundedContainer from "@/components/custom/RoundedContainer";
 
 export default function QuestionnaireViewer() {

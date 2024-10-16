@@ -1,7 +1,7 @@
 "use client";
 
-import { questionnaireData } from "@/app/questionnaire/questionnaireConfig";
 import SelectQuestion from "@/app/questionnaire/SelectQuestion";
+import { questionnaireData } from "@/app/questionnaire/types";
 
 export default function page() {
   return (

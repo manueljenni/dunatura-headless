@@ -1,6 +1,5 @@
 import { Button } from "@/components/primitives/button";
-import { AnswerType, QuestionId } from "./questionnaireConfig";
-import { Question } from "./questionnaireEngine";
+import { AnswerType, Question, QuestionId } from "./types";
 
 type ConsentScreenProps = {
   question: Question;
