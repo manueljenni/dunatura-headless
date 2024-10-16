@@ -16,7 +16,7 @@ export default function QuestionContainer(props: {
   };
 
   return (
-    <div className="space-y-6 p-12">
+    <div className="space-y-6 px-4 md:px-12 py-4 md:py-12">
       <div className="space-y-1 mb-8">
         <h2 className="text-4xl text-primary font-semibold mb-4">
           {replaceVariables(props.question.text)}

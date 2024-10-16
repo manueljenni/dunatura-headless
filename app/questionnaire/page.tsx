@@ -92,8 +92,8 @@ export default function Questionnaire() {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto relative h-full flex justify-center items-center">
-      <AnimatePresence initial={false} mode="wait" custom={direction}>
+    <div className="w-full md:max-w-2xl mx-auto relative h-full flex justify-center items-center">
+      <AnimatePresence initial={false} mode="sync" custom={direction}>
         {currentQuestion ? (
           <motion.div
             key={currentQuestion.id}
