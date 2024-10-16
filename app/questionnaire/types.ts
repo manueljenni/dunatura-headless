@@ -5,6 +5,7 @@ export enum QuestionType {
   TextInput = "text_input",
   ConsentScreen = "consent",
   NameInput = "name_input",
+  EffectsAfterFirstMonth = "effects_after_first_month",
 }
 
 export const vitamins = {
@@ -193,15 +194,29 @@ export const questionnaireData = [
       { value: { text: "Höhere Ausdauer", value: "endurance" }, scores: {} },
       { value: { text: "Natürliche Schönheit", value: "beauty" }, scores: {} },
       {
-        value: { text: "Höhere Immunität während des ganzen Jahres", value: "immunity" },
+        value: {
+          text: "Verbesserte Immunität während des ganzen Jahres",
+          value: "immunity",
+        },
         scores: {},
       },
     ],
   },
   {
+    id: 3,
+    text: "Was unsere Kunden nach ihrem ersten Monat erleben",
+    type: QuestionType.EffectsAfterFirstMonth,
+    maxSteps: 1,
+    answers: [
+      { value: { text: "Jünger als 20", value: "under_20" }, scores: {} },
+      { value: { text: "20 - 30", value: "20_30" }, scores: {} },
+      { value: { text: "31 - 40", value: "31_40" }, scores: {} },
+      { value: { text: "Älter als 40", value: "over_40" }, scores: {} },
+    ],
+  },
+  {
     id: 4,
     text: "Hey ${name}, wie alt bist du?",
-    subtitle: "Wir möchten dein Alter für die Dosisberechnung verwenden.",
     variables: { name: "name" },
     type: QuestionType.Select,
     maxSteps: 1,

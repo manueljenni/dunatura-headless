@@ -1,5 +1,6 @@
 "use client";
 
+import EffectsAfterFirstMonth from "@/components/custom/questionnaire/EffectsAfterFirstMonth";
 import { useState } from "react";
 import ConsentScreen from "../../components/custom/questionnaire/ConsentScreen";
 import QuestionnaireComplete from "../../components/custom/questionnaire/QuestionnaireComplete";
@@ -57,11 +58,11 @@ export default function Questionnaire() {
           <SelectQuestion
             {...commonProps}
             onBack={handleBack}
-            variables={{ name: "Max" }}
+            variables={{ name: "PLACEHOLDER NAME" }}
           />
         );
-      default:
-        return null;
+      case QuestionType.EffectsAfterFirstMonth:
+        return <EffectsAfterFirstMonth {...commonProps} />;
     }
   };
 

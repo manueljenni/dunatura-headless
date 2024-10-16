@@ -4,7 +4,7 @@ import { Button } from "@/components/primitives/button";
 export default function QuestionContainer(props: {
   question: Question;
   variables?: Record<string, string>;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   isSubmitDisabled?: boolean;
   showSubmitButton?: boolean;
   showBackButton?: boolean;
@@ -17,13 +17,18 @@ export default function QuestionContainer(props: {
 
   return (
     <div className="space-y-6 p-12">
-      <div className="space-y-2">
-        <h2 className="text-4xl text-primary font-semibold">
+      <div className="space-y-1 mb-8">
+        <h2 className="text-4xl text-primary font-semibold mb-4">
           {replaceVariables(props.question.text)}
         </h2>
         {props.question.subtitle && (
           <p className="text-lg font-medium text-secondary">
             {replaceVariables(props.question.subtitle)}
+          </p>
+        )}
+        {props.question.maxSteps && props.question.maxSteps > 1 && (
+          <p className="text-lg font-medium text-secondary">
+            Wähle bis zu {props.question.maxSteps} Optionen aus
           </p>
         )}
       </div>
