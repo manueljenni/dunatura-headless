@@ -252,8 +252,6 @@ export const questionnaireData = [
   {
     id: 5,
     text: "Als welches Geschlecht identifizierst du dich?",
-    subtitle:
-      "Auch wenn Männer und Frauen viele Gemeinsamkeiten haben, gibt es doch biologisch bedingte Unterschiede. Beispielsweise tritt ein Eisenmangel bei Frauen häufiger auf als bei Männern.",
     type: QuestionType.Select,
     maxSteps: 1,
     answers: [

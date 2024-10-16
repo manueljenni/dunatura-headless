@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import ConsentScreen from "./ConsentScreen";
-import QuestionnaireComplete from "./QuestionnaireComplete";
+import ConsentScreen from "../../components/custom/questionnaire/ConsentScreen";
+import QuestionnaireComplete from "../../components/custom/questionnaire/QuestionnaireComplete";
+import SelectQuestion from "../../components/custom/questionnaire/SelectQuestion";
 import { QuestionnaireEngine } from "./questionnaireEngine";
-import SelectQuestion from "./SelectQuestion";
 import {
   AnswerType,
   Question,

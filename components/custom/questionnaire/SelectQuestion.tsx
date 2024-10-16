@@ -1,6 +1,6 @@
-import { Button } from "@/components/primitives/button";
 import { useEffect, useState } from "react";
-import { AnswerType, Question, QuestionId } from "./types";
+import { AnswerType, Question, QuestionId } from "../../../app/questionnaire/types";
+import QuestionContainer from "./Question";
 
 type SelectQuestionProps = {
   question: Question;
@@ -20,10 +20,6 @@ export default function SelectQuestion({
   );
 
   const isMultiSelect = maxSteps && maxSteps > 1;
-
-  const replaceVariables = (str: string) => {
-    return str.replace(/\$\{(\w+)\}/g, (_, key) => variables[key] || `[${key}]`);
-  };
 
   const handleSelect = (answer: AnswerType<QuestionId>) => {
     let newSelectedAnswers: AnswerType<QuestionId>[];
@@ -58,20 +54,11 @@ export default function SelectQuestion({
   const isSubmitDisabled = selectedAnswers.length === 0;
 
   return (
-    <div className="space-y-6 p-12">
-      <div className="space-y-2">
-        <h2 className="text-4xl text-primary font-semibold">{replaceVariables(text)}</h2>
-        {subtitle && (
-          <p className="text-lg font-medium text-secondary">
-            {replaceVariables(subtitle)}
-          </p>
-        )}
-        {isMultiSelect && (
-          <p className="text-lg font-medium text-secondary">
-            Select up to {maxSteps} options
-          </p>
-        )}
-      </div>
+    <QuestionContainer
+      question={question}
+      variables={variables}
+      onSubmit={handleSubmit}
+      isSubmitDisabled={isSubmitDisabled}>
       <div className="space-y-2">
         {answers.map((answer) => (
           <button
@@ -95,15 +82,32 @@ export default function SelectQuestion({
           </button>
         ))}
       </div>
-      <div className="flex justify-center">
-        <Button
-          variant={"pill"}
-          size={"pill-lg"}
-          onClick={handleSubmit}
-          disabled={isSubmitDisabled}>
-          Weiter
-        </Button>
-      </div>
-    </div>
+    </QuestionContainer>
+
+    // <div className="space-y-6 p-12">
+    //   <div className="space-y-2">
+    //     <h2 className="text-4xl text-primary font-semibold">{replaceVariables(text)}</h2>
+    //     {subtitle && (
+    //       <p className="text-lg font-medium text-secondary">
+    //         {replaceVariables(subtitle)}
+    //       </p>
+    //     )}
+    //     {isMultiSelect && (
+    //       <p className="text-lg font-medium text-secondary">
+    //         Select up to {maxSteps} options
+    //       </p>
+    //     )}
+    //   </div>
+
+    //   <div className="flex justify-center">
+    //     <Button
+    //       variant={"pill"}
+    //       size={"pill-lg"}
+    //       onClick={handleSubmit}
+    //       disabled={isSubmitDisabled}>
+    //       Weiter
+    //     </Button>
+    //   </div>
+    // </div>
   );
 }
