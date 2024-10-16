@@ -41,7 +41,13 @@ export default function Questionnaire() {
       case QuestionType.ConsentScreen:
         return <ConsentScreen question={currentQuestion} onAnswer={handleAnswer} />;
       case QuestionType.Select:
-        return <SelectQuestion question={currentQuestion} onAnswer={handleAnswer} />;
+        return (
+          <SelectQuestion
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            variables={{ name: "Max" }}
+          />
+        );
       default:
         return null;
     }
@@ -51,5 +57,5 @@ export default function Questionnaire() {
     return <QuestionnaireComplete scores={scores} />;
   }
 
-  return <div className="max-w-2xl mx-auto p-6 space-y-6">{renderQuestion()}</div>;
+  return <div className="max-w-2xl">{renderQuestion()}</div>;
 }

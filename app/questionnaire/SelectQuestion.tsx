@@ -6,9 +6,14 @@ import { Question } from "./questionnaireEngine";
 type SelectQuestionProps = {
   question: Question;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
+  variables?: Record<string, string>;
 };
 
-export default function SelectQuestion({ question, onAnswer }: SelectQuestionProps) {
+export default function SelectQuestion({
+  question,
+  onAnswer,
+  variables = {},
+}: SelectQuestionProps) {
   const { id, text, subtitle, answers, maxSteps } = question;
   const [selectedAnswers, setSelectedAnswers] = useState<AnswerType<QuestionId>[]>([]);
   const [wigglingAnswer, setWigglingAnswer] = useState<AnswerType<QuestionId> | null>(
@@ -16,6 +21,10 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
   );
 
   const isMultiSelect = maxSteps && maxSteps > 1;
+
+  const replaceVariables = (str: string) => {
+    return str.replace(/\$\{(\w+)\}/g, (_, key) => variables[key] || `[${key}]`);
+  };
 
   const handleSelect = (answer: AnswerType<QuestionId>) => {
     let newSelectedAnswers: AnswerType<QuestionId>[];
@@ -52,8 +61,12 @@ export default function SelectQuestion({ question, onAnswer }: SelectQuestionPro
   return (
     <div className="space-y-6 p-12">
       <div className="space-y-2">
-        <h2 className="text-4xl text-primary font-semibold">{text}</h2>
-        {subtitle && <p className="text-lg font-medium text-secondary">{subtitle}</p>}
+        <h2 className="text-4xl text-primary font-semibold">{replaceVariables(text)}</h2>
+        {subtitle && (
+          <p className="text-lg font-medium text-secondary">
+            {replaceVariables(subtitle)}
+          </p>
+        )}
         {isMultiSelect && (
           <p className="text-lg font-medium text-secondary">
             Select up to {maxSteps} options
