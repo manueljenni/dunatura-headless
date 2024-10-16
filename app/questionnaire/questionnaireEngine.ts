@@ -10,7 +10,7 @@ import {
 export class QuestionnaireEngine {
   private data: QuestionnaireData;
   private currentIndex: number;
-  private answers: Answers;
+  private answers: Partial<Answers>;
 
   constructor(config: { questions: QuestionnaireData }) {
     this.data = config.questions;
@@ -28,36 +28,49 @@ export class QuestionnaireEngine {
   answerQuestion<T extends QuestionId>(
     questionId: T,
     answer: AnswerType<T>[],
-  ): {
-    nextQuestion: Question | null;
-    newScores: Partial<Record<VitaminId, number>>;
-  } {
+  ): Question | null {
     this.answers[questionId] = answer as Answers[T];
-    const currentQuestion = this.getCurrentQuestion();
-    if (!currentQuestion) {
-      throw new Error("No current question found");
-    }
-    const newScores = this.calculateScores(currentQuestion, answer);
-
     this.currentIndex++;
-    const nextQuestion = this.getCurrentQuestion();
-
-    return { nextQuestion, newScores };
+    return this.getCurrentQuestion();
   }
 
-  private calculateScores(
-    question: Question,
-    answer: AnswerType<QuestionId> | AnswerType<QuestionId>[],
-  ): Partial<Record<VitaminId, number>> {
+  goBack(): Question | null {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      const currentQuestion = this.getCurrentQuestion();
+      if (currentQuestion) {
+        delete this.answers[currentQuestion.id];
+      }
+      return currentQuestion;
+    }
+    return null;
+  }
+
+  calculateFinalScores(): Partial<Record<VitaminId, number>> {
     let totalScores: Partial<Record<VitaminId, number>> = {};
 
+    this.data.forEach((question) => {
+      const answer = this.answers[question.id];
+      if (answer) {
+        this.updateScoresForQuestion(totalScores, question, answer);
+      }
+    });
+
+    return totalScores;
+  }
+
+  private updateScoresForQuestion(
+    totalScores: Partial<Record<VitaminId, number>>,
+    question: Question,
+    answer: AnswerType<QuestionId> | AnswerType<QuestionId>[],
+  ): void {
     if (Array.isArray(answer)) {
       answer.forEach((selectedValue) => {
         const selectedAnswer = question.answers.find(
           (a) => a.value.value === selectedValue,
         );
-        if (selectedAnswer?.value) {
-          this.updateScores(totalScores, selectedAnswer.scores ?? {});
+        if (selectedAnswer?.scores) {
+          this.updateScores(totalScores, selectedAnswer.scores);
         }
       });
     } else {
@@ -66,8 +79,6 @@ export class QuestionnaireEngine {
         this.updateScores(totalScores, selectedAnswer.scores);
       }
     }
-
-    return totalScores;
   }
 
   private updateScores(
