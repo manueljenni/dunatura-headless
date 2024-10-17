@@ -2,6 +2,7 @@ import { AnswerType, Question, QuestionId } from "@/app/questionnaire/types";
 import crosshair from "@/public/images/icons/crosshair.svg";
 import lightbulb from "@/public/images/icons/lightbulb.svg";
 import measure from "@/public/images/icons/measure.svg";
+import { motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import QuestionContainer from "./Question";
 
@@ -9,6 +10,27 @@ export default function EffectsAfterFirstMonth(props: {
   question: Question;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 }) {
+  const experiences = [
+    {
+      name: "Erhöhte Konzentration",
+      description:
+        "Maintain the ability to maintain a high level of focus throughout your day.",
+      image: crosshair,
+    },
+    {
+      name: "Verbesserte Produktivität",
+      description:
+        "Maintain the ability to maintain a high level of focus throughout your day.",
+      image: measure,
+    },
+    {
+      name: "Weniger Müdigkeit",
+      description:
+        "Maintain the ability to maintain a high level of focus throughout your day.",
+      image: lightbulb,
+    },
+  ];
+
   return (
     <QuestionContainer
       question={props.question}
@@ -17,22 +39,16 @@ export default function EffectsAfterFirstMonth(props: {
         props.onAnswer(props.question.id, []);
       }}
       showBackButton={false}>
-      <div className="flex flex-col space-y-8">
-        <Experience
-          name="Erhöhte Konzentration"
-          description="Maintain the ability to maintain a high level of focus throughout your day."
-          image={crosshair}
-        />
-        <Experience
-          name="Verbesserte Produktivität"
-          description="Maintain the ability to maintain a high level of focus throughout your day."
-          image={measure}
-        />
-        <Experience
-          name="Weniger Müdigkeit"
-          description="Maintain the ability to maintain a high level of focus throughout your day."
-          image={lightbulb}
-        />
+      <div className="flex flex-col space-y-8 h-full">
+        {experiences.map((experience, index) => (
+          <Experience
+            key={experience.name}
+            name={experience.name}
+            description={experience.description}
+            image={experience.image}
+            index={index}
+          />
+        ))}
       </div>
     </QuestionContainer>
   );
@@ -42,9 +58,14 @@ function Experience(props: {
   name: string;
   description: string;
   image: StaticImageData;
+  index: number;
 }) {
   return (
-    <div className="flex items-start space-x-1">
+    <motion.div
+      className="flex items-start space-x-1"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, delay: props.index * 0.2 }}>
       <div className="relative flex-shrink-0 w-9 h-9 mr-4">
         <div className="absolute inset-0 bg-primaryBackground rounded-full" />
         <div className="absolute inset-0 flex items-center justify-center">
@@ -63,6 +84,6 @@ function Experience(props: {
         <p className="text-lg text-primary font-medium">{props.name}</p>
         <p className="text-base text-secondary">{props.description}</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
