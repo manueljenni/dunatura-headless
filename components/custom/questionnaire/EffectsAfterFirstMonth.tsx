@@ -13,20 +13,19 @@ export default function EffectsAfterFirstMonth(props: {
   const experiences = [
     {
       name: "Erhöhte Konzentration",
-      description:
-        "Maintain the ability to maintain a high level of focus throughout your day.",
+      description: "Verbesserte Konzentration während Arbeit und Sport.",
       image: crosshair,
     },
     {
-      name: "Verbesserte Produktivität",
+      name: "Verringerte Müdigkeit",
       description:
-        "Maintain the ability to maintain a high level of focus throughout your day.",
+        "Dein Körper fühlt sich den ganzen Tag energiegeladen an. Das Energietief am Nachmittag ist Geschichte.",
       image: measure,
     },
     {
-      name: "Weniger Müdigkeit",
+      name: "Stärkeres Immunsystem",
       description:
-        "Maintain the ability to maintain a high level of focus throughout your day.",
+        "Dank einem gut gerüsteten Immunsystem überstehst du Erkältungen & Co. mit Leichtigkeit.",
       image: lightbulb,
     },
   ];

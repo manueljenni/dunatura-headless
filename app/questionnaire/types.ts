@@ -6,6 +6,7 @@ export enum QuestionType {
   ConsentScreen = "consent",
   NameInput = "name_input",
   EffectsAfterFirstMonth = "effects_after_first_month",
+  TagespackPlaceholder = "tagespack_placeholder",
 }
 
 export const vitamins = {
@@ -216,6 +217,17 @@ export const questionnaireData = [
   },
   {
     id: 4,
+    text: "Erzähle uns mehr über dich, sodass wir dir ein personalisiertes Tagespack zusammenstellen können.",
+    type: QuestionType.TagespackPlaceholder,
+    answers: [
+      {
+        value: { text: "Ich möchte ein Tagespack erhalten", value: "tagespack" },
+        scores: {},
+      },
+    ],
+  },
+  {
+    id: 5,
     text: "Hey ${name}, wie alt bist du?",
     variables: { name: "name" },
     type: QuestionType.Select,
@@ -265,7 +277,7 @@ export const questionnaireData = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     text: "Als welches Geschlecht identifizierst du dich?",
     type: QuestionType.Select,
     maxSteps: 1,

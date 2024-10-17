@@ -7,9 +7,10 @@ export default function layout({
 }>) {
   return (
     <div className="min-h-screen w-screen flex flex-col relative">
-      <main className="absolute inset-0 flex flex-col justify-center items-center z-10">
-        {children}
-      </main>
+      {children}
+      {/* <main className="absolute inset-0 flex flex-col justify-center items-center z-10 w-full h-full">
+        
+      </main> */}
       <div
         className="absolute bottom-0 w-full h-[45%] bg-cover bg-center"
         style={

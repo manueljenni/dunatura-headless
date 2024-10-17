@@ -1,6 +1,7 @@
 "use client";
 
 import EffectsAfterFirstMonth from "@/components/custom/questionnaire/EffectsAfterFirstMonth";
+import TagespackPlaceholder from "@/components/custom/questionnaire/TagespackPlaceholder";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import ConsentScreen from "../../components/custom/questionnaire/ConsentScreen";
@@ -67,6 +68,8 @@ export default function Questionnaire() {
         );
       case QuestionType.EffectsAfterFirstMonth:
         return <EffectsAfterFirstMonth {...commonProps} />;
+      case QuestionType.TagespackPlaceholder:
+        return <TagespackPlaceholder {...commonProps} />;
     }
   };
 
@@ -92,7 +95,7 @@ export default function Questionnaire() {
   };
 
   return (
-    <div className="w-full md:max-w-2xl mx-auto relative h-full flex justify-center items-center">
+    <div className="h-screen w-full overflow-hidden relative flex justify-center items-center z-[1000]">
       <AnimatePresence initial={false} mode="sync" custom={direction}>
         {currentQuestion ? (
           <motion.div
