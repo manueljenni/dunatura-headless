@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { AnswerType, Question, QuestionId } from "../../../app/questionnaire/types";
 import QuestionContainer from "./Question";
@@ -80,11 +81,18 @@ export default function SelectQuestion({
             } ${wigglingAnswer === answer.value.value ? "animate-wiggle" : ""}`}>
             <span>{answer.value.text}</span>
             {isMultiSelect && (
-              <span className="text-2xl">
-                {selectedAnswers.includes(answer.value.value as AnswerType<QuestionId>)
-                  ? "×"
-                  : "+"}
-              </span>
+              <motion.span
+                animate={{
+                  rotate: selectedAnswers.includes(
+                    answer.value.value as AnswerType<QuestionId>,
+                  )
+                    ? 45
+                    : 0,
+                }}
+                transition={{ duration: 0.2 }}
+                className="text-2xl">
+                +
+              </motion.span>
             )}
           </button>
         ))}

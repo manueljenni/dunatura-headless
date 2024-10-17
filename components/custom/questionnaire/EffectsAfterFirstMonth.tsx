@@ -1,6 +1,8 @@
 import { AnswerType, Question, QuestionId } from "@/app/questionnaire/types";
-import checkmark from "@/public/images/icons/checkmark-empty.svg";
-import Image from "next/image";
+import crosshair from "@/public/images/icons/crosshair.svg";
+import lightbulb from "@/public/images/icons/lightbulb.svg";
+import measure from "@/public/images/icons/measure.svg";
+import Image, { StaticImageData } from "next/image";
 import QuestionContainer from "./Question";
 
 export default function EffectsAfterFirstMonth(props: {
@@ -15,37 +17,39 @@ export default function EffectsAfterFirstMonth(props: {
         props.onAnswer(props.question.id, []);
       }}
       showBackButton={false}>
-      <div className="flex flex-col space-y-6">
+      <div className="flex flex-col space-y-8">
         <Experience
           name="Erhöhte Konzentration"
           description="Maintain the ability to maintain a high level of focus throughout your day."
+          image={crosshair}
         />
         <Experience
           name="Verbesserte Produktivität"
           description="Maintain the ability to maintain a high level of focus throughout your day."
+          image={measure}
         />
         <Experience
           name="Weniger Müdigkeit"
           description="Maintain the ability to maintain a high level of focus throughout your day."
+          image={lightbulb}
         />
       </div>
     </QuestionContainer>
   );
 }
 
-function Experience(props: { name: string; description: string }) {
+function Experience(props: {
+  name: string;
+  description: string;
+  image: StaticImageData;
+}) {
   return (
-    // <div className="flex flex-col space-y-1">
-    //   <p className="text-xl font-medium">{props.name}</p>
-    //   <p className="text-base text-secondary">{props.description}</p>
-    // </div>
-
     <div className="flex items-start space-x-1">
-      <div className="relative flex-shrink-0 w-8 h-8 mr-4">
+      <div className="relative flex-shrink-0 w-9 h-9 mr-4">
         <div className="absolute inset-0 bg-primaryBackground rounded-full" />
         <div className="absolute inset-0 flex items-center justify-center">
           <Image
-            src={checkmark}
+            src={props.image}
             alt="Checkmark"
             className="w-4 h-4"
             style={{
