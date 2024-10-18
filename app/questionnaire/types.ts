@@ -158,7 +158,6 @@ export const vitamins = {
   },
 } as const;
 
-// Define the questionnaire data
 export const questionnaireData = [
   {
     id: 1,
@@ -339,7 +338,6 @@ export type Answers = {
   [K in QuestionId]?: AnswerType<K>[];
 };
 
-// Question interface
 export interface Question {
   id: QuestionId;
   text: string;
