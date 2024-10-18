@@ -79,7 +79,9 @@ export default function Questionnaire() {
       case QuestionType.TagespackPlaceholder:
         return <TagespackPlaceholder {...commonProps} />;
       case QuestionType.NameInput:
-        return <NameInput {...commonProps} onAnswer={handleName} />;
+        return (
+          <NameInput {...commonProps} onAnswer={handleName} name={engine.getName()} />
+        );
     }
   };
 

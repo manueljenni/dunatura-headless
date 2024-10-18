@@ -8,15 +8,16 @@ import QuestionContainer from "./Question";
 export default function NameInput(props: {
   question: Question;
   onAnswer: (name: string) => void;
+  name?: string;
 }) {
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState<string | undefined>(props.name);
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <QuestionContainer
         question={props.question}
         showSubmitButton
-        onSubmit={() => props.onAnswer(name)}>
+        onSubmit={() => props.onAnswer(name ?? "")}>
         <div className="relative w-[350px] h-[350px] mx-auto">
           <Image
             src={tagespack}
