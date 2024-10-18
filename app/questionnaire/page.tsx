@@ -27,12 +27,16 @@ export default function Questionnaire() {
   const [engine] = useState(
     () => new QuestionnaireEngine({ questions: questionnaireData }),
   );
-  const [currentQuestion, setCurrentQuestion] = useState<Question | null>(
-    engine.getCurrentQuestion(),
-  );
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-  const [currentAnswers, setCurrentAnswers] = useState<AnswerType<QuestionId>[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [history, setHistory] = useState<HistoryItem[]>(() => {
+    const initialQuestion = engine.getCurrentQuestion();
+    return initialQuestion ? [{ question: initialQuestion, answers: [] }] : [];
+  });
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
+
+  const currentItem = history[currentQuestionIndex];
+  const currentQuestion = currentItem?.question;
+  const currentAnswers = currentItem?.answers ?? [];
 
   const handleAnswer = <T extends QuestionId>(
     questionId: T,
@@ -40,35 +44,45 @@ export default function Questionnaire() {
   ) => {
     const nextQuestion = engine.answerQuestion(questionId, answers);
 
+    setHistory((prevHistory) => {
+      const newHistory = [...prevHistory];
+      newHistory[currentQuestionIndex] = { ...newHistory[currentQuestionIndex], answers };
+      if (nextQuestion && currentQuestionIndex === newHistory.length - 1) {
+        newHistory.push({ question: nextQuestion, answers: [] });
+      }
+      return newHistory;
+    });
+
     setDirection("forward");
-    setCurrentQuestion(nextQuestion);
-    setHistory((prevHistory) => [
-      ...prevHistory,
-      { question: currentQuestion as Question, answers: currentAnswers },
-    ]);
-    setCurrentAnswers(answers);
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
   const handleName = (name: string) => {
     const nextQuestion = engine.setNameAndGoToNextQuestion(name);
+
+    setHistory((prevHistory) => {
+      const newHistory = [...prevHistory];
+      newHistory[currentQuestionIndex] = {
+        ...newHistory[currentQuestionIndex],
+        answers: [],
+      };
+      if (nextQuestion && currentQuestionIndex === newHistory.length - 1) {
+        newHistory.push({ question: nextQuestion, answers: [] });
+      }
+      return newHistory;
+    });
+
     setDirection("forward");
-    setCurrentQuestion(nextQuestion);
-    setHistory((prevHistory) => [
-      ...prevHistory,
-      { question: currentQuestion as Question, answers: currentAnswers },
-    ]);
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
   const handleBack = () => {
-    if (history.length > 0) {
-      const previousItem = history[history.length - 1];
+    if (currentQuestionIndex > 0) {
       setDirection("backward");
-      setCurrentQuestion(previousItem.question);
-      setCurrentAnswers(previousItem.answers);
-      setHistory((prevHistory) => prevHistory.slice(0, -1));
+      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
       engine.goBack();
     } else {
-      // Redirect to home
+      // Redirect to home or handle the case when there's no more history
       router.push("/");
     }
   };
@@ -80,31 +94,21 @@ export default function Questionnaire() {
       question: currentQuestion,
       onAnswer: handleAnswer,
       initialAnswers: currentAnswers,
+      onBack: handleBack,
     };
 
     switch (currentQuestion.type) {
       case QuestionType.ConsentScreen:
-        return <ConsentScreen {...commonProps} onBack={handleBack} />;
+        return <ConsentScreen {...commonProps} />;
       case QuestionType.Select:
-        return (
-          <SelectQuestion
-            {...commonProps}
-            onBack={handleBack}
-            variables={{ name: engine.getName() ?? "PLACEHOLDER NAME" }}
-          />
-        );
+        return <SelectQuestion {...commonProps} variables={{ name: engine.getName() }} />;
       case QuestionType.EffectsAfterFirstMonth:
         return <EffectsAfterFirstMonth {...commonProps} />;
       case QuestionType.TagespackPlaceholder:
         return <TagespackPlaceholder {...commonProps} />;
       case QuestionType.NameInput:
         return (
-          <NameInput
-            {...commonProps}
-            onAnswer={handleName}
-            name={engine.getName() ?? "PLACEHOLDER NAME"}
-            onBack={handleBack}
-          />
+          <NameInput {...commonProps} onAnswer={handleName} name={engine.getName()} />
         );
     }
   };

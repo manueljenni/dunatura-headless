@@ -41,8 +41,8 @@ export class QuestionnaireEngine {
     return this.getCurrentQuestion();
   }
 
-  getName(): string | undefined {
-    return this.name;
+  getName() {
+    return this.name ?? "PLACEHOLDER NAME";
   }
 
   goBack(): Question | null {

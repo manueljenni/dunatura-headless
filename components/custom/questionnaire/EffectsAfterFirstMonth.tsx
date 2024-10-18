@@ -13,7 +13,6 @@ export default function EffectsAfterFirstMonth(props: {
 }) {
   useKeyboardNavigation({
     onNext: () => props.onAnswer(props.question.id, []),
-    onBack: () => props.onAnswer(props.question.id, []),
   });
 
   const experiences = [

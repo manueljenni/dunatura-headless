@@ -26,6 +26,8 @@ export default function SelectQuestion({
     null,
   );
 
+  console.log("initialAnswers", initialAnswers);
+
   useKeyboardNavigation({
     onNext: () => onAnswer(id, selectedAnswers),
     isNextDisabled: selectedAnswers.length === 0,
