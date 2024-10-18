@@ -1,6 +1,7 @@
 "use client";
 
 import EffectsAfterFirstMonth from "@/components/custom/questionnaire/EffectsAfterFirstMonth";
+import NameInput from "@/components/custom/questionnaire/NameInput";
 import TagespackPlaceholder from "@/components/custom/questionnaire/TagespackPlaceholder";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -32,6 +33,13 @@ export default function Questionnaire() {
   ) => {
     const nextQuestion = engine.answerQuestion(questionId, answers);
 
+    setDirection("forward");
+    setCurrentQuestion(nextQuestion);
+    setHistory((prevHistory) => [...prevHistory, currentQuestion as Question]);
+  };
+
+  const handleName = (name: string) => {
+    const nextQuestion = engine.setNameAndGoToNextQuestion(name);
     setDirection("forward");
     setCurrentQuestion(nextQuestion);
     setHistory((prevHistory) => [...prevHistory, currentQuestion as Question]);
@@ -70,6 +78,8 @@ export default function Questionnaire() {
         return <EffectsAfterFirstMonth {...commonProps} />;
       case QuestionType.TagespackPlaceholder:
         return <TagespackPlaceholder {...commonProps} />;
+      case QuestionType.NameInput:
+        return <NameInput {...commonProps} onAnswer={handleName} />;
     }
   };
 
@@ -121,6 +131,7 @@ export default function Questionnaire() {
               onBack={() => {
                 handleBack();
               }}
+              name={engine.getName()}
             />
           </motion.div>
         )}

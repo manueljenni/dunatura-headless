@@ -11,6 +11,7 @@ export class QuestionnaireEngine {
   private data: QuestionnaireData;
   private currentIndex: number;
   private answers: Partial<Answers>;
+  private name?: string;
 
   constructor(config: { questions: QuestionnaireData }) {
     this.data = config.questions;
@@ -32,6 +33,16 @@ export class QuestionnaireEngine {
     this.answers[questionId] = answer as Answers[T];
     this.currentIndex++;
     return this.getCurrentQuestion();
+  }
+
+  setNameAndGoToNextQuestion(name: string): Question | null {
+    this.name = name;
+    this.currentIndex++;
+    return this.getCurrentQuestion();
+  }
+
+  getName(): string | undefined {
+    return this.name;
   }
 
   goBack(): Question | null {

@@ -10,7 +10,7 @@ export default function TagespackPlaceholder(props: {
   return (
     <div className="relative w-full h-screen">
       <div className="absolute inset-0 z-10">
-        <div className="relative w-full h-[150%] mx-auto">
+        <div className="relative w-full h-[150%] mx-auto max-w-2xl">
           <Image
             src={tagespack}
             alt="Tagespack"

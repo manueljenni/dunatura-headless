@@ -219,15 +219,19 @@ export const questionnaireData = [
     id: 4,
     text: "Erzähle uns mehr über dich, sodass wir dir ein personalisiertes Tagespack zusammenstellen können.",
     type: QuestionType.TagespackPlaceholder,
-    answers: [
-      {
-        value: { text: "Ich möchte ein Tagespack erhalten", value: "tagespack" },
-        scores: {},
-      },
-    ],
+    answers: [],
   },
   {
     id: 5,
+    text: "Lass uns zuerst deinen Namen hinzufügen.",
+    subtitle: "Dein Name wird auf dein Tagespack gedruckt.",
+    variables: { name: "name" },
+    type: QuestionType.NameInput,
+    maxSteps: 1,
+    answers: [],
+  },
+  {
+    id: 6,
     text: "Hey ${name}, wie alt bist du?",
     variables: { name: "name" },
     type: QuestionType.Select,
@@ -277,7 +281,7 @@ export const questionnaireData = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     text: "Als welches Geschlecht identifizierst du dich?",
     type: QuestionType.Select,
     maxSteps: 1,
