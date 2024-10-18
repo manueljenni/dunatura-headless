@@ -65,7 +65,7 @@ export default function Questionnaire() {
 
     switch (currentQuestion.type) {
       case QuestionType.ConsentScreen:
-        return <ConsentScreen {...commonProps} />;
+        return <ConsentScreen {...commonProps} onBack={handleBack} />;
       case QuestionType.Select:
         return (
           <SelectQuestion
@@ -80,7 +80,12 @@ export default function Questionnaire() {
         return <TagespackPlaceholder {...commonProps} />;
       case QuestionType.NameInput:
         return (
-          <NameInput {...commonProps} onAnswer={handleName} name={engine.getName()} />
+          <NameInput
+            {...commonProps}
+            onAnswer={handleName}
+            name={engine.getName()}
+            onBack={handleBack}
+          />
         );
     }
   };

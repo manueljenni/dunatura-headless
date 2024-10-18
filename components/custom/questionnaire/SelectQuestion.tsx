@@ -1,3 +1,4 @@
+import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { AnswerType, Question, QuestionId } from "../../../app/questionnaire/types";
@@ -21,6 +22,12 @@ export default function SelectQuestion({
   const [wigglingAnswer, setWigglingAnswer] = useState<AnswerType<QuestionId> | null>(
     null,
   );
+
+  useKeyboardNavigation({
+    onNext: () => onAnswer(id, []),
+    isNextDisabled: selectedAnswers.length === 0,
+    onBack: () => onBack(),
+  });
 
   const isMultiSelect = maxSteps && maxSteps > 1;
 

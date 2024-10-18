@@ -1,4 +1,5 @@
 import { AnswerType, Question, QuestionId } from "@/app/questionnaire/types";
+import { useKeyboardNavigation } from "@/app/utils/hooks";
 import crosshair from "@/public/images/icons/crosshair.svg";
 import lightbulb from "@/public/images/icons/lightbulb.svg";
 import measure from "@/public/images/icons/measure.svg";
@@ -10,6 +11,11 @@ export default function EffectsAfterFirstMonth(props: {
   question: Question;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 }) {
+  useKeyboardNavigation({
+    onNext: () => props.onAnswer(props.question.id, []),
+    onBack: () => props.onAnswer(props.question.id, []),
+  });
+
   const experiences = [
     {
       name: "Erhöhte Konzentration",

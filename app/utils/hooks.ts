@@ -23,3 +23,32 @@ export function useCart() {
 
   return { cartId };
 }
+
+type NavigationHandlers = {
+  onNext?: () => void;
+  isNextDisabled?: boolean;
+  onBack?: () => void;
+};
+
+export function useKeyboardNavigation({
+  onNext,
+  isNextDisabled,
+  onBack,
+}: NavigationHandlers) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter" || event.key === "ArrowRight") {
+        if (!isNextDisabled) {
+          onNext?.();
+        }
+      } else if (event.key === "ArrowLeft") {
+        onBack?.();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onNext, onBack]);
+}

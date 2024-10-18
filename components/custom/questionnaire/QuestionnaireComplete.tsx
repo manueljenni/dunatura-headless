@@ -1,3 +1,4 @@
+import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { Button } from "@/components/primitives/button";
 
 type QuestionnaireCompleteProps = {
@@ -11,6 +12,10 @@ export default function QuestionnaireComplete({
   onBack,
   name,
 }: QuestionnaireCompleteProps) {
+  useKeyboardNavigation({
+    onBack: () => onBack(),
+  });
+
   return (
     <div className="h-full w-full flex items-center justify-center">
       <div className="space-y-6 ">

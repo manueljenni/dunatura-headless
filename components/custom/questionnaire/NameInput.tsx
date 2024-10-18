@@ -1,4 +1,5 @@
 import { Question } from "@/app/questionnaire/types";
+import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { Input } from "@/components/primitives/input";
 import tagespack from "@/public/images/tagespack-name-missing.png";
 import Image from "next/image";
@@ -8,9 +9,15 @@ import QuestionContainer from "./Question";
 export default function NameInput(props: {
   question: Question;
   onAnswer: (name: string) => void;
+  onBack: () => void;
   name?: string;
 }) {
   const [name, setName] = useState<string | undefined>(props.name);
+
+  useKeyboardNavigation({
+    onNext: () => props.onAnswer(name ?? ""),
+    onBack: () => props.onBack(),
+  });
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
