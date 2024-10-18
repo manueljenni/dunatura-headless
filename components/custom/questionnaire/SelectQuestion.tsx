@@ -9,6 +9,7 @@ type SelectQuestionProps = {
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
   onBack: () => void;
   variables?: Record<string, string>;
+  initialAnswers: AnswerType<QuestionId>[];
 };
 
 export default function SelectQuestion({
@@ -16,15 +17,17 @@ export default function SelectQuestion({
   onAnswer,
   onBack,
   variables = {},
+  initialAnswers,
 }: SelectQuestionProps) {
   const { id, text, subtitle, answers, maxSteps } = question;
-  const [selectedAnswers, setSelectedAnswers] = useState<AnswerType<QuestionId>[]>([]);
+  const [selectedAnswers, setSelectedAnswers] =
+    useState<AnswerType<QuestionId>[]>(initialAnswers);
   const [wigglingAnswer, setWigglingAnswer] = useState<AnswerType<QuestionId> | null>(
     null,
   );
 
   useKeyboardNavigation({
-    onNext: () => onAnswer(id, []),
+    onNext: () => onAnswer(id, selectedAnswers),
     isNextDisabled: selectedAnswers.length === 0,
     onBack: () => onBack(),
   });
@@ -71,9 +74,7 @@ export default function SelectQuestion({
       isSubmitDisabled={isSubmitDisabled}
       showSubmitButton={true}
       showBackButton={true}
-      onBack={() => {
-        onBack();
-      }}>
+      onBack={onBack}>
       <div className="space-y-2">
         {answers.map((answer) => (
           <button

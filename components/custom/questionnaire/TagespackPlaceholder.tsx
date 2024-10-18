@@ -1,4 +1,5 @@
 import { AnswerType, Question, QuestionId } from "@/app/questionnaire/types";
+import { useKeyboardNavigation } from "@/app/utils/hooks";
 import tagespack from "@/public/images/tagespack-energie.png";
 import Image from "next/image";
 import QuestionContainer from "./Question";
@@ -7,6 +8,10 @@ export default function TagespackPlaceholder(props: {
   question: Question;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 }) {
+  useKeyboardNavigation({
+    onNext: () => props.onAnswer(props.question.id, []),
+  });
+
   return (
     <div className="relative w-full h-screen">
       <div className="absolute inset-0 z-10">

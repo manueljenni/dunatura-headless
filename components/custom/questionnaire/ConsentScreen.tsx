@@ -1,5 +1,4 @@
 import { useKeyboardNavigation } from "@/app/utils/hooks";
-import { Button } from "@/components/primitives/button";
 import { AnswerType, Question, QuestionId } from "../../../app/questionnaire/types";
 import QuestionContainer from "./Question";
 
@@ -14,30 +13,22 @@ export default function ConsentScreen({
   onAnswer,
   onBack,
 }: ConsentScreenProps) {
-  const { id, text, subtitle } = question;
-
-  const handleNext = () => onAnswer(id, ["consent"] as AnswerType<typeof id>[]);
+  const handleSubmit = () => {
+    onAnswer(question.id, ["consent"]);
+  };
 
   useKeyboardNavigation({
-    onNext: handleNext,
-    onBack,
+    onNext: handleSubmit,
+    onBack: onBack,
   });
 
   return (
     <QuestionContainer
       question={question}
-      onSubmit={handleNext}
-      showSubmitButton={false}
-      showBackButton={false}
-      onBack={onBack}>
-      <div className="flex space-x-2">
-        <Button variant="pill" size="pill-lg" onClick={handleNext}>
-          Ich stimme zu
-        </Button>
-        <Button variant="ghost" onClick={onBack}>
-          Nein, zurück
-        </Button>
-      </div>
-    </QuestionContainer>
+      onSubmit={handleSubmit}
+      isSubmitDisabled={false}
+      showSubmitButton={true}
+      showBackButton={true}
+      onBack={onBack}></QuestionContainer>
   );
 }

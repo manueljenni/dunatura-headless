@@ -6,25 +6,40 @@ import Image from "next/image";
 import { useState } from "react";
 import QuestionContainer from "./Question";
 
-export default function NameInput(props: {
+import { useEffect } from "react";
+
+type NameInputProps = {
   question: Question;
   onAnswer: (name: string) => void;
   onBack: () => void;
-  name?: string;
-}) {
-  const [name, setName] = useState<string | undefined>(props.name);
+  name: string;
+  initialAnswers: string[];
+};
+
+export default function NameInput({
+  question,
+  onAnswer,
+  onBack,
+  name,
+  initialAnswers,
+}: NameInputProps) {
+  const [inputValue, setInputValue] = useState(initialAnswers[0] || name);
+
+  useEffect(() => {
+    setInputValue(initialAnswers[0] || name);
+  }, [initialAnswers, name]);
 
   useKeyboardNavigation({
-    onNext: () => props.onAnswer(name ?? ""),
-    onBack: () => props.onBack(),
+    onNext: () => onAnswer(inputValue),
+    onBack: () => onBack(),
   });
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <QuestionContainer
-        question={props.question}
+        question={question}
         showSubmitButton
-        onSubmit={() => props.onAnswer(name ?? "")}>
+        onSubmit={() => onAnswer(inputValue)}>
         <div className="relative w-[350px] h-[350px] mx-auto">
           <Image
             src={tagespack}
@@ -33,17 +48,17 @@ export default function NameInput(props: {
             className="object-contain"
             priority
           />
-          {name && (
+          {inputValue && (
             <div className="absolute top-16 left-16 pl-2 py-1 pr-12 rounded line-clamp-1">
-              <span className="font-bold text-2xl">{name}</span>
+              <span className="font-bold text-2xl">{inputValue}</span>
             </div>
           )}
         </div>
         <Input
           placeholder="Dein Name"
           className="w-full max-w-sm mx-auto mt-4"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
         />
       </QuestionContainer>
     </div>
