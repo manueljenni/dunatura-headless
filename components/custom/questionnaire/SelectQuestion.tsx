@@ -26,8 +26,6 @@ export default function SelectQuestion({
     null,
   );
 
-  console.log("initialAnswers", initialAnswers);
-
   useKeyboardNavigation({
     onNext: () => onAnswer(id, selectedAnswers),
     isNextDisabled: selectedAnswers.length === 0,
@@ -49,7 +47,7 @@ export default function SelectQuestion({
         return;
       }
     } else {
-      newSelectedAnswers = [answer];
+      newSelectedAnswers = selectedAnswers.includes(answer) ? [] : [answer];
     }
 
     setSelectedAnswers(newSelectedAnswers);
