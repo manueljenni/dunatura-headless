@@ -106,7 +106,7 @@ export default function Questionnaire() {
             animate="center"
             exit="exit"
             transition={pageTransition}
-            className="absolute w-full">
+            className="absolute w-full h-full top-0">
             {renderQuestion()}
           </motion.div>
         ) : (
@@ -116,7 +116,12 @@ export default function Questionnaire() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute w-full">
-            <QuestionnaireComplete scores={engine.calculateFinalScores()} />
+            <QuestionnaireComplete
+              scores={engine.calculateFinalScores()}
+              onBack={() => {
+                handleBack();
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
