@@ -5,7 +5,7 @@ import NameInput from "@/components/custom/questionnaire/NameInput";
 import TagespackPlaceholder from "@/components/custom/questionnaire/TagespackPlaceholder";
 import { AnimatePresence, motion } from "framer-motion";
 import router from "next/router";
-import { useState } from "react";
+import { createContext, useState } from "react";
 import ConsentScreen from "../../components/custom/questionnaire/ConsentScreen";
 import QuestionnaireComplete from "../../components/custom/questionnaire/QuestionnaireComplete";
 import SelectQuestion from "../../components/custom/questionnaire/SelectQuestion";
@@ -23,6 +23,16 @@ type HistoryItem = {
   answers: AnswerType<QuestionId>[];
 };
 
+type AnimationContextType = {
+  isAnimating: boolean;
+  setIsAnimating: (value: boolean) => void;
+};
+
+export const AnimationContext = createContext<AnimationContextType>({
+  isAnimating: false,
+  setIsAnimating: () => {},
+});
+
 export default function Questionnaire() {
   const [engine] = useState(
     () => new QuestionnaireEngine({ questions: questionnaireData }),
@@ -33,6 +43,7 @@ export default function Questionnaire() {
     return initialQuestion ? [{ question: initialQuestion, answers: [] }] : [];
   });
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const currentItem = history[currentQuestionIndex];
   const currentQuestion = currentItem?.question;
@@ -136,36 +147,43 @@ export default function Questionnaire() {
 
   return (
     <div className="h-screen w-full overflow-hidden relative flex justify-center items-center z-[1000]">
-      <AnimatePresence initial={false} mode="sync" custom={direction}>
-        {currentQuestion ? (
-          <motion.div
-            key={currentQuestion.id}
-            custom={direction}
-            variants={pageVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={pageTransition}
-            className="absolute w-full h-full top-0">
-            {renderQuestion()}
-          </motion.div>
-        ) : (
-          <motion.div
-            key="complete"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="absolute w-full">
-            <QuestionnaireComplete
-              scores={engine.calculateFinalScores()}
-              onBack={() => {
-                handleBack();
-              }}
-              name={engine.getName()}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <AnimationContext.Provider value={{ isAnimating, setIsAnimating }}>
+        <AnimatePresence
+          initial={false}
+          mode="sync"
+          custom={direction}
+          onExitComplete={() => setIsAnimating(false)}>
+          {currentQuestion ? (
+            <motion.div
+              key={currentQuestion.id}
+              custom={direction}
+              variants={pageVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={pageTransition}
+              onAnimationStart={() => setIsAnimating(true)}
+              className="absolute w-full h-full top-0">
+              {renderQuestion()}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="complete"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute w-full">
+              <QuestionnaireComplete
+                scores={engine.calculateFinalScores()}
+                onBack={() => {
+                  handleBack();
+                }}
+                name={engine.getName()}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </AnimationContext.Provider>
     </div>
   );
 }

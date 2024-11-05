@@ -28,20 +28,22 @@ type NavigationHandlers = {
   onNext?: () => void;
   isNextDisabled?: boolean;
   onBack?: () => void;
+  isAnimating: boolean;
 };
 
 export function useKeyboardNavigation({
   onNext,
   isNextDisabled,
   onBack,
+  isAnimating,
 }: NavigationHandlers) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Enter" || event.key === "ArrowRight") {
-        if (!isNextDisabled) {
+        if (!isNextDisabled && !isAnimating) {
           onNext?.();
         }
-      } else if (event.key === "ArrowLeft") {
+      } else if (event.key === "ArrowLeft" && !isAnimating) {
         onBack?.();
       }
     };
@@ -50,5 +52,5 @@ export function useKeyboardNavigation({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onNext, onBack]);
+  }, [onNext, onBack, isAnimating]);
 }

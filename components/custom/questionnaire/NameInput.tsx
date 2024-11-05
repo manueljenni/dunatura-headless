@@ -3,9 +3,10 @@ import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { Input } from "@/components/primitives/input";
 import tagespack from "@/public/images/tagespack-name-missing.png";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import QuestionContainer from "./Question";
 
+import { AnimationContext } from "@/app/questionnaire/page";
 import { useEffect } from "react";
 
 type NameInputProps = {
@@ -29,9 +30,11 @@ export default function NameInput({
     setInputValue(initialAnswers[0] || name);
   }, [initialAnswers, name]);
 
+  const { isAnimating } = useContext(AnimationContext);
   useKeyboardNavigation({
     onNext: () => onAnswer(inputValue),
     onBack: () => onBack(),
+    isAnimating,
   });
 
   return (

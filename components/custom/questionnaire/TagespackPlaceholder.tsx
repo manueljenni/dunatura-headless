@@ -1,15 +1,19 @@
+import { AnimationContext } from "@/app/questionnaire/page";
 import { AnswerType, Question, QuestionId } from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import tagespack from "@/public/images/tagespack-energie.png";
 import Image from "next/image";
+import { useContext } from "react";
 import QuestionContainer from "./Question";
 
 export default function TagespackPlaceholder(props: {
   question: Question;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 }) {
+  const { isAnimating } = useContext(AnimationContext);
   useKeyboardNavigation({
     onNext: () => props.onAnswer(props.question.id, []),
+    isAnimating,
   });
 
   return (

@@ -1,5 +1,7 @@
+import { AnimationContext } from "@/app/questionnaire/page";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { Button } from "@/components/primitives/button";
+import { useContext } from "react";
 
 type QuestionnaireCompleteProps = {
   scores: Record<string, number>;
@@ -12,8 +14,10 @@ export default function QuestionnaireComplete({
   onBack,
   name,
 }: QuestionnaireCompleteProps) {
+  const { isAnimating } = useContext(AnimationContext);
   useKeyboardNavigation({
     onBack: () => onBack(),
+    isAnimating,
   });
 
   return (

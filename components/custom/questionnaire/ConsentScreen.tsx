@@ -1,4 +1,6 @@
+import { AnimationContext } from "@/app/questionnaire/page";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
+import { useContext } from "react";
 import { AnswerType, Question, QuestionId } from "../../../app/questionnaire/types";
 import QuestionContainer from "./Question";
 
@@ -17,9 +19,11 @@ export default function ConsentScreen({
     onAnswer(question.id, ["consent"]);
   };
 
+  const { isAnimating } = useContext(AnimationContext);
   useKeyboardNavigation({
     onNext: handleSubmit,
     onBack: onBack,
+    isAnimating,
   });
 
   return (
