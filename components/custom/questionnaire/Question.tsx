@@ -1,8 +1,8 @@
-import { Question } from "@/app/questionnaire/types";
+import { Question, QuestionId } from "@/app/questionnaire/types";
 import { Button } from "@/components/primitives/button";
 
 export default function QuestionContainer(props: {
-  question: Question;
+  question: Question<QuestionId>;
   variables?: Record<string, string>;
   onSubmit?: () => void;
   isSubmitDisabled?: boolean;

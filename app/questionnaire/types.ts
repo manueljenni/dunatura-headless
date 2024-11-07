@@ -168,6 +168,7 @@ export const questionnaireData = [
       { value: { text: "Ich stimme zu", value: "consent" }, scores: {} },
       { value: { text: "Nein, zurück", value: "decline" }, scores: {} },
     ],
+    conditions: {},
   },
   {
     id: 2,
@@ -201,6 +202,7 @@ export const questionnaireData = [
         scores: {},
       },
     ],
+    conditions: {},
   },
   {
     id: 3,
@@ -213,12 +215,14 @@ export const questionnaireData = [
       { value: { text: "31 - 40", value: "31_40" }, scores: {} },
       { value: { text: "Älter als 40", value: "over_40" }, scores: {} },
     ],
+    conditions: {},
   },
   {
     id: 4,
     text: "Erzähle uns mehr über dich, sodass wir dir ein personalisiertes Tagespack zusammenstellen können.",
     type: QuestionType.TagespackPlaceholder,
     answers: [],
+    conditions: {},
   },
   {
     id: 5,
@@ -228,6 +232,7 @@ export const questionnaireData = [
     type: QuestionType.NameInput,
     maxSteps: 1,
     answers: [],
+    conditions: {},
   },
   {
     id: 6,
@@ -278,6 +283,7 @@ export const questionnaireData = [
         },
       },
     ],
+    conditions: {},
   },
   {
     id: 7,
@@ -313,6 +319,32 @@ export const questionnaireData = [
       },
       { value: { text: "Andere", value: "other" }, scores: {} },
     ],
+    conditions: {},
+  },
+  {
+    id: 8,
+    text: "Bist du schwanger, planst du bald schwanger zu werden oder bist du in der Stillzeit?",
+    type: QuestionType.Select,
+    maxSteps: 1,
+    answers: [
+      {
+        value: { text: "Ich bin aktuell schwanger", value: "pregnant" },
+        scores: {},
+      },
+      {
+        value: { text: "Ich plane eine Schwangerschaft", value: "planned_pregnant" },
+        scores: {},
+      },
+      {
+        value: { text: "In der Stillzeit", value: "breastfeeding" },
+        scores: {},
+      },
+      { value: { text: "Nein, weder noch", value: "no" }, scores: {} },
+    ],
+    conditions: {
+      // Gender must be female
+      7: "female",
+    },
   },
 ] as const;
 
@@ -348,6 +380,7 @@ export interface Question<T extends QuestionId> {
     scores?: Record<string, number>;
   }>;
   maxSteps?: number;
+  conditions?: Partial<Record<QuestionId, AnswerType<QuestionId>>>;
 }
 
 export interface QuestionProps<T extends QuestionId> {

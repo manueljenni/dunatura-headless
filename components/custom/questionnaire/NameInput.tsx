@@ -1,4 +1,4 @@
-import { Question } from "@/app/questionnaire/types";
+import { Question, QuestionId } from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { Input } from "@/components/primitives/input";
 import tagespack from "@/public/images/tagespack-name-missing.png";
@@ -9,7 +9,7 @@ import QuestionContainer from "./Question";
 import { useEffect } from "react";
 
 type NameInputProps = {
-  question: Question;
+  question: Question<QuestionId>;
   onAnswer: (name: string) => void;
   onBack: () => void;
   name: string;
