@@ -11,22 +11,13 @@ import QuestionnaireComplete from "../../components/custom/questionnaire/Questio
 import SelectQuestion from "../../components/custom/questionnaire/SelectQuestion";
 import { QuestionnaireEngine } from "./questionnaireEngine";
 import {
+  AnimationContextType,
   AnswerType,
-  Question,
+  HistoryItem,
   QuestionId,
   questionnaireData,
   QuestionType,
 } from "./types";
-
-type HistoryItem = {
-  question: Question;
-  answers: AnswerType<QuestionId>[];
-};
-
-type AnimationContextType = {
-  isAnimating: boolean;
-  setIsAnimating: (value: boolean) => void;
-};
 
 export const AnimationContext = createContext<AnimationContextType>({
   isAnimating: false,

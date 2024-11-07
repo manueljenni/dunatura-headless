@@ -349,3 +349,13 @@ export interface Question {
   }>;
   maxSteps?: number;
 }
+
+export type AnimationContextType = {
+  isAnimating: boolean;
+  setIsAnimating: (value: boolean) => void;
+};
+
+export type HistoryItem = {
+  question: Question;
+  answers: AnswerType<QuestionId>[];
+};
