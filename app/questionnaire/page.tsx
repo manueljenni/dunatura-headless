@@ -5,24 +5,19 @@ import NameInput from "@/components/custom/questionnaire/NameInput";
 import TagespackPlaceholder from "@/components/custom/questionnaire/TagespackPlaceholder";
 import { AnimatePresence, motion } from "framer-motion";
 import router from "next/router";
-import { createContext, useState } from "react";
+import { useState } from "react";
 import ConsentScreen from "../../components/custom/questionnaire/ConsentScreen";
 import QuestionnaireComplete from "../../components/custom/questionnaire/QuestionnaireComplete";
 import SelectQuestion from "../../components/custom/questionnaire/SelectQuestion";
+import { AnimationContext } from "./animationContext";
 import { QuestionnaireEngine } from "./questionnaireEngine";
 import {
-  AnimationContextType,
   AnswerType,
   HistoryItem,
   QuestionId,
   questionnaireData,
   QuestionType,
 } from "./types";
-
-export const AnimationContext = createContext<AnimationContextType>({
-  isAnimating: false,
-  setIsAnimating: () => {},
-});
 
 export default function Questionnaire() {
   const [engine] = useState(

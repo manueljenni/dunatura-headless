@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import { createCart } from "../../api/fetch";
-import { AnimationContext } from "../questionnaire/page";
+import { AnimationContext } from "../questionnaire/animationContext";
 
 export function useCart() {
   const [cartId, setCartId] = useState<string | null>(null);
