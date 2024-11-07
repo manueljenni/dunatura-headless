@@ -338,8 +338,8 @@ export type Answers = {
   [K in QuestionId]?: AnswerType<K>[];
 };
 
-export interface Question {
-  id: QuestionId;
+export interface Question<T extends QuestionId> {
+  id: T;
   text: string;
   subtitle?: string;
   type: QuestionType;
@@ -350,12 +350,22 @@ export interface Question {
   maxSteps?: number;
 }
 
-export type AnimationContextType = {
-  isAnimating: boolean;
-  setIsAnimating: (value: boolean) => void;
-};
+export interface QuestionProps<T extends QuestionId> {
+  question: Question<T>;
+  onAnswer: (questionId: T, answers: AnswerType<T>[]) => void;
+  initialAnswers: AnswerType<T>[];
+  onBack: () => void;
+  variables?: { name?: string };
+}
 
-export type HistoryItem = {
-  question: Question;
-  answers: AnswerType<QuestionId>[];
-};
+export interface HistoryItem<T extends QuestionId> {
+  question: Question<T>;
+  answers: AnswerType<T>[];
+}
+
+export interface QuestionnaireState<T extends QuestionId> {
+  currentQuestionIndex: number;
+  history: HistoryItem<T>[];
+  direction: "forward" | "backward";
+  isAnimating: boolean;
+}

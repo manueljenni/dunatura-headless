@@ -1,156 +1,135 @@
 "use client";
 
-import EffectsAfterFirstMonth from "@/components/custom/questionnaire/EffectsAfterFirstMonth";
-import NameInput from "@/components/custom/questionnaire/NameInput";
-import TagespackPlaceholder from "@/components/custom/questionnaire/TagespackPlaceholder";
 import { AnimatePresence, motion } from "framer-motion";
 import router from "next/router";
-import { useState } from "react";
-import ConsentScreen from "../../components/custom/questionnaire/ConsentScreen";
+import { useCallback, useState } from "react";
 import QuestionnaireComplete from "../../components/custom/questionnaire/QuestionnaireComplete";
-import SelectQuestion from "../../components/custom/questionnaire/SelectQuestion";
 import { AnimationContext } from "./animationContext";
+import { QuestionRenderer } from "./components/QuestionRenderer";
+import { useQuestionAnimation } from "./hooks/useQuestionAnimation";
 import { QuestionnaireEngine } from "./questionnaireEngine";
 import {
   AnswerType,
-  HistoryItem,
+  Question,
   QuestionId,
   questionnaireData,
-  QuestionType,
+  QuestionnaireState,
 } from "./types";
+
+function updateHistory<T extends QuestionId>(
+  history: Array<{ question: Question<QuestionId>; answers: AnswerType<QuestionId>[] }>,
+  currentIndex: number,
+  answers: AnswerType<T>[],
+  nextQuestion: Question<QuestionId> | null,
+) {
+  const newHistory = [...history];
+  newHistory[currentIndex] = {
+    ...newHistory[currentIndex],
+    answers: answers as AnswerType<QuestionId>[],
+  };
+
+  if (nextQuestion && currentIndex === newHistory.length - 1) {
+    newHistory.push({ question: nextQuestion, answers: [] });
+  }
+
+  return newHistory;
+}
 
 export default function Questionnaire() {
   const [engine] = useState(
     () => new QuestionnaireEngine({ questions: questionnaireData }),
   );
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [history, setHistory] = useState<HistoryItem[]>(() => {
-    const initialQuestion = engine.getCurrentQuestion();
-    return initialQuestion ? [{ question: initialQuestion, answers: [] }] : [];
-  });
-  const [direction, setDirection] = useState<"forward" | "backward">("forward");
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [state, setState] = useState<QuestionnaireState<QuestionId>>(() => ({
+    currentQuestionIndex: 0,
+    history: engine.getCurrentQuestion()
+      ? [{ question: engine.getCurrentQuestion()!, answers: [] }]
+      : [],
+    direction: "forward" as const,
+    isAnimating: false,
+  }));
 
-  const currentItem = history[currentQuestionIndex];
+  const { pageVariants, pageTransition } = useQuestionAnimation();
+  const currentItem = state.history[state.currentQuestionIndex];
   const currentQuestion = currentItem?.question;
   const currentAnswers = currentItem?.answers ?? [];
 
-  const handleAnswer = <T extends QuestionId>(
-    questionId: T,
-    answers: AnswerType<T>[],
-  ) => {
-    const nextQuestion = engine.answerQuestion(questionId, answers);
+  const handleAnswer = useCallback(
+    <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => {
+      const nextQuestion = engine.answerQuestion(questionId, answers);
+      setState((prev) => ({
+        ...prev,
+        history: updateHistory(
+          prev.history,
+          prev.currentQuestionIndex,
+          answers,
+          nextQuestion,
+        ),
+        direction: "forward",
+        currentQuestionIndex: prev.currentQuestionIndex + 1,
+      }));
+    },
+    [engine],
+  );
 
-    setHistory((prevHistory) => {
-      const newHistory = [...prevHistory];
-      newHistory[currentQuestionIndex] = { ...newHistory[currentQuestionIndex], answers };
-      if (nextQuestion && currentQuestionIndex === newHistory.length - 1) {
-        newHistory.push({ question: nextQuestion, answers: [] });
-      }
-      return newHistory;
-    });
+  const handleName = useCallback(
+    (name: string) => {
+      const nextQuestion = engine.setNameAndGoToNextQuestion(name);
+      setState((prev) => ({
+        ...prev,
+        history: updateHistory(prev.history, prev.currentQuestionIndex, [], nextQuestion),
+        direction: "forward",
+        currentQuestionIndex: prev.currentQuestionIndex + 1,
+      }));
+    },
+    [engine],
+  );
 
-    setDirection("forward");
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-  };
-
-  const handleName = (name: string) => {
-    const nextQuestion = engine.setNameAndGoToNextQuestion(name);
-
-    setHistory((prevHistory) => {
-      const newHistory = [...prevHistory];
-      newHistory[currentQuestionIndex] = {
-        ...newHistory[currentQuestionIndex],
-        answers: [],
-      };
-      if (nextQuestion && currentQuestionIndex === newHistory.length - 1) {
-        newHistory.push({ question: nextQuestion, answers: [] });
-      }
-      return newHistory;
-    });
-
-    setDirection("forward");
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-  };
-
-  const handleBack = () => {
-    if (currentQuestionIndex > 0) {
-      setDirection("backward");
-      setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
+  const handleBack = useCallback(() => {
+    if (state.currentQuestionIndex > 0) {
+      setState((prev) => ({
+        ...prev,
+        direction: "backward",
+        currentQuestionIndex: prev.currentQuestionIndex - 1,
+      }));
       engine.goBack();
     } else {
-      // Redirect to home or handle the case when there's no more history
       router.push("/");
     }
-  };
-
-  const renderQuestion = () => {
-    if (!currentQuestion) return null;
-
-    const commonProps = {
-      question: currentQuestion,
-      onAnswer: handleAnswer,
-      initialAnswers: currentAnswers,
-      onBack: handleBack,
-    };
-
-    switch (currentQuestion.type) {
-      case QuestionType.ConsentScreen:
-        return <ConsentScreen {...commonProps} />;
-      case QuestionType.Select:
-        return <SelectQuestion {...commonProps} variables={{ name: engine.getName() }} />;
-      case QuestionType.EffectsAfterFirstMonth:
-        return <EffectsAfterFirstMonth {...commonProps} />;
-      case QuestionType.TagespackPlaceholder:
-        return <TagespackPlaceholder {...commonProps} />;
-      case QuestionType.NameInput:
-        return (
-          <NameInput {...commonProps} onAnswer={handleName} name={engine.getName()} />
-        );
-    }
-  };
-
-  const pageVariants = {
-    enter: (direction: "forward" | "backward") => ({
-      x: direction === "forward" ? "100%" : "-100%",
-      opacity: 0,
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: "forward" | "backward") => ({
-      x: direction === "forward" ? "-100%" : "100%",
-      opacity: 0,
-    }),
-  };
-
-  const pageTransition = {
-    type: "tween",
-    ease: "anticipate",
-    duration: 0.5,
-  };
+  }, [state.currentQuestionIndex, engine]);
 
   return (
     <div className="h-screen w-full overflow-hidden relative flex justify-center items-center z-[1000]">
-      <AnimationContext.Provider value={{ isAnimating, setIsAnimating }}>
+      <AnimationContext.Provider
+        value={{
+          isAnimating: state.isAnimating,
+          setIsAnimating: (isAnimating) => setState((prev) => ({ ...prev, isAnimating })),
+        }}>
         <AnimatePresence
           initial={false}
           mode="sync"
-          custom={direction}
-          onExitComplete={() => setIsAnimating(false)}>
+          custom={state.direction}
+          onExitComplete={() => setState((prev) => ({ ...prev, isAnimating: false }))}>
           {currentQuestion ? (
             <motion.div
               key={currentQuestion.id}
-              custom={direction}
+              custom={state.direction}
               variants={pageVariants}
               initial="enter"
               animate="center"
               exit="exit"
               transition={pageTransition}
-              onAnimationStart={() => setIsAnimating(true)}
+              onAnimationStart={() =>
+                setState((prev) => ({ ...prev, isAnimating: true }))
+              }
               className="absolute w-full h-full top-0">
-              {renderQuestion()}
+              <QuestionRenderer
+                question={currentQuestion}
+                onAnswer={handleAnswer}
+                onNameAnswer={handleName}
+                initialAnswers={currentAnswers}
+                onBack={handleBack}
+                name={engine.getName()}
+              />
             </motion.div>
           ) : (
             <motion.div
@@ -161,9 +140,7 @@ export default function Questionnaire() {
               className="absolute w-full">
               <QuestionnaireComplete
                 scores={engine.calculateFinalScores()}
-                onBack={() => {
-                  handleBack();
-                }}
+                onBack={handleBack}
                 name={engine.getName()}
               />
             </motion.div>
