@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createCart } from "../../api/fetch";
+import { AnimationContext } from "../questionnaire/page";
 
 export function useCart() {
   const [cartId, setCartId] = useState<string | null>(null);
@@ -35,8 +36,9 @@ export function useKeyboardNavigation({
   onNext,
   isNextDisabled,
   onBack,
-  isAnimating,
-}: NavigationHandlers) {
+}: Omit<NavigationHandlers, "isAnimating">) {
+  const { isAnimating } = useContext(AnimationContext);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Enter" || event.key === "ArrowRight") {
@@ -52,5 +54,5 @@ export function useKeyboardNavigation({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onNext, onBack, isAnimating]);
+  }, [onNext, onBack, isAnimating, isNextDisabled]);
 }

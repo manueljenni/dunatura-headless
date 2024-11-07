@@ -1,4 +1,3 @@
-import { AnimationContext } from "@/app/questionnaire/page";
 import { AnswerType, Question, QuestionId } from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import crosshair from "@/public/images/icons/crosshair.svg";
@@ -6,17 +5,14 @@ import lightbulb from "@/public/images/icons/lightbulb.svg";
 import measure from "@/public/images/icons/measure.svg";
 import { motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
-import { useContext } from "react";
 import QuestionContainer from "./Question";
 
 export default function EffectsAfterFirstMonth(props: {
   question: Question;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 }) {
-  const { isAnimating } = useContext(AnimationContext);
   useKeyboardNavigation({
     onNext: () => props.onAnswer(props.question.id, []),
-    isAnimating,
   });
 
   const experiences = [
