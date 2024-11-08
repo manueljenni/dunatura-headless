@@ -5,7 +5,7 @@ import Image from "next/image";
 import QuestionContainer from "./Question";
 
 export default function TagespackPlaceholder(props: {
-  question: Question;
+  question: Question<QuestionId>;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 }) {
   useKeyboardNavigation({

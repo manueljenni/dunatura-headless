@@ -5,7 +5,7 @@ import { AnswerType, Question, QuestionId } from "../../../app/questionnaire/typ
 import QuestionContainer from "./Question";
 
 type SelectQuestionProps = {
-  question: Question;
+  question: Question<QuestionId>;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
   onBack: () => void;
   variables?: Record<string, string>;

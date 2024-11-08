@@ -20,37 +20,27 @@ export class QuestionnaireEngine {
   }
 
   getCurrentQuestion(): Question<QuestionId> | null {
-    console.log("Current index: " + this.currentIndex);
-
-    while (this.currentIndex < this.data.length) {
-      const question = this.data[this.currentIndex];
-      const conditionsMet = this.checkConditions(question);
-      console.log("Conditions met: ", conditionsMet);
-      if (conditionsMet) {
-        return question;
-      } else {
-        return this.data[this.currentIndex + 1];
-      }
-    }
-    return null;
+    const question = this.data[this.currentIndex];
+    return this.checkConditions(question) ? question : this.findNextQuestion();
   }
 
   answerQuestion<T extends QuestionId>(
     questionId: T,
     answer: AnswerType<T>[],
   ): Question<QuestionId> | null {
-    console.warn("Answering question", questionId, answer);
-    console.log("Answers: BEFORE checking conditions", this.answers);
-
-    this.answers[questionId] = answer as Answers[T];
-    this.currentIndex++;
+    const updatedAnswers = { ...this.answers, [questionId]: answer as Answers[T] };
+    const nextIndex = this.findNextValidQuestionIndex(
+      this.currentIndex + 1,
+      updatedAnswers,
+    );
+    this.answers = updatedAnswers;
+    this.currentIndex = nextIndex ?? this.currentIndex;
     return this.getCurrentQuestion();
   }
 
   setNameAndGoToNextQuestion(name: string): Question<QuestionId> | null {
     this.name = name;
-    this.currentIndex++;
-    return this.getCurrentQuestion();
+    return this.findNextQuestion();
   }
 
   getName() {
@@ -58,75 +48,107 @@ export class QuestionnaireEngine {
   }
 
   goBack(): Question<QuestionId> | null {
-    if (this.currentIndex > 0) {
-      this.currentIndex--;
-      return this.getCurrentQuestion();
-    }
-    return null;
+    const previousIndex = this.findPreviousValidQuestionIndex(
+      this.currentIndex - 1,
+      this.answers,
+    );
+    this.currentIndex = previousIndex ?? this.currentIndex;
+    return this.getCurrentQuestion();
   }
 
   calculateFinalScores(): Partial<Record<VitaminId, number>> {
-    let totalScores: Partial<Record<VitaminId, number>> = {};
-
-    this.data.forEach((question) => {
-      const answer = this.answers[question.id];
-      if (answer) {
-        this.updateScoresForQuestion(totalScores, question as any, answer);
-      }
-    });
-
-    return totalScores;
+    return this.data.reduce(
+      (totalScores, question) => {
+        const answer = this.answers[question.id];
+        return answer
+          ? this.updateScoresForQuestion(totalScores, question, answer)
+          : totalScores;
+      },
+      {} as Partial<Record<VitaminId, number>>,
+    );
   }
 
   private updateScoresForQuestion(
     totalScores: Partial<Record<VitaminId, number>>,
     question: Question<QuestionId>,
     answer: AnswerType<QuestionId> | AnswerType<QuestionId>[],
-  ): void {
-    if (Array.isArray(answer)) {
-      answer.forEach((selectedValue) => {
-        const selectedAnswer = question.answers.find(
-          (a) => a.value.value === selectedValue,
-        );
-        if (selectedAnswer?.scores) {
-          this.updateScores(totalScores, selectedAnswer.scores);
-        }
-      });
-    } else {
-      const selectedAnswer = question.answers.find((a) => a.value.value === answer);
+  ): Partial<Record<VitaminId, number>> {
+    const selectedAnswers = Array.isArray(answer) ? answer : [answer];
+    selectedAnswers.forEach((selectedValue) => {
+      const selectedAnswer = question.answers.find(
+        (a) => a.value.value === selectedValue,
+      );
       if (selectedAnswer?.scores) {
-        this.updateScores(totalScores, selectedAnswer.scores);
+        totalScores = this.updateScores(totalScores, selectedAnswer.scores);
       }
-    }
+    });
+    return totalScores;
   }
 
   private updateScores(
     totalScores: Partial<Record<VitaminId, number>>,
     newScores: Partial<Record<VitaminId, number>>,
-  ): void {
-    Object.entries(newScores).forEach(([vitamin, score]) => {
-      const vitaminId = Number(vitamin) as VitaminId;
-      totalScores[vitaminId] = (totalScores[vitaminId] ?? 0) + (score ?? 0);
-    });
+  ): Partial<Record<VitaminId, number>> {
+    return Object.entries(newScores).reduce(
+      (updatedScores, [vitamin, score]) => {
+        const vitaminId = Number(vitamin) as VitaminId;
+        updatedScores[vitaminId] = (updatedScores[vitaminId] ?? 0) + (score ?? 0);
+        return updatedScores;
+      },
+      { ...totalScores },
+    );
   }
 
   private checkConditions(question: Question<QuestionId>): boolean {
     if (!question.conditions) {
-      console.log("No conditions for question", question.id);
+      console.log("No conditions found");
       return true;
     }
-
     return Object.entries(question.conditions).every(
       ([questionIdStr, requiredAnswer]) => {
-        console.log("Answers DURING conditions: ", this.answers);
+        console.log("Checking conditions for question", questionIdStr);
+        console.log("Required answer", requiredAnswer);
         const questionId = Number(questionIdStr) as QuestionId;
         const answer: AnswerType<QuestionId>[] | undefined = this.answers[questionId];
-
-        console.log("Required answer", requiredAnswer);
-        console.log("answer string: ", answer?.toString());
-
+        console.log("Answer", answer);
         return answer?.toString() == requiredAnswer || false;
       },
     );
+  }
+
+  private findNextValidQuestionIndex(
+    startIndex: number,
+    answers: Partial<Answers>,
+  ): number | null {
+    for (let i = startIndex; i < this.data.length; i++) {
+      if (this.checkConditions(this.data[i])) {
+        return i;
+      }
+    }
+    return null;
+  }
+
+  private findPreviousValidQuestionIndex(
+    startIndex: number,
+    answers: Partial<Answers>,
+  ): number | null {
+    for (let i = startIndex; i >= 0; i--) {
+      if (this.checkConditions(this.data[i])) {
+        return i;
+      }
+    }
+    return null;
+  }
+
+  private findNextQuestion(): Question<QuestionId> | null {
+    const nextIndex = this.findNextValidQuestionIndex(
+      this.currentIndex + 1,
+      this.answers,
+    );
+    if (nextIndex !== null) {
+      this.currentIndex = nextIndex;
+      return this.getCurrentQuestion();
+    }
+    return null;
   }
 }

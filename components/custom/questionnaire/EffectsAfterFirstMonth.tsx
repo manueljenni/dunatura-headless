@@ -8,7 +8,7 @@ import Image, { StaticImageData } from "next/image";
 import QuestionContainer from "./Question";
 
 export default function EffectsAfterFirstMonth(props: {
-  question: Question;
+  question: Question<QuestionId>;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
 }) {
   useKeyboardNavigation({
