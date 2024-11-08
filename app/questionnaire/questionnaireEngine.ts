@@ -29,6 +29,14 @@ export class QuestionnaireEngine {
     answer: AnswerType<T>[],
   ): Question<QuestionId> | null {
     const updatedAnswers = { ...this.answers, [questionId]: answer as Answers[T] };
+
+    // Remove answers for questions whose conditions are no longer met
+    this.data.forEach((question) => {
+      if (updatedAnswers[question.id] !== undefined && !this.checkConditions(question)) {
+        delete updatedAnswers[question.id];
+      }
+    });
+
     this.answers = updatedAnswers;
 
     const nextIndex = this.findNextValidQuestionIndex(
@@ -114,10 +122,13 @@ export class QuestionnaireEngine {
       ([questionIdStr, requiredAnswer]) => {
         console.log("Checking conditions for question", questionIdStr);
         console.log("Required answer", requiredAnswer);
+
         const questionId = Number(questionIdStr) as QuestionId;
-        const answer: AnswerType<QuestionId>[] | undefined = this.answers[questionId];
-        console.log("Answer", answer);
-        return answer?.toString() == requiredAnswer || false;
+        const answers: AnswerType<QuestionId>[] | undefined = this.answers[questionId];
+        console.log("Answers", answers);
+
+        console.log("Returning...", answers?.includes(requiredAnswer));
+        return answers?.includes(requiredAnswer);
       },
     );
   }

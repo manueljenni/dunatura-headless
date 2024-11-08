@@ -67,10 +67,6 @@ export default function Questionnaire() {
         direction: "forward",
         currentQuestionIndex: prev.currentQuestionIndex + 1,
       }));
-
-      console.log("Answered question", questionId, answers);
-      console.log("Next question", nextQuestion);
-      console.log("History", state.history);
     },
     [engine],
   );

@@ -159,132 +159,132 @@ export const vitamins = {
 } as const;
 
 export const questionnaireData = [
-  // {
-  //   id: 1,
-  //   text: "Bevor es losgeht",
-  //   subtitle: "Dürfen wir deine Informationen verarbeiten?",
-  //   type: QuestionType.ConsentScreen,
-  //   answers: [
-  //     { value: { text: "Ich stimme zu", value: "consent" }, scores: {} },
-  //     { value: { text: "Nein, zurück", value: "decline" }, scores: {} },
-  //   ],
-  //   conditions: {},
-  // },
-  // {
-  //   id: 2,
-  //   text: "Meine Gesundheitsziele beinhalten...",
-  //   type: QuestionType.Select,
-  //   maxSteps: 3,
-  //   answers: [
-  //     {
-  //       value: { text: "Gesundheit allgemein verbessern", value: "overall_health" },
-  //       scores: {},
-  //     },
-  //     { value: { text: "Mehr Energie während des Tages", value: "energy" }, scores: {} },
-  //     {
-  //       value: {
-  //         text: "Konzentration während der Arbeit steigern",
-  //         value: "concentration",
-  //       },
-  //       scores: {},
-  //     },
-  //     {
-  //       value: { text: "Bessere Performance im Sport", value: "performance" },
-  //       scores: {},
-  //     },
-  //     { value: { text: "Höhere Ausdauer", value: "endurance" }, scores: {} },
-  //     { value: { text: "Natürliche Schönheit", value: "beauty" }, scores: {} },
-  //     {
-  //       value: {
-  //         text: "Verbesserte Immunität während des ganzen Jahres",
-  //         value: "immunity",
-  //       },
-  //       scores: {},
-  //     },
-  //   ],
-  //   conditions: {},
-  // },
-  // {
-  //   id: 3,
-  //   text: "Was unsere Kunden nach ihrem ersten Monat erleben",
-  //   type: QuestionType.EffectsAfterFirstMonth,
-  //   maxSteps: 1,
-  //   answers: [
-  //     { value: { text: "Jünger als 20", value: "under_20" }, scores: {} },
-  //     { value: { text: "20 - 30", value: "20_30" }, scores: {} },
-  //     { value: { text: "31 - 40", value: "31_40" }, scores: {} },
-  //     { value: { text: "Älter als 40", value: "over_40" }, scores: {} },
-  //   ],
-  //   conditions: {},
-  // },
-  // {
-  //   id: 4,
-  //   text: "Erzähle uns mehr über dich, sodass wir dir ein personalisiertes Tagespack zusammenstellen können.",
-  //   type: QuestionType.TagespackPlaceholder,
-  //   answers: [],
-  //   conditions: {},
-  // },
-  // {
-  //   id: 5,
-  //   text: "Lass uns zuerst deinen Namen hinzufügen.",
-  //   subtitle: "Dein Name wird auf dein Tagespack gedruckt.",
-  //   variables: { name: "name" },
-  //   type: QuestionType.NameInput,
-  //   maxSteps: 1,
-  //   answers: [],
-  //   conditions: {},
-  // },
-  // {
-  //   id: 6,
-  //   text: "Hey ${name}, wie alt bist du?",
-  //   variables: { name: "name" },
-  //   type: QuestionType.Select,
-  //   maxSteps: 1,
-  //   answers: [
-  //     {
-  //       value: { text: "Jünger als 20", value: "under_20" },
-  //       scores: {
-  //         [vitamins.VIT_D3_K2.id]: 5,
-  //         [vitamins.ZINK.id]: 5,
-  //         [vitamins.VIT_B12_KOMPLEX.id]: 5,
-  //       },
-  //     },
-  //     {
-  //       value: { text: "20 - 30", value: "20_30" },
-  //       scores: {
-  //         [vitamins.COENZYM_Q10.id]: 2,
-  //         [vitamins.VIT_D3_K2.id]: 6,
-  //         [vitamins.ZINK.id]: 6,
-  //         [vitamins.VIT_B12_KOMPLEX.id]: 5,
-  //       },
-  //     },
-  //     {
-  //       value: { text: "31 - 40", value: "31_40" },
-  //       scores: {
-  //         [vitamins.COENZYM_Q10.id]: 6,
-  //         [vitamins.OMEGA_3.id]: 3,
-  //         [vitamins.HYALURONSAURE.id]: 4,
-  //         [vitamins.VIT_D3_K2.id]: 7,
-  //         [vitamins.VIT_C.id]: 2,
-  //         [vitamins.ZINK.id]: 7,
-  //         [vitamins.VIT_B12_KOMPLEX.id]: 7,
-  //       },
-  //     },
-  //     {
-  //       value: { text: "Älter als 40", value: "over_40" },
-  //       scores: {
-  //         [vitamins.COENZYM_Q10.id]: 8,
-  //         [vitamins.OMEGA_3.id]: 6,
-  //         [vitamins.HYALURONSAURE.id]: 6,
-  //         [vitamins.VIT_D3_K2.id]: 8,
-  //         [vitamins.VIT_C.id]: 4,
-  //         [vitamins.ZINK.id]: 8,
-  //         [vitamins.VIT_B12_KOMPLEX.id]: 8,
-  //       },
-  //     },
-  //   ],
-  //   conditions: {},
-  // },
+  {
+    id: 1,
+    text: "Bevor es losgeht",
+    subtitle: "Dürfen wir deine Informationen verarbeiten?",
+    type: QuestionType.ConsentScreen,
+    answers: [
+      { value: { text: "Ich stimme zu", value: "consent" }, scores: {} },
+      { value: { text: "Nein, zurück", value: "decline" }, scores: {} },
+    ],
+    conditions: {},
+  },
+  {
+    id: 2,
+    text: "Meine Gesundheitsziele beinhalten...",
+    type: QuestionType.Select,
+    maxSteps: 3,
+    answers: [
+      {
+        value: { text: "Gesundheit allgemein verbessern", value: "overall_health" },
+        scores: {},
+      },
+      { value: { text: "Mehr Energie während des Tages", value: "energy" }, scores: {} },
+      {
+        value: {
+          text: "Konzentration während der Arbeit steigern",
+          value: "concentration",
+        },
+        scores: {},
+      },
+      {
+        value: { text: "Bessere Performance im Sport", value: "performance" },
+        scores: {},
+      },
+      { value: { text: "Höhere Ausdauer", value: "endurance" }, scores: {} },
+      { value: { text: "Natürliche Schönheit", value: "beauty" }, scores: {} },
+      {
+        value: {
+          text: "Verbesserte Immunität während des ganzen Jahres",
+          value: "immunity",
+        },
+        scores: {},
+      },
+    ],
+    conditions: {},
+  },
+  {
+    id: 3,
+    text: "Was unsere Kunden nach ihrem ersten Monat erleben",
+    type: QuestionType.EffectsAfterFirstMonth,
+    maxSteps: 1,
+    answers: [
+      { value: { text: "Jünger als 20", value: "under_20" }, scores: {} },
+      { value: { text: "20 - 30", value: "20_30" }, scores: {} },
+      { value: { text: "31 - 40", value: "31_40" }, scores: {} },
+      { value: { text: "Älter als 40", value: "over_40" }, scores: {} },
+    ],
+    conditions: {},
+  },
+  {
+    id: 4,
+    text: "Erzähle uns mehr über dich, sodass wir dir ein personalisiertes Tagespack zusammenstellen können.",
+    type: QuestionType.TagespackPlaceholder,
+    answers: [],
+    conditions: {},
+  },
+  {
+    id: 5,
+    text: "Lass uns zuerst deinen Namen hinzufügen.",
+    subtitle: "Dein Name wird auf dein Tagespack gedruckt.",
+    variables: { name: "name" },
+    type: QuestionType.NameInput,
+    maxSteps: 1,
+    answers: [],
+    conditions: {},
+  },
+  {
+    id: 6,
+    text: "Hey ${name}, wie alt bist du?",
+    variables: { name: "name" },
+    type: QuestionType.Select,
+    maxSteps: 1,
+    answers: [
+      {
+        value: { text: "Jünger als 20", value: "under_20" },
+        scores: {
+          [vitamins.VIT_D3_K2.id]: 5,
+          [vitamins.ZINK.id]: 5,
+          [vitamins.VIT_B12_KOMPLEX.id]: 5,
+        },
+      },
+      {
+        value: { text: "20 - 30", value: "20_30" },
+        scores: {
+          [vitamins.COENZYM_Q10.id]: 2,
+          [vitamins.VIT_D3_K2.id]: 6,
+          [vitamins.ZINK.id]: 6,
+          [vitamins.VIT_B12_KOMPLEX.id]: 5,
+        },
+      },
+      {
+        value: { text: "31 - 40", value: "31_40" },
+        scores: {
+          [vitamins.COENZYM_Q10.id]: 6,
+          [vitamins.OMEGA_3.id]: 3,
+          [vitamins.HYALURONSAURE.id]: 4,
+          [vitamins.VIT_D3_K2.id]: 7,
+          [vitamins.VIT_C.id]: 2,
+          [vitamins.ZINK.id]: 7,
+          [vitamins.VIT_B12_KOMPLEX.id]: 7,
+        },
+      },
+      {
+        value: { text: "Älter als 40", value: "over_40" },
+        scores: {
+          [vitamins.COENZYM_Q10.id]: 8,
+          [vitamins.OMEGA_3.id]: 6,
+          [vitamins.HYALURONSAURE.id]: 6,
+          [vitamins.VIT_D3_K2.id]: 8,
+          [vitamins.VIT_C.id]: 4,
+          [vitamins.ZINK.id]: 8,
+          [vitamins.VIT_B12_KOMPLEX.id]: 8,
+        },
+      },
+    ],
+    conditions: {},
+  },
   {
     id: 7,
     text: "Als welches Geschlecht identifizierst du dich?",
