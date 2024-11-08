@@ -67,6 +67,10 @@ export default function Questionnaire() {
         direction: "forward",
         currentQuestionIndex: prev.currentQuestionIndex + 1,
       }));
+
+      console.log("Answered question", questionId, answers);
+      console.log("Next question", nextQuestion);
+      console.log("History", state.history);
     },
     [engine],
   );
@@ -109,7 +113,20 @@ export default function Questionnaire() {
           mode="sync"
           custom={state.direction}
           onExitComplete={() => setState((prev) => ({ ...prev, isAnimating: false }))}>
-          {currentQuestion ? (
+          {!currentQuestion ? (
+            <motion.div
+              key="complete"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute w-full">
+              <QuestionnaireComplete
+                scores={engine.calculateFinalScores()}
+                onBack={handleBack}
+                name={engine.getName()}
+              />
+            </motion.div>
+          ) : (
             <motion.div
               key={currentQuestion.id}
               custom={state.direction}
@@ -127,19 +144,6 @@ export default function Questionnaire() {
                 onAnswer={handleAnswer}
                 onNameAnswer={handleName}
                 initialAnswers={currentAnswers}
-                onBack={handleBack}
-                name={engine.getName()}
-              />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="complete"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute w-full">
-              <QuestionnaireComplete
-                scores={engine.calculateFinalScores()}
                 onBack={handleBack}
                 name={engine.getName()}
               />

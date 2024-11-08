@@ -15,13 +15,13 @@ export class QuestionnaireEngine {
 
   constructor(config: { questions: QuestionnaireData }) {
     this.data = config.questions;
-    this.currentIndex = 0;
+    this.currentIndex = this.findNextValidQuestionIndex(0, {}) ?? 0;
     this.answers = {};
   }
 
   getCurrentQuestion(): Question<QuestionId> | null {
     const question = this.data[this.currentIndex];
-    return this.checkConditions(question) ? question : this.findNextQuestion();
+    return question ?? null;
   }
 
   answerQuestion<T extends QuestionId>(
@@ -29,12 +29,18 @@ export class QuestionnaireEngine {
     answer: AnswerType<T>[],
   ): Question<QuestionId> | null {
     const updatedAnswers = { ...this.answers, [questionId]: answer as Answers[T] };
+    this.answers = updatedAnswers;
+
     const nextIndex = this.findNextValidQuestionIndex(
       this.currentIndex + 1,
       updatedAnswers,
     );
-    this.answers = updatedAnswers;
-    this.currentIndex = nextIndex ?? this.currentIndex;
+
+    if (nextIndex === null) {
+      return null;
+    }
+
+    this.currentIndex = nextIndex;
     return this.getCurrentQuestion();
   }
 
@@ -120,6 +126,10 @@ export class QuestionnaireEngine {
     startIndex: number,
     answers: Partial<Answers>,
   ): number | null {
+    if (startIndex >= this.data.length) {
+      return null;
+    }
+
     for (let i = startIndex; i < this.data.length; i++) {
       if (this.checkConditions(this.data[i])) {
         return i;
