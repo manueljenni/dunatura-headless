@@ -50,6 +50,12 @@ export default function SelectQuestion({
     }
 
     setSelectedAnswers(newSelectedAnswers);
+    if (newSelectedAnswers.length > 0 && !isMultiSelect) {
+      // Sleep 500 ms
+      setTimeout(() => {
+        onAnswer(id, newSelectedAnswers);
+      }, 150);
+    }
   };
 
   useEffect(() => {

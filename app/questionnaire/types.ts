@@ -348,7 +348,7 @@ export const questionnaireData = [
   },
   {
     id: 9,
-    text: "Das Leben ist nicht jeden Tag gleich. Stress kommt und geht. Wie fühlst du dich? (in den letzten 1 - 2 Wochen)",
+    text: "Wie würdest du dein aktuelles Stresslevel der letzten 1-2 Wochen einschätzen?",
     type: QuestionType.Select,
     maxSteps: 1,
     answers: [
