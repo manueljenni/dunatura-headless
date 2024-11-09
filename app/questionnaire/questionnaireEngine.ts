@@ -20,6 +20,7 @@ export class QuestionnaireEngine {
   private answers: Partial<Answers>;
   private name?: string;
   private history: History;
+  private lastValidIndex: number | null = null;
 
   constructor(config: { questions: QuestionnaireData }) {
     this.data = config.questions;
@@ -43,11 +44,7 @@ export class QuestionnaireEngine {
 
   getCurrentQuestion(): Question<QuestionId> | null {
     const question = this.data[this.currentIndex];
-    console.log("Getting current question:", {
-      currentIndex: this.currentIndex,
-      question,
-      answers: this.answers,
-    });
+    console.log("Current question:", question);
     return question ?? null;
   }
 
@@ -55,14 +52,28 @@ export class QuestionnaireEngine {
     return this.history;
   }
 
+  private isLastValidQuestion(currentIndex: number): boolean {
+    const nextValidIndex = this.findNextValidQuestionIndex(
+      currentIndex + 1,
+      this.answers,
+    );
+    return nextValidIndex === null;
+  }
+
   answerQuestion<T extends QuestionId>(
     questionId: T,
     answer: AnswerType<T>[],
   ): Question<QuestionId> | null {
-    // If the answer hasn't changed, just find and return the next question
+    const currentQuestionIndex = this.data.findIndex((q) => q.id === questionId);
+
+    // If the answer hasn't changed
     const currentAnswers = this.answers[questionId];
     if (JSON.stringify(currentAnswers) === JSON.stringify(answer)) {
-      const currentQuestionIndex = this.data.findIndex((q) => q.id === questionId);
+      if (this.isLastValidQuestion(currentQuestionIndex)) {
+        this.lastValidIndex = currentQuestionIndex;
+        return null;
+      }
+
       const nextIndex = this.findNextValidQuestionIndex(
         currentQuestionIndex + 1,
         this.answers,
@@ -75,18 +86,8 @@ export class QuestionnaireEngine {
       return null;
     }
 
-    console.log("Answering question:", {
-      questionId,
-      answer,
-      currentIndex: this.currentIndex,
-      currentAnswers: this.answers,
-    });
-
     // Store the answer
     this.answers[questionId] = answer as Answers[T];
-
-    // Find the current question's index
-    const currentQuestionIndex = this.data.findIndex((q) => q.id === questionId);
 
     // Update history
     this.history[questionId] = {
@@ -94,17 +95,16 @@ export class QuestionnaireEngine {
       answers: answer as AnswerType<QuestionId>[],
     };
 
-    // Find next valid question
+    // Check if this is the last valid question
+    if (this.isLastValidQuestion(currentQuestionIndex)) {
+      this.lastValidIndex = currentQuestionIndex;
+      return null;
+    }
+
     const nextIndex = this.findNextValidQuestionIndex(
       currentQuestionIndex + 1,
       this.answers,
     );
-
-    console.log("Next question calculation:", {
-      currentQuestionIndex,
-      nextIndex,
-      answers: this.answers,
-    });
 
     if (nextIndex !== null) {
       this.currentIndex = nextIndex;
@@ -142,16 +142,18 @@ export class QuestionnaireEngine {
   }
 
   goBack(): Question<QuestionId> | null {
+    // If we're in complete state, return to the last valid question
+    if (this.lastValidIndex !== null) {
+      this.currentIndex = this.lastValidIndex;
+      this.lastValidIndex = null;
+      return this.getCurrentQuestion();
+    }
+
+    // Normal back navigation
     const previousIndex = this.findPreviousValidQuestionIndex(
       this.currentIndex - 1,
       this.answers,
     );
-
-    console.log("Going back:", {
-      currentIndex: this.currentIndex,
-      previousIndex,
-      answers: this.answers,
-    });
 
     if (previousIndex !== null) {
       this.currentIndex = previousIndex;
