@@ -7,54 +7,134 @@ import {
   VitaminId,
 } from "./types";
 
+type HistoryItem = {
+  question: Question<QuestionId>;
+  answers: AnswerType<QuestionId>[];
+};
+
+type History = Partial<Record<QuestionId, HistoryItem>>;
+
 export class QuestionnaireEngine {
   private data: QuestionnaireData;
   private currentIndex: number;
   private answers: Partial<Answers>;
   private name?: string;
+  private history: History;
 
   constructor(config: { questions: QuestionnaireData }) {
     this.data = config.questions;
-    this.currentIndex = this.findNextValidQuestionIndex(0, {}) ?? 0;
+    this.currentIndex = 0;
     this.answers = {};
+    this.history = {
+      [this.currentIndex]: {
+        question: this.getCurrentQuestion()!,
+        answers: [],
+      },
+    };
+  }
+
+  getCurrentIndex() {
+    return this.currentIndex;
+  }
+
+  getAnswers(): Partial<Answers> {
+    return this.answers;
   }
 
   getCurrentQuestion(): Question<QuestionId> | null {
     const question = this.data[this.currentIndex];
+    console.log("Getting current question:", {
+      currentIndex: this.currentIndex,
+      question,
+      answers: this.answers,
+    });
     return question ?? null;
+  }
+
+  getHistory(): History {
+    return this.history;
   }
 
   answerQuestion<T extends QuestionId>(
     questionId: T,
     answer: AnswerType<T>[],
   ): Question<QuestionId> | null {
-    const updatedAnswers = { ...this.answers, [questionId]: answer as Answers[T] };
+    // If the answer hasn't changed, just find and return the next question
+    const currentAnswers = this.answers[questionId];
+    if (JSON.stringify(currentAnswers) === JSON.stringify(answer)) {
+      const currentQuestionIndex = this.data.findIndex((q) => q.id === questionId);
+      const nextIndex = this.findNextValidQuestionIndex(
+        currentQuestionIndex + 1,
+        this.answers,
+      );
 
-    // Remove answers for questions whose conditions are no longer met
-    this.data.forEach((question) => {
-      if (updatedAnswers[question.id] !== undefined && !this.checkConditions(question)) {
-        delete updatedAnswers[question.id];
+      if (nextIndex !== null) {
+        this.currentIndex = nextIndex;
+        return this.getCurrentQuestion();
       }
-    });
-
-    this.answers = updatedAnswers;
-
-    const nextIndex = this.findNextValidQuestionIndex(
-      this.currentIndex + 1,
-      updatedAnswers,
-    );
-
-    if (nextIndex === null) {
       return null;
     }
 
-    this.currentIndex = nextIndex;
-    return this.getCurrentQuestion();
+    console.log("Answering question:", {
+      questionId,
+      answer,
+      currentIndex: this.currentIndex,
+      currentAnswers: this.answers,
+    });
+
+    // Store the answer
+    this.answers[questionId] = answer as Answers[T];
+
+    // Find the current question's index
+    const currentQuestionIndex = this.data.findIndex((q) => q.id === questionId);
+
+    // Update history
+    this.history[questionId] = {
+      question: this.data[currentQuestionIndex] as Question<QuestionId>,
+      answers: answer as AnswerType<QuestionId>[],
+    };
+
+    // Find next valid question
+    const nextIndex = this.findNextValidQuestionIndex(
+      currentQuestionIndex + 1,
+      this.answers,
+    );
+
+    console.log("Next question calculation:", {
+      currentQuestionIndex,
+      nextIndex,
+      answers: this.answers,
+    });
+
+    if (nextIndex !== null) {
+      this.currentIndex = nextIndex;
+      const nextQuestion = this.getCurrentQuestion();
+
+      if (nextQuestion) {
+        this.history[nextQuestion.id] = {
+          question: nextQuestion,
+          answers: [],
+        };
+      }
+
+      return nextQuestion;
+    }
+
+    return null;
   }
 
   setNameAndGoToNextQuestion(name: string): Question<QuestionId> | null {
     this.name = name;
-    return this.findNextQuestion();
+    const nextQuestion = this.findNextQuestion();
+
+    if (nextQuestion) {
+      this.history[nextQuestion.id] = {
+        question: nextQuestion,
+        answers: [],
+      };
+    }
+
+    return nextQuestion;
   }
 
   getName() {
@@ -66,8 +146,19 @@ export class QuestionnaireEngine {
       this.currentIndex - 1,
       this.answers,
     );
-    this.currentIndex = previousIndex ?? this.currentIndex;
-    return this.getCurrentQuestion();
+
+    console.log("Going back:", {
+      currentIndex: this.currentIndex,
+      previousIndex,
+      answers: this.answers,
+    });
+
+    if (previousIndex !== null) {
+      this.currentIndex = previousIndex;
+      return this.getCurrentQuestion();
+    }
+
+    return null;
   }
 
   calculateFinalScores(): Partial<Record<VitaminId, number>> {
@@ -114,38 +205,61 @@ export class QuestionnaireEngine {
   }
 
   private checkConditions(question: Question<QuestionId>): boolean {
-    if (!question.conditions) {
-      console.log("No conditions found");
+    if (!question.conditions || Object.keys(question.conditions).length === 0) {
       return true;
     }
-    return Object.entries(question.conditions).every(
+
+    const result = Object.entries(question.conditions).every(
       ([questionIdStr, requiredAnswer]) => {
-        console.log("Checking conditions for question", questionIdStr);
-        console.log("Required answer", requiredAnswer);
-
         const questionId = Number(questionIdStr) as QuestionId;
-        const answers: AnswerType<QuestionId>[] | undefined = this.answers[questionId];
-        console.log("Answers", answers);
+        const answers = this.answers[questionId];
 
-        console.log("Returning...", answers?.includes(requiredAnswer));
-        return answers?.includes(requiredAnswer);
+        if (!answers || answers.length === 0) {
+          return false;
+        }
+
+        return answers.includes(requiredAnswer as never);
       },
     );
+
+    console.log("Checking conditions for question:", {
+      questionId: question.id,
+      conditions: question.conditions,
+      answers: this.answers,
+      result,
+    });
+
+    return result;
   }
 
   private findNextValidQuestionIndex(
     startIndex: number,
     answers: Partial<Answers>,
   ): number | null {
+    console.log("Finding next valid index:", {
+      startIndex,
+      dataLength: this.data.length,
+    });
+
     if (startIndex >= this.data.length) {
       return null;
     }
 
     for (let i = startIndex; i < this.data.length; i++) {
-      if (this.checkConditions(this.data[i])) {
+      const question = this.data[i];
+      const conditionsMet = this.checkConditions(question);
+
+      console.log("Checking question:", {
+        index: i,
+        questionId: question.id,
+        conditionsMet,
+      });
+
+      if (conditionsMet) {
         return i;
       }
     }
+
     return null;
   }
 
@@ -154,7 +268,8 @@ export class QuestionnaireEngine {
     answers: Partial<Answers>,
   ): number | null {
     for (let i = startIndex; i >= 0; i--) {
-      if (this.checkConditions(this.data[i])) {
+      const question = this.data[i];
+      if (this.checkConditions(question)) {
         return i;
       }
     }

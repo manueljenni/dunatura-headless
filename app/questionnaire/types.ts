@@ -346,6 +346,87 @@ export const questionnaireData = [
       7: "female",
     },
   },
+  {
+    id: 9,
+    text: "Das Leben ist nicht jeden Tag gleich. Stress kommt und geht. Wie fühlst du dich? (in den letzten 1 - 2 Wochen)",
+    type: QuestionType.Select,
+    maxSteps: 1,
+    answers: [
+      {
+        value: { text: "Entspannt und ausgeglichen", value: "normal" },
+        scores: {},
+      },
+      {
+        value: { text: "Leicht angespannt", value: "light_stress" },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 2,
+          [vitamins.VIT_D3_K2.id]: 2,
+          [vitamins.MAGNESIUM.id]: 2,
+          [vitamins.VIT_B12_KOMPLEX.id]: 2,
+        },
+      },
+      {
+        value: { text: "Häufig gestresst", value: "medium_stress" },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 4,
+          [vitamins.ASHWAGANDHA.id]: 4,
+          [vitamins.COENZYM_Q10.id]: 2,
+          [vitamins.VIT_D3_K2.id]: 4,
+          [vitamins.MAGNESIUM.id]: 4,
+          [vitamins.VIT_B12_KOMPLEX.id]: 4,
+          [vitamins.VIT_C.id]: 2,
+        },
+      },
+      {
+        value: { text: "Im Dauerstress", value: "heavy_stress" },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 6,
+          [vitamins.ASHWAGANDHA.id]: 8,
+          [vitamins.COENZYM_Q10.id]: 4,
+          [vitamins.VIT_D3_K2.id]: 6,
+          [vitamins.MAGNESIUM.id]: 6,
+          [vitamins.VIT_B12_KOMPLEX.id]: 6,
+          [vitamins.VIT_C.id]: 4,
+        },
+      },
+    ],
+  },
+  {
+    id: 10,
+    text: "Alles klar. Und wie ist dein Schlaf?",
+    type: QuestionType.Select,
+    maxSteps: 1,
+    answers: [
+      {
+        value: {
+          text: "Prima! Ich schlafe super ein. Morgens stehe ich erholt auf.",
+          value: "normal",
+        },
+        scores: {},
+      },
+      {
+        value: {
+          text: "OK. Bis auf wenige Ausnahmen schlafe ich gut.",
+          value: "light_issues",
+        },
+        scores: {},
+      },
+      {
+        value: {
+          text: "Nicht so gut. Ich schlafe schlecht ein oder wache nachts auf.",
+          value: "medium_issues",
+        },
+        scores: {},
+      },
+      {
+        value: {
+          text: "Schlaf? Schön wäre es. Das klappt aktuell fast nie.",
+          value: "strong_issues",
+        },
+        scores: {},
+      },
+    ],
+  },
 ] as const;
 
 // Vitamin-related types
@@ -393,12 +474,12 @@ export interface QuestionProps<T extends QuestionId> {
 
 export interface HistoryItem<T extends QuestionId> {
   question: Question<T>;
-  answers: AnswerType<T>[];
+  answers: AnswerType<QuestionId>[];
 }
 
 export interface QuestionnaireState<T extends QuestionId> {
   currentQuestionIndex: number;
-  history: HistoryItem<T>[];
+  history: { [K in QuestionId]?: HistoryItem<T>[] }; // HistoryItem<T>[];
   direction: "forward" | "backward";
   isAnimating: boolean;
 }
