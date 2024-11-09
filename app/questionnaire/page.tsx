@@ -4,6 +4,7 @@ import QuestionnaireComplete from "@/components/custom/questionnaire/Questionnai
 import { AnimatePresence, motion } from "framer-motion";
 import router from "next/router";
 import { useCallback, useMemo, useState } from "react";
+import { AnimationContext } from "./animationContext";
 import { QuestionRenderer } from "./components/QuestionRenderer";
 import { useQuestionAnimation } from "./hooks/useQuestionAnimation";
 import { QuestionnaireEngine } from "./questionnaireEngine";
@@ -51,6 +52,8 @@ export default function Questionnaire() {
   }, []);
 
   const handleBack = useCallback(() => {
+    setDirection("backward");
+
     if (isComplete) {
       setIsComplete(false);
       const lastQuestion = engine.goBack();
@@ -60,7 +63,6 @@ export default function Questionnaire() {
       return;
     }
 
-    setDirection("backward");
     const previousQuestion = engine.goBack();
     if (previousQuestion) {
       setCurrentQuestionId(previousQuestion.id);
@@ -73,42 +75,50 @@ export default function Questionnaire() {
 
   return (
     <div className="h-screen w-full overflow-hidden relative flex justify-center items-center z-[1000]">
-      <AnimatePresence initial={false} mode="sync" custom={direction}>
-        {isComplete ? (
-          <motion.div
-            key="complete"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ type: "tween", duration: 0.3 }}
-            className="absolute w-full">
-            <QuestionnaireComplete
-              scores={engine.calculateFinalScores()}
-              onBack={handleBack}
-              name={engine.getName()}
-            />
-          </motion.div>
-        ) : currentQuestion ? (
-          <motion.div
-            key={currentQuestion.id}
-            custom={direction}
-            variants={pageVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={pageTransition}
-            className="absolute w-full h-full top-0">
-            <QuestionRenderer
-              question={currentQuestion}
-              onAnswer={handleAnswer}
-              onNameAnswer={handleName}
-              initialAnswers={history[currentQuestion.id]?.answers ?? []}
-              onBack={handleBack}
-              name={engine.getName()}
-            />
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <AnimationContext.Provider
+        value={{
+          isAnimating: false,
+          setIsAnimating: () => {},
+        }}>
+        <AnimatePresence initial={false} mode="sync" custom={direction}>
+          {isComplete ? (
+            <motion.div
+              key="complete"
+              custom={direction}
+              variants={pageVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={pageTransition}
+              className="absolute w-full">
+              <QuestionnaireComplete
+                scores={engine.calculateFinalScores()}
+                onBack={handleBack}
+                name={engine.getName()}
+              />
+            </motion.div>
+          ) : currentQuestion ? (
+            <motion.div
+              key={currentQuestion.id}
+              custom={direction}
+              variants={pageVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={pageTransition}
+              className="absolute w-full h-full top-0">
+              <QuestionRenderer
+                question={currentQuestion}
+                onAnswer={handleAnswer}
+                onNameAnswer={handleName}
+                initialAnswers={history[currentQuestion.id]?.answers ?? []}
+                onBack={handleBack}
+                name={engine.getName()}
+              />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </AnimationContext.Provider>
 
       {process.env.NODE_ENV === "development" && (
         <div className="absolute top-0 right-0 p-4 bg-neutral-200 rounded-lg max-w-[400px] overflow-scroll h-full max-h-screen">
