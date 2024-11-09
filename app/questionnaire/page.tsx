@@ -120,7 +120,7 @@ export default function Questionnaire() {
         </AnimatePresence>
       </AnimationContext.Provider>
 
-      {process.env.NODE_ENV === "development" && (
+      {/* {process.env.NODE_ENV === "development" && (
         <div className="absolute top-0 right-0 p-4 bg-neutral-200 rounded-lg max-w-[400px] overflow-scroll h-full max-h-screen">
           <p>
             <b>Current index</b>: {engine.getCurrentIndex()}
@@ -138,7 +138,7 @@ export default function Questionnaire() {
             <b>History</b>: <pre>{JSON.stringify(history, null, 2)}</pre>
           </p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
