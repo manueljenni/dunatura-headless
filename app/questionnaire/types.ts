@@ -427,42 +427,6 @@ export const questionnaireData = [
       },
     ],
   },
-  {
-    id: 11,
-    text: "Wie ist deine Ernährung?",
-    type: QuestionType.Select,
-    maxSteps: 1,
-    answers: [
-      {
-        value: {
-          text: "Prima! Ich schlafe super ein. Morgens stehe ich erholt auf.",
-          value: "normal",
-        },
-        scores: {},
-      },
-      {
-        value: {
-          text: "OK. Bis auf wenige Ausnahmen schlafe ich gut.",
-          value: "light_issues",
-        },
-        scores: {},
-      },
-      {
-        value: {
-          text: "Nicht so gut. Ich schlafe schlecht ein oder wache nachts auf.",
-          value: "medium_issues",
-        },
-        scores: {},
-      },
-      {
-        value: {
-          text: "Schlaf? Schön wäre es. Das klappt aktuell fast nie.",
-          value: "strong_issues",
-        },
-        scores: {},
-      },
-    ],
-  },
 ] as const;
 
 // Vitamin-related types
