@@ -1,6 +1,8 @@
 "use client";
 
 import QuestionnaireComplete from "@/components/custom/questionnaire/QuestionnaireComplete";
+import { Button } from "@/components/primitives/button";
+import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import router from "next/router";
 import { useCallback, useMemo, useState } from "react";
@@ -73,8 +75,35 @@ export default function Questionnaire() {
 
   const { pageVariants, pageTransition } = useQuestionAnimation();
 
+  const progress = useMemo(() => {
+    const currentIndex = engine.getCurrentIndex();
+    const totalQuestions = engine.getTotalQuestions();
+    return Math.round(((currentIndex + 1) / totalQuestions) * 100);
+  }, [currentQuestionId]);
+
   return (
     <div className="h-screen w-full overflow-hidden relative flex justify-center items-center z-[1000]">
+      <div className="absolute top-0 left-0 right-0 md:max-w-2xl mx-auto h-[50px] space-y-2">
+        <div className="flex items-center justify-between py-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleBack}
+            className="w-8 h-8 border rounded-full">
+            <ArrowLeftIcon className="w-4 h-4 text-primary font-medium" />
+          </Button>
+          <h1 className="text-lg font-medium text-primary">Health goals</h1>
+          <span className="text-lg text-neutral-400 font-medium">
+            {engine.getCurrentIndex() + 1} of {engine.getTotalQuestions()}
+          </span>
+        </div>
+        <div className="w-full h-1.5 bg-primary/10 rounded-full">
+          <div
+            className="h-full bg-primary transition-all duration-300 rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
       <AnimationContext.Provider
         value={{
           isAnimating: false,
@@ -106,7 +135,7 @@ export default function Questionnaire() {
               animate="center"
               exit="exit"
               transition={pageTransition}
-              className="absolute w-full h-full top-0">
+              className="absolute w-full h-full top-0 mt-[60px]">
               <QuestionRenderer
                 question={currentQuestion}
                 onAnswer={handleAnswer}

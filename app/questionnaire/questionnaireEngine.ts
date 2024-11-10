@@ -289,4 +289,8 @@ export class QuestionnaireEngine {
     }
     return null;
   }
+
+  getTotalQuestions(): number {
+    return this.data.length;
+  }
 }
