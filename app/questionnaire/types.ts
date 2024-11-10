@@ -409,23 +409,310 @@ export const questionnaireData = [
           text: "OK. Bis auf wenige Ausnahmen schlafe ich gut.",
           value: "light_issues",
         },
-        scores: {},
+        scores: {
+          [vitamins.SELEN.id]: 1,
+          [vitamins.VIT_D3_K2.id]: 1,
+          [vitamins.MAGNESIUM.id]: 3,
+          [vitamins.VIT_B12_KOMPLEX.id]: 1,
+        },
       },
       {
         value: {
           text: "Nicht so gut. Ich schlafe schlecht ein oder wache nachts auf.",
           value: "medium_issues",
         },
-        scores: {},
+        scores: {
+          [vitamins.ASHWAGANDHA.id]: 2,
+          [vitamins.SELEN.id]: 2,
+          [vitamins.VIT_D3_K2.id]: 3,
+          [vitamins.MAGNESIUM.id]: 5,
+          [vitamins.VIT_B12_KOMPLEX.id]: 3,
+        },
       },
       {
         value: {
           text: "Schlaf? Schön wäre es. Das klappt aktuell fast nie.",
           value: "strong_issues",
         },
-        scores: {},
+        scores: {
+          [vitamins.ASHWAGANDHA.id]: 4,
+          [vitamins.COENZYM_Q10.id]: 3,
+          [vitamins.SELEN.id]: 3,
+          [vitamins.VIT_D3_K2.id]: 5,
+          [vitamins.MAGNESIUM.id]: 10,
+          [vitamins.VIT_B12_KOMPLEX.id]: 5,
+        },
       },
     ],
+  },
+  {
+    id: 11,
+    text: "Wie steht es bei dir um Kraft und Energie?",
+    type: QuestionType.Select,
+    maxSteps: 1,
+    answers: [
+      {
+        value: {
+          text: "Optimal. Genau wie es sein sollte.",
+          value: "normal",
+        },
+        scores: {},
+      },
+      {
+        value: {
+          text: "Grundsätzlich habe ich ganz gut Energie, bis auf wenige Ausnahmen.",
+          value: "light_issues",
+        },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 2,
+          [vitamins.COENZYM_Q10.id]: 3,
+          [vitamins.SELEN.id]: 3,
+          [vitamins.EISEN_VIT_C.id]: 2,
+          [vitamins.VIT_D3_K2.id]: 3,
+          [vitamins.ZINK.id]: 1,
+          [vitamins.VIT_B12_KOMPLEX.id]: 3,
+        },
+      },
+      {
+        value: {
+          text: "Meistens fühle ich mich eher schlapp. Es gibt aber auch gute Tage.",
+          value: "medium_issues",
+        },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 4,
+          [vitamins.COENZYM_Q10.id]: 7,
+          [vitamins.SELEN.id]: 6,
+          [vitamins.EISEN_VIT_C.id]: 4,
+          [vitamins.VIT_D3_K2.id]: 6,
+          [vitamins.ZINK.id]: 2,
+          [vitamins.VIT_B12_KOMPLEX.id]: 6,
+        },
+      },
+      {
+        value: {
+          text: "Mein Akkus sind komplett leer und ich erhole mich nicht richtig.",
+          value: "strong_issues",
+        },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 6,
+          [vitamins.COENZYM_Q10.id]: 10,
+          [vitamins.SELEN.id]: 10,
+          [vitamins.EISEN_VIT_C.id]: 6,
+          [vitamins.VIT_D3_K2.id]: 10,
+          [vitamins.ZINK.id]: 3,
+          [vitamins.VIT_B12_KOMPLEX.id]: 10,
+        },
+      },
+    ],
+  },
+  {
+    id: 12,
+    text: "Wie oft treibst du Sport?",
+    type: QuestionType.Select,
+    maxSteps: 1,
+    answers: [
+      {
+        value: {
+          text: "Gar nicht, oder das ist lange her.",
+          value: "never",
+        },
+        scores: {},
+      },
+      {
+        value: {
+          text: "Etwa 1x pro Woche - gelegentlich.",
+          value: "1x_week",
+        },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 2,
+          [vitamins.OPC_TRAUBENKERNEXTKRAKT.id]: 2,
+          [vitamins.COENZYM_Q10.id]: 2,
+          [vitamins.MSM.id]: 2,
+          [vitamins.KALIUM.id]: 3,
+          [vitamins.L_ARGININ.id]: 2,
+          [vitamins.HYALURONSAURE.id]: 2,
+          [vitamins.OMEGA_3.id]: 2,
+          [vitamins.SELEN.id]: 2,
+          [vitamins.EISEN_VIT_C.id]: 2,
+          [vitamins.VIT_D3_K2.id]: 2,
+          [vitamins.MAGNESIUM.id]: 99,
+          [vitamins.ZINK.id]: 2,
+          [vitamins.VIT_B12_KOMPLEX.id]: 2,
+          [vitamins.VIT_C.id]: 2,
+        },
+      },
+      {
+        value: {
+          text: "2-3x pro Woche - regelmäßig.",
+          value: "2_3x_week",
+        },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 4,
+          [vitamins.OPC_TRAUBENKERNEXTKRAKT.id]: 4,
+          [vitamins.ASHWAGANDHA.id]: 4,
+          [vitamins.COENZYM_Q10.id]: 4,
+          [vitamins.MSM.id]: 4,
+          [vitamins.KALIUM.id]: 5,
+          [vitamins.L_ARGININ.id]: 4,
+          [vitamins.HYALURONSAURE.id]: 4,
+          [vitamins.OMEGA_3.id]: 4,
+          [vitamins.SELEN.id]: 4,
+          [vitamins.EISEN_VIT_C.id]: 4,
+          [vitamins.VIT_D3_K2.id]: 99,
+          [vitamins.MAGNESIUM.id]: 99,
+          [vitamins.ZINK.id]: 4,
+          [vitamins.VIT_B12_KOMPLEX.id]: 4,
+          [vitamins.VIT_C.id]: 4,
+        },
+      },
+      {
+        value: {
+          text: "Fast täglich.",
+          value: "daily",
+        },
+        scores: {
+          [vitamins.KURKUMA_EXTRACT.id]: 6,
+          [vitamins.OPC_TRAUBENKERNEXTKRAKT.id]: 6,
+          [vitamins.ASHWAGANDHA.id]: 6,
+          [vitamins.COENZYM_Q10.id]: 6,
+          [vitamins.MSM.id]: 6,
+          [vitamins.KALIUM.id]: 8,
+          [vitamins.L_ARGININ.id]: 6,
+          [vitamins.HYALURONSAURE.id]: 6,
+          [vitamins.OMEGA_3.id]: 6,
+          [vitamins.SELEN.id]: 6,
+          [vitamins.EISEN_VIT_C.id]: 6,
+          [vitamins.VIT_D3_K2.id]: 99,
+          [vitamins.MAGNESIUM.id]: 99,
+          [vitamins.ZINK.id]: 6,
+          [vitamins.VIT_B12_KOMPLEX.id]: 6,
+          [vitamins.VIT_C.id]: 6,
+        },
+      },
+    ],
+  },
+  {
+    id: 13,
+    text: "Was ist Sport für dich?",
+    type: QuestionType.Select,
+    maxSteps: 1,
+    answers: [
+      {
+        value: {
+          text: "Unnötig und zeitraubend.",
+          value: "unnecessary",
+        },
+        scores: {
+          [vitamins.VIT_D3_K2.id]: 1,
+          [vitamins.ZINK.id]: 1,
+          [vitamins.VIT_B12_KOMPLEX.id]: 1,
+        },
+      },
+      {
+        value: {
+          text: "Netter Zeitvertrieb - ohne Priorität.",
+          value: "time_spender",
+        },
+        scores: {
+          [vitamins.KALIUM.id]: 2,
+          [vitamins.OMEGA_3.id]: 2,
+          [vitamins.VIT_D3_K2.id]: 1,
+          [vitamins.MAGNESIUM.id]: 99,
+          [vitamins.ZINK.id]: 1,
+          [vitamins.VIT_B12_KOMPLEX.id]: 1,
+        },
+      },
+      {
+        value: {
+          text: "Sport ist fester Bestandteil meines Lebens.",
+          value: "important",
+        },
+        scores: {
+          [vitamins.KALIUM.id]: 4,
+          [vitamins.OMEGA_3.id]: 4,
+          [vitamins.VIT_D3_K2.id]: 99,
+          [vitamins.MAGNESIUM.id]: 99,
+          [vitamins.ZINK.id]: 2,
+          [vitamins.VIT_B12_KOMPLEX.id]: 2,
+        },
+      },
+      {
+        value: {
+          text: "Das Wichtigste für mich, ich habe sehr ambitionierte Ziele.",
+          value: "ambitious",
+        },
+        scores: {
+          [vitamins.KALIUM.id]: 6,
+          [vitamins.OMEGA_3.id]: 6,
+          [vitamins.VIT_D3_K2.id]: 99,
+          [vitamins.MAGNESIUM.id]: 99,
+          [vitamins.ZINK.id]: 3,
+          [vitamins.VIT_B12_KOMPLEX.id]: 3,
+        },
+      },
+    ],
+    conditions: {},
+  },
+  {
+    id: 14,
+    text: "Rauchst du oder konsumierst du Produkte mit Nikotin?",
+    type: QuestionType.Select,
+    maxSteps: 1,
+    answers: [
+      {
+        value: {
+          text: "Niemals.",
+          value: "never",
+        },
+        scores: {},
+      },
+      {
+        value: {
+          text: "Gelegentlich.",
+          value: "occasional",
+        },
+        scores: {
+          [vitamins.OPC_TRAUBENKERNEXTKRAKT.id]: 2,
+          [vitamins.COENZYM_Q10.id]: 1,
+          [vitamins.OMEGA_3.id]: 1,
+          [vitamins.VIT_D3_K2.id]: 1,
+          [vitamins.ZINK.id]: 2,
+          [vitamins.VIT_B12_KOMPLEX.id]: 2,
+          [vitamins.VIT_C.id]: 4,
+        },
+      },
+      {
+        value: {
+          text: "Täglich, aber weniger als 10 Zigaretten.",
+          value: "daily_less_than_10",
+        },
+        scores: {
+          [vitamins.OPC_TRAUBENKERNEXTKRAKT.id]: 4,
+          [vitamins.COENZYM_Q10.id]: 2,
+          [vitamins.OMEGA_3.id]: 2,
+          [vitamins.VIT_D3_K2.id]: 2,
+          [vitamins.ZINK.id]: 4,
+          [vitamins.VIT_B12_KOMPLEX.id]: 4,
+          [vitamins.VIT_C.id]: 6,
+        },
+      },
+      {
+        value: {
+          text: "Ich rauche mehr als 10 Zigaretten täglich.",
+          value: "daily_more_than_10",
+        },
+        scores: {
+          [vitamins.OPC_TRAUBENKERNEXTKRAKT.id]: 6,
+          [vitamins.COENZYM_Q10.id]: 3,
+          [vitamins.OMEGA_3.id]: 3,
+          [vitamins.VIT_D3_K2.id]: 3,
+          [vitamins.ZINK.id]: 6,
+          [vitamins.VIT_B12_KOMPLEX.id]: 6,
+          [vitamins.VIT_C.id]: 10,
+        },
+      },
+    ],
+    conditions: {},
   },
 ] as const;
 
