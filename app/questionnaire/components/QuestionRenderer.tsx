@@ -13,6 +13,7 @@ interface QuestionRendererProps<T extends QuestionId> {
   initialAnswers: AnswerType<T>[];
   onBack: () => void;
   name?: string;
+  isLastQuestion?: boolean;
 }
 
 export const QuestionRenderer: FC<QuestionRendererProps<QuestionId>> = ({
@@ -22,12 +23,14 @@ export const QuestionRenderer: FC<QuestionRendererProps<QuestionId>> = ({
   initialAnswers,
   onBack,
   name,
+  isLastQuestion,
 }) => {
   const commonProps = {
     question,
     onAnswer,
     initialAnswers,
     onBack,
+    isLastQuestion,
   };
 
   switch (question.type) {

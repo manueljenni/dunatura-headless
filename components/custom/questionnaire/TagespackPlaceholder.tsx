@@ -7,6 +7,7 @@ import QuestionContainer from "./Question";
 export default function TagespackPlaceholder(props: {
   question: Question<QuestionId>;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
+  isLastQuestion?: boolean;
 }) {
   useKeyboardNavigation({
     onNext: () => props.onAnswer(props.question.id, []),
@@ -30,6 +31,7 @@ export default function TagespackPlaceholder(props: {
           question={props.question}
           showSubmitButton
           onSubmit={() => props.onAnswer(props.question.id, [])}
+          isLastQuestion={props.isLastQuestion}
         />
       </div>
     </div>

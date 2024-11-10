@@ -10,6 +10,7 @@ import QuestionContainer from "./Question";
 export default function EffectsAfterFirstMonth(props: {
   question: Question<QuestionId>;
   onAnswer: <T extends QuestionId>(questionId: T, answers: AnswerType<T>[]) => void;
+  isLastQuestion?: boolean;
 }) {
   useKeyboardNavigation({
     onNext: () => props.onAnswer(props.question.id, []),
@@ -39,6 +40,7 @@ export default function EffectsAfterFirstMonth(props: {
     <QuestionContainer
       question={props.question}
       showSubmitButton={true}
+      isLastQuestion={props.isLastQuestion}
       onSubmit={() => {
         props.onAnswer(props.question.id, []);
       }}

@@ -14,6 +14,7 @@ type NameInputProps = {
   onBack: () => void;
   name: string;
   initialAnswers: string[];
+  isLastQuestion?: boolean;
 };
 
 export default function NameInput({
@@ -22,6 +23,7 @@ export default function NameInput({
   onBack,
   name,
   initialAnswers,
+  isLastQuestion,
 }: NameInputProps) {
   const [inputValue, setInputValue] = useState(initialAnswers[0] || name);
 
@@ -39,7 +41,8 @@ export default function NameInput({
       <QuestionContainer
         question={question}
         showSubmitButton
-        onSubmit={() => onAnswer(inputValue)}>
+        onSubmit={() => onAnswer(inputValue)}
+        isLastQuestion={isLastQuestion}>
         <div className="relative w-[350px] h-[350px] mx-auto">
           <Image
             src={tagespack}

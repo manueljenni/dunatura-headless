@@ -10,6 +10,7 @@ export default function QuestionContainer(props: {
   showBackButton?: boolean;
   onBack?: () => void;
   children?: React.ReactNode;
+  isLastQuestion?: boolean;
 }) {
   const replaceVariables = (str: string) => {
     return str.replace(/\$\{(\w+)\}/g, (_, key) => props.variables?.[key] || `[${key}]`);
@@ -42,7 +43,7 @@ export default function QuestionContainer(props: {
                 size={"pill-lg"}
                 onClick={props.onSubmit}
                 disabled={props.isSubmitDisabled}>
-                Weiter
+                {props.isLastQuestion ? "Fertig" : "Weiter"}
               </Button>
             )}
             {props.showBackButton && (

@@ -10,6 +10,7 @@ type SelectQuestionProps = {
   onBack: () => void;
   variables?: Record<string, string>;
   initialAnswers: AnswerType<QuestionId>[];
+  isLastQuestion?: boolean;
 };
 
 export default function SelectQuestion({
@@ -18,6 +19,7 @@ export default function SelectQuestion({
   onBack,
   variables = {},
   initialAnswers,
+  isLastQuestion,
 }: SelectQuestionProps) {
   const { id, text, subtitle, answers, maxSteps } = question;
   const [selectedAnswers, setSelectedAnswers] =
@@ -79,7 +81,8 @@ export default function SelectQuestion({
       isSubmitDisabled={isSubmitDisabled}
       showSubmitButton={true}
       showBackButton={true}
-      onBack={onBack}>
+      onBack={onBack}
+      isLastQuestion={isLastQuestion}>
       <div className="space-y-2">
         {answers.map((answer) => (
           <button

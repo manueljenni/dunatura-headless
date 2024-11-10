@@ -293,4 +293,8 @@ export class QuestionnaireEngine {
   getTotalQuestions(): number {
     return this.data.length;
   }
+
+  isLastQuestion(): boolean {
+    return this.currentIndex == this.data.length - 1;
+  }
 }
