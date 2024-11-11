@@ -32,16 +32,12 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <Link href="/" className="hidden lg:inline-block">
             <Link href="/questionnaire">
-              <Button variant="pill" size={"pill-lg"}>
-                Jetzt Test starten
+              <Button asChild variant="pill" size={"pill-lg"}>
+                <a>Jetzt Test starten</a>
               </Button>
             </Link>
           </Link>
-          <MobileHeader
-            onToggle={(isOpen) =>
-              console.log("Mobile menu is", isOpen ? "open" : "closed")
-            }
-          />
+          <MobileHeader onToggle={() => {}} />
         </div>
       </nav>
     </div>

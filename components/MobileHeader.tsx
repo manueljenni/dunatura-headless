@@ -32,7 +32,7 @@ export default function MobileHeader({ onToggle }: MobileHeaderProps) {
   }, [onToggle]);
 
   return (
-    <>
+    <div>
       <button className="lg:hidden focus:outline-none" onClick={toggleMobileMenu}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -87,6 +87,6 @@ export default function MobileHeader({ onToggle }: MobileHeaderProps) {
           </nav>
         </div>
       </div>
-    </>
+    </div>
   );
 }
