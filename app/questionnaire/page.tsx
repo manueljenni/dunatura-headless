@@ -84,7 +84,7 @@ export default function Questionnaire() {
   return (
     <div className="h-screen w-full overflow-hidden relative flex justify-center items-center z-[1000]">
       {!isComplete && (
-        <div className="absolute top-0 left-0 right-0 md:max-w-2xl mx-auto h-[50px] space-y-2">
+        <div className="absolute top-0 left-0 right-0 md:max-w-2xl mx-auto h-[50px] space-y-2 px-4">
           <div className="flex items-center justify-between py-4">
             <Button
               variant="ghost"

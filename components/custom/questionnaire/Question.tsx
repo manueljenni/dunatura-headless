@@ -18,8 +18,8 @@ export default function QuestionContainer(props: {
 
   return (
     <div className="h-full flex items-start justify-center w-full">
-      <div className="md:max-w-2xl mx-auto w-full">
-        <div className="space-y-6 py-4 md:py-12">
+      <div className="md:max-w-2xl mx-auto w-full px-4">
+        <div className="space-y-6 py-12">
           <div className="space-y-1 mb-8">
             <h2 className="text-4xl text-primary font-semibold mb-4">
               {replaceVariables(props.question.text)}

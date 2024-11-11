@@ -88,6 +88,8 @@ export default function SelectQuestion({
           <button
             key={answer.value.value}
             onClick={() => handleSelect(answer.value.value as AnswerType<QuestionId>)}
+            tabIndex={0}
+            onFocus={(e) => e.target.blur()}
             className={`w-full px-4 py-3 text-left rounded-2xl border border-[#E2E9E2] font-medium ${
               isMultiSelect ? "flex justify-between items-center" : ""
             } ${
