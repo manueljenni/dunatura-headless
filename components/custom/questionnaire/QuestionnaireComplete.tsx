@@ -4,6 +4,7 @@ import { Button } from "@/components/primitives/button";
 import checkmark from "@/public/images/icons/checkmark-empty.svg";
 import { Bed, ChevronLeft, ChevronRight, Leaf } from 'lucide-react';
 import Image from "next/image";
+import { useEffect, useRef, useState } from 'react';
 import Goal from "./completed/Goal";
 
 type QuestionnaireCompleteProps = {
@@ -50,6 +51,22 @@ export default function QuestionnaireComplete({
     .sort((a, b) => b.value - a.value)
     .slice(0, 6);
 
+  const titleRef = useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    const calculateOffset = () => {
+      if (titleRef.current) {
+        const titleLeft = titleRef.current.getBoundingClientRect().left;
+        setOffset(titleLeft);
+      }
+    };
+
+    calculateOffset();
+    window.addEventListener('resize', calculateOffset);
+    return () => window.removeEventListener('resize', calculateOffset);
+  }, []);
+
   return (
     <div className="h-screen flex items-start justify-center w-full overflow-hidden">
       <div className="h-full px-4">
@@ -74,12 +91,13 @@ export default function QuestionnaireComplete({
 
         <div className="md:max-w-2xl mx-auto w-full">
           <div className="space-y-6">
-            <h1 className="text-3xl font-medium">What we recommend:</h1>
+            <h1 ref={titleRef} className="text-3xl font-medium">What we recommend:</h1>
           </div>
         </div>
         
-        <div className="relative w-screen">
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x mask-fade-right px-4 no-scrollbar">
+        <div className="relative w-screen -ml-4">
+          <div className="flex gap-4 overflow-x-auto pb-4 mask-fade-right px-4 no-scrollbar">
+            <div className="shrink-0" style={{ width: offset - 32 }} aria-hidden="true" />
             {scoresArray.map((vitamin) => {
               const vitaminKey = vitaminIdToKey[vitamin.id];
               if (vitaminKey) {
