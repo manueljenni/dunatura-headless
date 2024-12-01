@@ -159,3 +159,8 @@
   mask-image: linear-gradient(to right, black 85%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
 }
+
+.disabled-button {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

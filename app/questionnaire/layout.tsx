@@ -16,11 +16,11 @@ export default function layout({
           {
             backgroundImage: "url('/images/landing/landscape.png')",
             "--gradient-overlay":
-              "linear-gradient(to bottom, #FBFCF8 0%, rgba(251, 252, 248, 0.8) 60%, rgba(251, 252, 248, 0.8) 30%, transparent 100%)",
+              "linear-gradient(to bottom, #FBFCF8 0%, rgba(251, 252, 248, 0.8) 60%, rgba(251, 252, 248, 0.8) 30%, rgba(251, 252, 248, 0) 100%)",
           } as React.CSSProperties
         }>
         <div
-          className="absolute inset-0 h-4/5"
+          className="absolute inset-0 h-full"
           style={{ background: "var(--gradient-overlay)" }}></div>
       </div>
     </div>

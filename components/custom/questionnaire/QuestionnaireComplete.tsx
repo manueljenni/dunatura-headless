@@ -54,6 +54,7 @@ export default function QuestionnaireComplete({
 
   const titleRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState<number | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const calculateOffset = () => {
@@ -68,12 +69,37 @@ export default function QuestionnaireComplete({
     return () => window.removeEventListener('resize', calculateOffset);
   }, []);
 
+  const scrollToIndex = (index: number) => {
+    const container = document.querySelector('.pills-container');
+    const items = container?.querySelectorAll('.pill-item');
+    if (container && items && items[index]) {
+      container.scrollTo({
+        left: items[index].getBoundingClientRect().left - offset! + container.scrollLeft,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1);
+      scrollToIndex(currentIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentIndex < scoresArray.length - 1) {
+      setCurrentIndex(prev => prev + 1);
+      scrollToIndex(currentIndex + 1);
+    }
+  };
+
   return (
     <div className="h-full flex items-start justify-center w-full overflow-hidden">
       <div className="h-full px-4">
         <div className="md:max-w-2xl mx-auto w-full">
-          <div className="space-y-6 py-12">
-            <div className="space-y-2">
+          <div className="space-y-6 py-8">
+            <div>
               <h2 className="text-4xl text-primary font-semibold">
                 Hier ist deine Kombination, <br /> basierend auf deinen Zielen
               </h2>
@@ -89,24 +115,82 @@ export default function QuestionnaireComplete({
           </div>
         </div>
 
-        <div className="md:max-w-2xl mx-auto w-full mb-4">
-           <h1 ref={titleRef} className="text-3xl font-medium text-primary">Unsere Empfehlung für dich</h1>
+        <div className="md:max-w-2xl mx-auto w-full mb-4 flex items-center justify-between">
+          <h1 ref={titleRef} className="text-3xl font-medium text-primary">Unsere Empfehlung für dich</h1>
+          <div className="flex gap-2">
+            <button
+              onClick={handlePrevious}
+              disabled={currentIndex === 0}
+              className={`testimonial-nav ${currentIndex === 0 ? "disabled-button" : ""}`}
+            >
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 65 65"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="1"
+                  y="0.740967"
+                  width="63"
+                  height="63"
+                  rx="31.5"
+                  stroke="currentColor"
+                  className="text-[#D8DED9]"
+                />
+                <path
+                  d="M26.9353 30.9075L34.0873 23.7555L32.2017 21.8699L21.8307 32.2408L32.2017 42.6116L34.0873 40.726L26.9353 33.5742H43.1641V30.9075H26.9353Z"
+                  className="fill-primary"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={currentIndex === scoresArray.length - 1}
+              className={`testimonial-nav ${
+                currentIndex === scoresArray.length - 1 ? "disabled-button" : ""
+              }`}
+            >
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 65 65"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="1"
+                  y="0.740967"
+                  width="63"
+                  height="63"
+                  rx="31.5"
+                  stroke="currentColor"
+                  className="text-[#D8DED9]"
+                />
+                <path
+                  d="M38.0647 30.9075L30.9127 23.7555L32.7983 21.8699L43.1693 32.2408L32.7983 42.6116L30.9127 40.726L38.0647 33.5742H21.8359V30.9075H38.0647Z"
+                  className="fill-primary"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
         
         <div className="relative w-screen -ml-4">
           <div 
-            className={`flex gap-4 overflow-x-auto pb-4 px-4 no-scrollbar transition-opacity duration-500 ${
+            className={`pills-container flex gap-4 overflow-x-auto pb-4 px-4 no-scrollbar transition-opacity duration-500 ${
               offset === null ? 'opacity-0' : 'opacity-100'
             }`}
           >
             {offset !== null && (
               <>
                 <div className="shrink-0" style={{ width: offset - 32 }} aria-hidden="true" />
-                {scoresArray.map((vitamin) => {
+                {scoresArray.map((vitamin, index) => {
                   const vitaminKey = vitaminIdToKey[vitamin.id as VitaminId];
                   if (vitaminKey) {
                     return (
-                      <div className="w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border">
+                      <div key={vitamin.id} className="pill-item w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border">
                         <div className="space-y-4">
                          <div className="space-y-2">
                            <h2 className="text-2xl font-semibold text-primary">{vitamins[vitaminKey].name}</h2>
