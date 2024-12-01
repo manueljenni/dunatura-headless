@@ -2,9 +2,9 @@
 
 import { Answers, questionnaireData, VitaminId, vitaminIdToKey, vitamins } from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
+import Icon from "@/components/Icon";
 import { Button } from "@/components/primitives/button";
 import checkmark from "@/public/images/icons/checkmark-empty.svg";
-import { Bed, Leaf } from 'lucide-react';
 import Image from "next/image";
 import { useEffect, useRef, useState } from 'react';
 import Goal from "./completed/Goal";
@@ -45,7 +45,7 @@ export default function QuestionnaireComplete({
       return {
         id: Number(key),
         value: scores[key],
-        explanation: "Because you told us you have trouble sleeping, " + vitamins[vitaminKey].name + " will help you sleep better and have more energy for the next day."
+        explanation: "Weil du uns gesagt hast, dass du Schwierigkeiten beim Schlafen hast, wird " + vitamins[vitaminKey].name + " dir dabei helfen, besser zu schlafen und mehr Energie für den nächsten Tag zu haben."
       };
     })
     .filter((item): item is NonNullable<typeof item> => !!item)
@@ -111,14 +111,12 @@ export default function QuestionnaireComplete({
                          <div className="space-y-2">
                            <h2 className="text-2xl font-semibold text-primary">{vitamins[vitaminKey].name}</h2>
                           <div className="flex gap-4 font-medium text-primary">
-                            <div className="flex items-center gap-2">
-                              <Bed className="h-5 w-5" />
-                              <span>Better sleep</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Leaf className="h-5 w-5" />
-                              <span>Vegan</span>
-                            </div>
+                            {vitamins[vitaminKey].effects.map((effect, index) => (
+                              <div key={index} className="flex items-center gap-2">
+                                <Icon icon={effect.icon} color="#324033" size={20}  />
+                                <span>{effect.text}</span>
+                              </div>
+                            ))}
                           </div>
                          </div>
                           <div className="py-6">

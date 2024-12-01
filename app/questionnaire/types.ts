@@ -1,3 +1,15 @@
+import {
+  Activity,
+  Brain,
+  CircleUser,
+  Flower2,
+  Heart,
+  Layers,
+  Shield,
+  Sparkle,
+  User
+} from "lucide-react";
+
 // Enum
 export enum QuestionType {
   Select = "select",
@@ -18,6 +30,10 @@ export const vitamins = {
     headline: "Algenöl mit dem Baustein für Herzfunktion, Blutdruck und Gehirnfunktion.",
     shopifyId: "omega-3-fettsauren-vegan",
     color: "#00783b",
+    effects: [
+      { text: "Herzgesundheit", icon: Heart },
+      { text: "Gehirnfunktion", icon: Brain }
+    ],
   },
   HYALURONSAURE: {
     id: 10,
@@ -27,6 +43,10 @@ export const vitamins = {
     headline: "Bestandteil der Haut, des Bindegewebes und der Knorpel.",
     shopifyId: "hyaluronsaure",
     color: "#BD9AC8",
+    effects: [
+      { text: "Hautstraffung", icon: Sparkle },
+      { text: "Gelenke", icon: Activity }
+    ],
   },
   VIT_C: {
     id: 11,
@@ -36,16 +56,23 @@ export const vitamins = {
     headline: "Der Klassiker für das Immunsystem und die Kollagenbildung.",
     shopifyId: "vitamin-c",
     color: "#EA5D0B",
+    effects: [
+      { text: "Immunsystem", icon: Shield },
+      { text: "Kollagenbildung", icon: Flower2 }
+    ],
   },
   MSM: {
     id: 14,
     name: "MSM",
     subtitle: "500mg MSM",
     longTitle: "MSM - 500mg",
-    headline:
-      "Schwefel - Bestandteil von Haut, Haaren, Muskeln, Sehnen, Knorpel und Bindegewebe.",
+    headline: "Schwefel - Bestandteil von Haut, Haaren, Muskeln, Sehnen, Knorpel und Bindegewebe.",
     shopifyId: "msm",
     color: "#0166B3",
+    effects: [
+      { text: "Gelenke", icon: Activity },
+      { text: "Bindegewebe", icon: Layers }
+    ],
   },
   KALIUM: {
     id: 15,
@@ -55,6 +82,10 @@ export const vitamins = {
     headline: "Das Elektrolyt für Blutdruck, Nervensystem und Muskelfunktion.",
     shopifyId: "kalium",
     color: "#00B4E6",
+    effects: [
+      { text: "Bindegewebe", icon: Layers },
+      { text: "Muskeln", icon: Activity }
+    ],
   },
   L_ARGININ: {
     id: 16,
@@ -64,6 +95,10 @@ export const vitamins = {
     headline: "Der Eiweißbaustein für die Stickstoffmonoxid Produktion.",
     shopifyId: "l-arginin",
     color: "#008F9D",
+    effects: [
+      { text: "Gelenke", icon: Activity },
+      { text: "Bindegewebe", icon: Layers }
+    ],
   },
   MAGNESIUM: {
     id: 17,
@@ -73,6 +108,10 @@ export const vitamins = {
     headline: "Der schnell verfügbare Beitrag für deine Muskelfunktion.",
     shopifyId: "tri-magnesiumdicitrat",
     color: "#D1D8DC",
+    effects: [
+      { text: "Muskeln", icon: Activity },
+      { text: "Bindegewebe", icon: Layers }
+    ],
   },
   SELEN: {
     id: 18,
@@ -82,6 +121,10 @@ export const vitamins = {
     headline: "Das Spurenelement für Haut, Haare und die Schilddrüse.",
     shopifyId: "selen",
     color: "#D0CFE2",
+    effects: [
+      { text: "Haut", icon: User },
+      { text: "Haare", icon: CircleUser }
+    ],
   },
   EISEN_VIT_C: {
     id: 19,
@@ -91,6 +134,10 @@ export const vitamins = {
     headline: "Die Kombination für den Energiestoffwechsel.",
     shopifyId: "eisen-vitamin-c",
     color: "#F39973",
+    effects: [
+      { text: "Muskeln", icon: Activity },
+      { text: "Bindegewebe", icon: Layers }
+    ],
   },
   KURKUMA_EXTRACT: {
     id: 29,
@@ -100,6 +147,10 @@ export const vitamins = {
     headline: "Traditioneller Pflanzenstoff trifft Wissenschaft.",
     shopifyId: "kurkuma",
     color: "#FBB806",
+    effects: [
+      { text: "Haut", icon: User },
+      { text: "Gelenke", icon: Activity }
+    ],
   },
   OPC_TRAUBENKERNEXTKRAKT: {
     id: 30,
@@ -109,6 +160,10 @@ export const vitamins = {
     headline: "Das starke Antioxidans aus der Natur.",
     shopifyId: "opc-traubenkernextrakt",
     color: "#823C8A",
+    effects: [
+      { text: "Haut", icon: User },
+      { text: "Gelenke", icon: Activity }
+    ],
   },
   VIT_D3_K2: {
     id: 41,
@@ -118,6 +173,10 @@ export const vitamins = {
     headline: "Das Sonnenvitamin mit seinem Cofaktor.",
     shopifyId: "vitamin-d2k3",
     color: "#FBBE5C",
+    effects: [
+      { text: "Knochen", icon: Activity },
+      { text: "Muskeln", icon: Activity }
+    ],
   },
   COENZYM_Q10: {
     id: 44,
@@ -127,6 +186,10 @@ export const vitamins = {
     headline: "Bestandteil aller Zellen, besonders Lunge, Leber und Herz.",
     shopifyId: "q10",
     color: "#f4c245",
+    effects: [
+      { text: "Herzgesundheit", icon: Heart },
+      { text: "Muskeln", icon: Activity }
+    ],
   },
   ZINK: {
     id: 55,
@@ -136,6 +199,10 @@ export const vitamins = {
     headline: "Das Multitalent für Immunsystem, Haut, Haare und Fingernägel.",
     shopifyId: "zink",
     color: "#C4DAD1",
+    effects: [
+      { text: "Haut", icon: User },
+      { text: "Haare", icon: CircleUser }
+    ],
   },
   VIT_B12_KOMPLEX: {
     id: 56,
@@ -146,6 +213,10 @@ export const vitamins = {
       "Hochdosiertes Vitamin B12 und Folat - ergänzt mit den weiteren B-Vitaminen.",
     shopifyId: "vitamin-b12-folat",
     color: "#D53140",
+    effects: [
+      { text: "Muskeln", icon: Activity },
+      { text: "Gelenke", icon: Activity }
+    ],
   },
   ASHWAGANDHA: {
     id: 60,
@@ -155,6 +226,10 @@ export const vitamins = {
     headline: "Ashwaghanda",
     shopifyId: "ashwagandha",
     color: "#AECAE7",
+    effects: [
+      { text: "Haut", icon: User },
+      { text: "Gelenke", icon: Activity }
+    ],
   },
 } as const;
 
@@ -610,7 +685,7 @@ export const questionnaireData = [
       },
       {
         value: {
-          text: "Netter Zeitvertrieb - ohne Priorität.",
+          text: "Netter Zeitvertreib - ohne Priorität.",
           value: "time_spender",
         },
         scores: {
