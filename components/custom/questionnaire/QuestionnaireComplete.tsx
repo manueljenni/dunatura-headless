@@ -4,7 +4,7 @@ import { VitaminId, vitaminIdToKey, vitamins } from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { Button } from "@/components/primitives/button";
 import checkmark from "@/public/images/icons/checkmark-empty.svg";
-import { Bed, ChevronLeft, ChevronRight, Leaf } from 'lucide-react';
+import { Bed, Leaf } from 'lucide-react';
 import Image from "next/image";
 import { useEffect, useRef, useState } from 'react';
 import Goal from "./completed/Goal";
@@ -91,15 +91,13 @@ export default function QuestionnaireComplete({
           </div>
         </div>
 
-        <div className="md:max-w-2xl mx-auto w-full">
-          <div className="space-y-6">
-            <h1 ref={titleRef} className="text-3xl font-medium">What we recommend:</h1>
-          </div>
+        <div className="md:max-w-2xl mx-auto w-full mb-4">
+           <h1 ref={titleRef} className="text-3xl font-medium">Unsere Empfehlung:</h1>
         </div>
         
         <div className="relative w-screen -ml-4">
           <div 
-            className={`flex gap-4 overflow-x-auto pb-4 mask-fade-right px-4 no-scrollbar transition-opacity duration-500 ${
+            className={`flex gap-4 overflow-x-auto pb-4 px-4 no-scrollbar transition-opacity duration-500 ${
               offset === null ? 'opacity-0' : 'opacity-100'
             }`}
           >
@@ -110,7 +108,7 @@ export default function QuestionnaireComplete({
                   const vitaminKey = vitaminIdToKey[vitamin.id];
                   if (vitaminKey) {
                     return (
-                      <div className="w-[350px] shrink-0 snap-start rounded-2xl bg-white p-6 shadow">
+                      <div className="w-[350px] shrink-0 snap-start rounded-2xl bg-white p-6 border">
                         <div className="space-y-4">
                           <h2 className="text-2xl font-medium">{vitamins[vitaminKey].name}</h2>
                           <div className="flex gap-4">
@@ -147,14 +145,7 @@ export default function QuestionnaireComplete({
               </>
             )}
           </div>
-          <div className="absolute right-8 top-1/2 -translate-y-1/2 flex gap-2">
-            <button className="rounded-full bg-white p-4 shadow">
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-            <button className="rounded-full bg-white p-4 shadow">
-              <ChevronRight className="h-6 w-6" />
-            </button>
-          </div>
+        
         </div>
       </div>
     </div>
