@@ -6,11 +6,10 @@ export default function layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen w-screen flex flex-col relative">
-      {children}
-      {/* <main className="absolute inset-0 flex flex-col justify-center items-center z-10 w-full h-full">
-        
-      </main> */}
+    <div className="min-h-screen relative h-full">
+      <div className="relative z-10 w-full">
+        {children}
+      </div>
       <div
         className="absolute bottom-0 w-full h-[45%] bg-cover bg-center"
         style={
