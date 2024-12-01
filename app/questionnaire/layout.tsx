@@ -6,12 +6,12 @@ export default function layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="min-h-screen relative h-full">
-      <div className="relative z-10 w-full">
+    <div className="min-h-screen relative bg-[#FBFCF8]">
+      <div className="relative z-10 w-full overflow-y-auto">
         {children}
       </div>
       <div
-        className="absolute bottom-0 w-full h-[45%] bg-cover bg-center"
+        className="fixed bottom-0 left-0 w-full h-[45%] bg-cover bg-center"
         style={
           {
             backgroundImage: "url('/images/landing/landscape.png')",
