@@ -1,10 +1,9 @@
 "use client";
 
-import { Answers, questionnaireData, VitaminId, vitaminIdToKey, vitamins } from "@/app/questionnaire/types";
+import { Answers, healthGoalIcons, questionnaireData, VitaminId, vitaminIdToKey, vitamins } from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import Icon from "@/components/Icon";
 import { Button } from "@/components/primitives/button";
-import checkmark from "@/public/images/icons/checkmark-empty.svg";
 import Image from "next/image";
 import { useEffect, useRef, useState } from 'react';
 import Goal from "./completed/Goal";
@@ -12,6 +11,7 @@ import Goal from "./completed/Goal";
 type Goal = {
   text: string;
   value: string;
+  icon: typeof healthGoalIcons[keyof typeof healthGoalIcons];
 };
 
 type QuestionnaireCompleteProps = {
@@ -35,8 +35,11 @@ export default function QuestionnaireComplete({
     const goalAnswer = questionnaireData[1].answers.find(
       answer => answer.value.value === goalValue
     );
-    return goalAnswer?.value;
-  }).filter((goal): goal is typeof questionnaireData[1]['answers'][number]['value'] => !!goal);
+    return {
+      ...goalAnswer?.value,
+      icon: healthGoalIcons[goalValue as keyof typeof healthGoalIcons]
+    };
+  }).filter((goal): goal is (typeof questionnaireData[1]['answers'][number]['value'] & { icon: typeof healthGoalIcons[keyof typeof healthGoalIcons] }) => !!goal);
 
   const scoresArray = Object.keys(scores)
     .map((key) => {
@@ -103,10 +106,17 @@ export default function QuestionnaireComplete({
               <h2 className="text-4xl text-primary font-semibold">
                 Hier ist deine Kombination, <br /> basierend auf deinen Zielen
               </h2>
-              <div className="flex py-4 space-y-6 lg:space-y-0 lg:space-x-4 pb-8 flex-col lg:flex-row">
-                {goals?.map((goal, index) => (
-                  <Goal key={index} text={goal.text} image={checkmark} />
-                ))}
+              <div className="flex py-4 space-y-6 lg:space-y-0 pb-8 flex-col lg:flex-row">
+                {goals?.map((goal, index) => {
+                  const IconComponent = goal.icon;
+                  return (
+                    <Goal 
+                      key={index} 
+                      text={goal.text} 
+                      icon={<IconComponent className="w-6 h-6 text-primary" />} 
+                    />
+                  );
+                })}
               </div>
               <Button variant="pill" size="pill-xl">
                 Weiter

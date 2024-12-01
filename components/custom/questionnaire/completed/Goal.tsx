@@ -1,23 +1,14 @@
-import Image from "next/image";
 
-export default function Goal(props: { text: string; image: string }) {
+type GoalProps = {
+  text: string;
+  icon: React.ReactNode;
+};
+
+export default function Goal({ text, icon }: GoalProps) {
   return (
-    <div className="flex items-center min-w-[250px]">
-      <div className="relative flex-shrink-0 w-9 h-9 mr-4">
-        <div className="absolute inset-0 bg-[#EBEDE9] rounded-full" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Image
-            src={props.image}
-            alt="Checkmark"
-            className="w-4 h-4"
-            style={{
-              maxWidth: "100%",
-              height: "auto",
-            }}
-          />
-        </div>
-      </div>
-      <p className="text-lg text-primary font-medium">{props.text}</p>
+    <div className="flex items-center gap-2 bg-[#FBFCF8] rounded-full px-4 py-2 min-w-[250px]">
+      <span className="flex items-center justify-center mr-2">{icon}</span>
+      <span className="text-primary font-medium">{text}</span>
     </div>
   );
 }

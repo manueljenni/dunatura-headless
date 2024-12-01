@@ -2,12 +2,19 @@ import {
   Activity,
   Brain,
   CircleUser,
+  Dumbbell,
   Flower2,
+  Focus,
   Heart,
   Layers,
   Shield,
+  ShieldCheck,
+  ShieldPlus,
   Sparkle,
-  User
+  Sparkles,
+  Timer,
+  User,
+  Zap
 } from "lucide-react";
 
 // Enum
@@ -845,3 +852,15 @@ export interface QuestionnaireState<T extends QuestionId> {
   direction: "forward" | "backward";
   isAnimating: boolean;
 }
+
+export const healthGoalIcons = {
+  overall_health: ShieldCheck,
+  energy: Zap,
+  concentration: Focus,
+  performance: Dumbbell,
+  endurance: Timer,
+  beauty: Sparkles,
+  immunity: ShieldPlus,
+} as const;
+
+export type HealthGoal = keyof typeof healthGoalIcons;
