@@ -1,3 +1,5 @@
+"use client";
+
 import { VitaminId, vitaminIdToKey, vitamins } from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { Button } from "@/components/primitives/button";
@@ -52,7 +54,7 @@ export default function QuestionnaireComplete({
     .slice(0, 6);
 
   const titleRef = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
+  const [offset, setOffset] = useState<number | null>(null);
 
   useEffect(() => {
     const calculateOffset = () => {
@@ -96,46 +98,54 @@ export default function QuestionnaireComplete({
         </div>
         
         <div className="relative w-screen -ml-4">
-          <div className="flex gap-4 overflow-x-auto pb-4 mask-fade-right px-4 no-scrollbar">
-            <div className="shrink-0" style={{ width: offset - 32 }} aria-hidden="true" />
-            {scoresArray.map((vitamin) => {
-              const vitaminKey = vitaminIdToKey[vitamin.id];
-              if (vitaminKey) {
-                return (
-                  <div className="w-[350px] shrink-0 snap-start rounded-2xl bg-white p-6 shadow">
-                    <div className="space-y-4">
-                      <h2 className="text-2xl font-medium">{vitamins[vitaminKey].name}</h2>
-                      <div className="flex gap-4">
-                        <div className="flex items-center gap-2">
-                          <Bed className="h-5 w-5" />
-                          <span>Better sleep</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Leaf className="h-5 w-5" />
-                          <span>Vegan</span>
+          <div 
+            className={`flex gap-4 overflow-x-auto pb-4 mask-fade-right px-4 no-scrollbar transition-opacity duration-500 ${
+              offset === null ? 'opacity-0' : 'opacity-100'
+            }`}
+          >
+            {offset !== null && (
+              <>
+                <div className="shrink-0" style={{ width: offset - 32 }} aria-hidden="true" />
+                {scoresArray.map((vitamin) => {
+                  const vitaminKey = vitaminIdToKey[vitamin.id];
+                  if (vitaminKey) {
+                    return (
+                      <div className="w-[350px] shrink-0 snap-start rounded-2xl bg-white p-6 shadow">
+                        <div className="space-y-4">
+                          <h2 className="text-2xl font-medium">{vitamins[vitaminKey].name}</h2>
+                          <div className="flex gap-4">
+                            <div className="flex items-center gap-2">
+                              <Bed className="h-5 w-5" />
+                              <span>Better sleep</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Leaf className="h-5 w-5" />
+                              <span>Vegan</span>
+                            </div>
+                          </div>
+                          <div className="py-6">
+                            <div className="relative h-[100px] w-full">
+                            <Image
+                              src={`/images/pills/pill-vitc.png`}
+                              alt={vitamins[vitaminKey].name}
+                              fill
+                              className="object-contain"
+                            />
+                            </div>
+                          </div>
+                          <p className="text-gray-700">
+                            Because you told us you have trouble sleeping, {vitamins[vitaminKey].name} will help you sleep better and have more energy for the next day.
+                          </p>
+                          <button className="rounded-full bg-gray-200 px-6 py-2 font-medium">
+                            Details
+                          </button>
                         </div>
                       </div>
-                      <div className="py-6">
-                        <div className="relative h-[100px] w-full">
-                        <Image
-                          src={`/images/pills/pill-vitc.png`}
-                          alt={vitamins[vitaminKey].name}
-                          fill
-                          className="object-contain"
-                        />
-                        </div>
-                      </div>
-                      <p className="text-gray-700">
-                        Because you told us you have trouble sleeping, {vitamins[vitaminKey].name} will help you sleep better and have more energy for the next day.
-                      </p>
-                      <button className="rounded-full bg-gray-200 px-6 py-2 font-medium">
-                        Details
-                      </button>
-                    </div>
-                  </div>
-                );
-              }
-            })}
+                    );
+                  }
+                })}
+              </>
+            )}
           </div>
           <div className="absolute right-8 top-1/2 -translate-y-1/2 flex gap-2">
             <button className="rounded-full bg-white p-4 shadow">
