@@ -39,12 +39,16 @@ export default function QuestionnaireComplete({
   }).filter((goal): goal is typeof questionnaireData[1]['answers'][number]['value'] => !!goal);
 
   const scoresArray = Object.keys(scores)
-    .map((key: string) => {
+    .map((key) => {
+      const vitaminKey = vitaminIdToKey[Number(key) as VitaminId];
+      if (!vitaminKey) return null;
       return {
-        id: key as unknown as VitaminId,
+        id: Number(key),
         value: scores[key],
+        explanation: "Because you told us you have trouble sleeping, " + vitamins[vitaminKey].name + " will help you sleep better and have more energy for the next day."
       };
     })
+    .filter((item): item is NonNullable<typeof item> => !!item)
     .sort((a, b) => b.value - a.value)
     .slice(0, 6);
 
@@ -99,7 +103,7 @@ export default function QuestionnaireComplete({
               <>
                 <div className="shrink-0" style={{ width: offset - 32 }} aria-hidden="true" />
                 {scoresArray.map((vitamin) => {
-                  const vitaminKey = vitaminIdToKey[vitamin.id];
+                  const vitaminKey = vitaminIdToKey[vitamin.id as VitaminId];
                   if (vitaminKey) {
                     return (
                       <div className="w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border">
@@ -128,7 +132,7 @@ export default function QuestionnaireComplete({
                             </div>
                           </div>
                           <p className="text-primary font-medium">
-                            Because you told us you have trouble sleeping, {vitamins[vitaminKey].name} will help you sleep better and have more energy for the next day.
+                            {vitamin.explanation}
                           </p>
                           <button className="rounded-full bg-[#D8DED9] px-6 py-2 font-medium">
                             Details
