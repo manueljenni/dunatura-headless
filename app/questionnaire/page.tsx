@@ -124,6 +124,7 @@ export default function Questionnaire() {
               className="absolute w-full">
               <QuestionnaireComplete
                 scores={engine.calculateFinalScores()}
+                answers={engine.getAnswers()}
                 onBack={handleBack}
                 name={engine.getName()}
               />

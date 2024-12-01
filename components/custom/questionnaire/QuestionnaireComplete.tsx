@@ -1,6 +1,6 @@
 "use client";
 
-import { VitaminId, vitaminIdToKey, vitamins } from "@/app/questionnaire/types";
+import { Answers, questionnaireData, VitaminId, vitaminIdToKey, vitamins } from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import { Button } from "@/components/primitives/button";
 import checkmark from "@/public/images/icons/checkmark-empty.svg";
@@ -9,39 +9,34 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from 'react';
 import Goal from "./completed/Goal";
 
+type Goal = {
+  text: string;
+  value: string;
+};
+
 type QuestionnaireCompleteProps = {
   scores: Record<string, number>;
   onBack: () => void;
   name?: string;
+  answers: Answers;
 };
 
 export default function QuestionnaireComplete({
   scores,
   onBack,
   name,
+  answers,
 }: QuestionnaireCompleteProps) {
   useKeyboardNavigation({
     onBack: () => onBack(),
   });
 
-  scores = {
-    "8": 18,
-    "10": 10,
-    "11": 14,
-    "14": 4,
-    "15": 10,
-    "16": 9,
-    "17": 111,
-    "18": 6,
-    "19": 4,
-    "29": 6,
-    "30": 13,
-    "41": 120,
-    "44": 14,
-    "55": 22,
-    "56": 27,
-    "60": 6,
-  };
+  const goals = answers[2]?.map(goalValue => {
+    const goalAnswer = questionnaireData[1].answers.find(
+      answer => answer.value.value === goalValue
+    );
+    return goalAnswer?.value;
+  }).filter((goal): goal is typeof questionnaireData[1]['answers'][number]['value'] => !!goal);
 
   const scoresArray = Object.keys(scores)
     .map((key: string) => {
@@ -70,19 +65,18 @@ export default function QuestionnaireComplete({
   }, []);
 
   return (
-    <div className="h-screen flex items-start justify-center w-full overflow-hidden">
+    <div className="h-full flex items-start justify-center w-full overflow-hidden">
       <div className="h-full px-4">
         <div className="md:max-w-2xl mx-auto w-full">
           <div className="space-y-6 py-12">
             <div className="space-y-2">
               <h2 className="text-4xl text-primary font-semibold">
-                Hier ist deine individuelle Kombination <br /> basierend auf deinen Zielen
-                und Bedürfnissen
+                Hier ist deine Kombination, <br /> basierend auf deinen Zielen
               </h2>
-              <div className="flex py-4 space-x-4 pb-8">
-                <Goal text="Höherer Fokus" image={checkmark} />
-                <Goal text="Aktiver Lifestyle" image={checkmark} />
-                <Goal text="Bessere Performance" image={checkmark} />
+              <div className="flex py-4 space-y-6 lg:space-y-0 lg:space-x-4 pb-8 flex-col lg:flex-row">
+                {goals?.map((goal, index) => (
+                  <Goal key={index} text={goal.text} image={checkmark} />
+                ))}
               </div>
               <Button variant="pill" size="pill-xl">
                 Weiter
@@ -92,7 +86,7 @@ export default function QuestionnaireComplete({
         </div>
 
         <div className="md:max-w-2xl mx-auto w-full mb-4">
-           <h1 ref={titleRef} className="text-3xl font-medium">Unsere Empfehlung:</h1>
+           <h1 ref={titleRef} className="text-3xl font-medium text-primary">Unsere Empfehlung für dich</h1>
         </div>
         
         <div className="relative w-screen -ml-4">
@@ -108,10 +102,11 @@ export default function QuestionnaireComplete({
                   const vitaminKey = vitaminIdToKey[vitamin.id];
                   if (vitaminKey) {
                     return (
-                      <div className="w-[350px] shrink-0 snap-start rounded-2xl bg-white p-6 border">
+                      <div className="w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border">
                         <div className="space-y-4">
-                          <h2 className="text-2xl font-medium">{vitamins[vitaminKey].name}</h2>
-                          <div className="flex gap-4">
+                         <div className="space-y-2">
+                           <h2 className="text-2xl font-semibold text-primary">{vitamins[vitaminKey].name}</h2>
+                          <div className="flex gap-4 font-medium text-primary">
                             <div className="flex items-center gap-2">
                               <Bed className="h-5 w-5" />
                               <span>Better sleep</span>
@@ -121,20 +116,21 @@ export default function QuestionnaireComplete({
                               <span>Vegan</span>
                             </div>
                           </div>
+                         </div>
                           <div className="py-6">
                             <div className="relative h-[100px] w-full">
                             <Image
-                              src={`/images/pills/pill-vitc.png`}
+                              src={`/images/pills/pill-yellow.png`}
                               alt={vitamins[vitaminKey].name}
                               fill
                               className="object-contain"
                             />
                             </div>
                           </div>
-                          <p className="text-gray-700">
+                          <p className="text-primary font-medium">
                             Because you told us you have trouble sleeping, {vitamins[vitaminKey].name} will help you sleep better and have more energy for the next day.
                           </p>
-                          <button className="rounded-full bg-gray-200 px-6 py-2 font-medium">
+                          <button className="rounded-full bg-[#D8DED9] px-6 py-2 font-medium">
                             Details
                           </button>
                         </div>
@@ -145,7 +141,6 @@ export default function QuestionnaireComplete({
               </>
             )}
           </div>
-        
         </div>
       </div>
     </div>

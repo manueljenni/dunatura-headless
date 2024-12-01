@@ -7,7 +7,7 @@ export default function layout({
 }>) {
   return (
     <div className="min-h-screen relative bg-[#FBFCF8]">
-      <div className="relative z-10 w-full overflow-y-auto">
+      <div className="relative z-10 w-full overflow-y-scroll">
         {children}
       </div>
       <div
