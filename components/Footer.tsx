@@ -1,8 +1,14 @@
+"use client";
 import logoWhite from "@/public/images/logos/logo-white.svg";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isProductsRoute = pathname.startsWith("/products");
+  const bgColor = isProductsRoute ? "#F2F1E9" : "#fbfcf8";
+
   return (
     <div className="relative overflow-hidden">
       <div
@@ -14,6 +20,7 @@ export default function Footer() {
           right: 0,
           height: "70px",
           overflow: "hidden",
+          backgroundColor: bgColor,
         }}
         className="z-10">
         <div

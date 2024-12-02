@@ -2,13 +2,17 @@
 import logoBlack from "@/public/images/logos/logo-black.svg";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import MobileHeader from "./MobileHeader";
 import { Button } from "./primitives/button";
 
 export default function Header() {
+  const pathname = usePathname();
+  const isProductsRoute = pathname.startsWith("/products");
+
   return (
-    <div className="max-w-6xl mx-auto bg-lightBackground w-full">
-      <nav className="flex justify-between items-center px-4 py-4 h-18 font-medium">
+    <div className={`w-full ${isProductsRoute ? "bg-[#F2F1E9]" : "bg-lightBackground"}`}>
+      <nav className="flex justify-between items-center px-4 py-4 h-18 font-medium max-w-6xl mx-auto">
         <div className="flex items-center gap-6">
           <Link href="/">
             <Image
@@ -26,7 +30,6 @@ export default function Header() {
           <div className="hidden lg:flex items-center gap-6">
             <Link href="/">Jetzt konfigurieren</Link>
             <Link href="/products">Alle Produkte</Link>
-            {/* <Link href="/">Über uns</Link> */}
           </div>
         </div>
         <div className="flex items-center gap-4">

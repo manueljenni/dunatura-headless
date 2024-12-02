@@ -7,9 +7,9 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <section className="flex flex-col min-h-screen">
+    <section className="flex flex-col min-h-screen bg-lightBackground">
       <Header />
-      <main className="flex-1 flex flex-col justify-center items-center">{children}</main>
+      <main className="flex-1">{children}</main>
       <Footer />
     </section>
   );

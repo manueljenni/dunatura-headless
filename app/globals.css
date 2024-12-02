@@ -2,33 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .text-balance {
+@layer utilities
+{
+  .text-balance
+  {
     text-wrap: balance;
   }
-  .no-scrollbar::-webkit-scrollbar {
+
+  .no-scrollbar::-webkit-scrollbar
+  {
     display: none;
   }
-  .no-scrollbar {
+
+  .no-scrollbar
+  {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 }
 
-@layer base {
-  :root {
+@layer base
+{
+  :root
+  {
     --background: 120deg 12.2% 92%;
-    --light-background: 75deg 40% 98%; /* #F8FBF8 */
+    --light-background: 75deg 40% 98%;
+    /* #F8FBF8 */
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 120 13% 22.5%; /* #324132 */
+    --primary: 120 13% 22.5%;
+    /* #324132 */
     --primary-foreground: 0 0% 98%;
     --primary-background: 120 12.2% 92%;
     --selected-background: 120 12.2% 92%;
-    --secondary: 120 5.56% 35.3%; /* #2B382B */
+    --secondary: 120 5.56% 35.3%;
+    /* #2B382B */
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
@@ -46,7 +57,9 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
-  .dark {
+
+  .dark
+  {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -75,34 +88,42 @@
   }
 }
 
-@layer base {
-  * {
+@layer base
+{
+  *
+  {
     @apply border-border;
   }
-  body {
+
+  body
+  {
     @apply bg-lightBackground text-foreground;
   }
 }
 
-.scroll-container {
+.scroll-container
+{
   display: flex;
   overflow-x: hidden;
   white-space: nowrap;
   padding-bottom: 5rem;
 }
 
-.scroll-content {
+.scroll-content
+{
   display: flex;
   gap: 0.2rem;
   animation: scroll 5800s linear infinite;
 }
 
-.scroll-item {
+.scroll-item
+{
   flex-shrink: 0;
   width: 18rem;
 }
 
-#footer-overlay-content {
+#footer-overlay-content
+{
   width: 150%;
   height: 100%;
   background-color: hsl(var(--primary));
@@ -112,55 +133,70 @@
   right: 0;
   position: relative;
 }
-#footer-overlay-wrapper {
+
+#footer-overlay-wrapper
+{
   transform: translateY(70px);
   height: 100px;
-  background-color: #fbfcf8;
+  background-color: red;
   overflow: hidden;
 }
 
-@keyframes scroll {
-  0% {
+@keyframes scroll
+{
+  0%
+  {
     transform: translateX(0);
   }
-  100% {
+
+  100%
+  {
     transform: translateX(-50%);
   }
 }
 
-.animate-scroll {
+.animate-scroll
+{
   animation: scroll 30s linear infinite;
 }
 
-.no-scrollbar {
+.no-scrollbar
+{
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.slide-in {
+.slide-in
+{
   transform: translateX(0);
 }
 
-.slide-out {
+.slide-out
+{
   transform: translateX(-100%);
 }
 
-@keyframes swipe {
-  0% {
+@keyframes swipe
+{
+  0%
+  {
     transform: translate(0);
   }
 
-  100% {
+  100%
+  {
     transform: translate(-100%);
   }
 }
 
-.mask-fade-right {
+.mask-fade-right
+{
   mask-image: linear-gradient(to right, black 85%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
 }
 
-.disabled-button {
+.disabled-button
+{
   opacity: 0.5;
   cursor: not-allowed;
 }

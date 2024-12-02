@@ -1,6 +1,7 @@
 import { getAllProducts } from "@/api/fetch";
 import AddToCartButton from "@/components/custom/button/AddToCartButton";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function page() {
   const products = await getAllProducts();
@@ -12,7 +13,8 @@ export default async function page() {
       <h1 className="text-3xl font-bold mb-8">Our Products</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
-          <div
+          <Link href={`/products/${product.handle}`} key={product.id}>
+            <div
             key={product.id}
             className="bg-white rounded-lg p-6 shadow-md flex flex-col h-full">
             <div className="w-full aspect-square mb-4 flex items-center justify-center">
@@ -42,8 +44,9 @@ export default async function page() {
                 </span>
               </div>
               <AddToCartButton variantId={product.variants.edges[0]?.node.id} />
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </main>
