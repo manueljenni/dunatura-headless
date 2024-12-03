@@ -10,41 +10,42 @@ export default async function page() {
     <main
       className="flex min-h-screen flex-col items-center p-8 
     mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Our Products</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
-          <Link href={`/products/${product.handle}`} key={product.id}>
-            <div
-              key={product.id}
-              className="bg-white rounded-lg p-6 shadow-md flex flex-col h-full">
-              <div className="w-full aspect-square mb-4 flex items-center justify-center">
-                <Image
-                  src={
-                    product.metafield?.reference?.image?.originalSrc ||
-                    product.images.edges[0]?.node.originalSrc
-                  }
-                  alt={product.title}
-                  className="max-h-full max-w-full object-contain"
-                  width={400}
-                  height={400}
-                  style={{
-                    maxWidth: "100%",
-                    height: "auto",
-                  }}
-                />
+          <Link href={`/products/${product.handle}`} key={product.id} className="h-full">
+            <div className="w-[350px] h-full rounded-2xl bg-[#FBFCF8] p-6 border border-[#E5E9E6] hover:border-primary/20 transition-colors flex flex-col">
+              <div className="space-y-4">
+                <h2 className="text-lg font-semibold text-primary">{product.title}</h2>
+                <div className="relative h-[200px] w-full">
+                  <Image
+                    src={
+                      product.metafield?.reference?.image?.originalSrc ||
+                      product.images.edges[0]?.node.originalSrc
+                    }
+                    alt={product.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </div>
-              <h2 className="text-xl font-semibold mb-2 h-14 overflow-hidden">
-                {product.title}
-              </h2>
-              <p className="text-sm text-gray-600 mb-2">28 Beutel = 4 Wochen</p>
-              <div className="flex justify-between items-center mt-auto">
+              <div className="mt-auto flex justify-between items-center">
                 <div>
-                  <p className="text-2xl font-bold">
-                    €{product.priceRange.minVariantPrice.amount}
+                  <p className="text-2xl font-bold text-primary">
+                    €
+                    {Number(product.priceRange.minVariantPrice.amount).toLocaleString(
+                      "de-DE",
+                      { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+                    )}
                   </p>
-                  <span className="text-sm text-gray-600">
-                    (€{(product.priceRange.minVariantPrice.amount / 100).toFixed(2)} /
-                    100g)
+                  <span className="text-sm text-primary">
+                    (€
+                    {(
+                      Number(product.priceRange.minVariantPrice.amount) / 100
+                    ).toLocaleString("de-DE", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    / 100g)
                   </span>
                 </div>
                 <AddToCartButton variantId={product.variants.edges[0]?.node.id} />
