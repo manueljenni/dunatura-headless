@@ -15,35 +15,39 @@ export default async function page() {
         {products.map((product) => (
           <Link href={`/products/${product.handle}`} key={product.id}>
             <div
-            key={product.id}
-            className="bg-white rounded-lg p-6 shadow-md flex flex-col h-full">
-            <div className="w-full aspect-square mb-4 flex items-center justify-center">
-              <Image
-                src={product.images.edges[0]?.node.originalSrc}
-                alt={product.title}
-                className="max-h-full max-w-full object-contain"
-                width={400}
-                height={400}
-                style={{
-                  maxWidth: "100%",
-                  height: "auto",
-                }}
-              />
-            </div>
-            <h2 className="text-xl font-semibold mb-2 h-14 overflow-hidden">
-              {product.title}
-            </h2>
-            <p className="text-sm text-gray-600 mb-2">28 Beutel = 4 Wochen</p>
-            <div className="flex justify-between items-center mt-auto">
-              <div>
-                <p className="text-2xl font-bold">
-                  €{product.priceRange.minVariantPrice.amount}
-                </p>
-                <span className="text-sm text-gray-600">
-                  (€{(product.priceRange.minVariantPrice.amount / 100).toFixed(2)} / 100g)
-                </span>
+              key={product.id}
+              className="bg-white rounded-lg p-6 shadow-md flex flex-col h-full">
+              <div className="w-full aspect-square mb-4 flex items-center justify-center">
+                <Image
+                  src={
+                    product.metafield?.reference?.image?.originalSrc ||
+                    product.images.edges[0]?.node.originalSrc
+                  }
+                  alt={product.title}
+                  className="max-h-full max-w-full object-contain"
+                  width={400}
+                  height={400}
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                  }}
+                />
               </div>
-              <AddToCartButton variantId={product.variants.edges[0]?.node.id} />
+              <h2 className="text-xl font-semibold mb-2 h-14 overflow-hidden">
+                {product.title}
+              </h2>
+              <p className="text-sm text-gray-600 mb-2">28 Beutel = 4 Wochen</p>
+              <div className="flex justify-between items-center mt-auto">
+                <div>
+                  <p className="text-2xl font-bold">
+                    €{product.priceRange.minVariantPrice.amount}
+                  </p>
+                  <span className="text-sm text-gray-600">
+                    (€{(product.priceRange.minVariantPrice.amount / 100).toFixed(2)} /
+                    100g)
+                  </span>
+                </div>
+                <AddToCartButton variantId={product.variants.edges[0]?.node.id} />
               </div>
             </div>
           </Link>

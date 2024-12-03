@@ -105,9 +105,10 @@ export async function getThemenpacksWithIngredients(): Promise<Tagespack[]> {
 }
 
 export async function getIngredients(ingredientsString: string): Promise<Ingredient> {
-  const { data } = await client.request(`#graphql
-    query GetIngredients {
-      product(id: "${ingredientsString}") {
+  const { data } = await client.request(
+    `#graphql
+    query GetIngredients($id: ID!) {
+      product(id: $id) {
         id
         title
         images(first: 1) {
@@ -119,7 +120,17 @@ export async function getIngredients(ingredientsString: string): Promise<Ingredi
         }
       }
     }
-  `);
+  `,
+    {
+      variables: {
+        id: ingredientsString,
+      },
+    },
+  );
+
+  if (!data?.product) {
+    throw new Error(`Product with id ${ingredientsString} not found`);
+  }
 
   const imageSrc = data.product.images.edges[0]?.node.originalSrc;
   let localImagePath = null;
@@ -189,6 +200,15 @@ export async function getAllProducts() {
                   }
                 }
                 tags
+                metafield(namespace: "custom", key: "cover_image") {
+                  reference {
+                    ... on MediaImage {
+                      image {
+                        originalSrc
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -232,18 +252,26 @@ export async function addToCart(cartId: string, variantId: string) {
   if (!cartId) {
     cartId = await createCart();
   }
-  const response = await client.request(`#graphql
-    mutation CartLinesAdd {
-      cartLinesAdd(cartId: "${cartId}", lines: [{
+  const response = await client.request(
+    `#graphql
+    mutation CartLinesAdd($cartId: ID!, $variantId: ID!) {
+      cartLinesAdd(cartId: $cartId, lines: [{
         quantity: 1,
-        merchandiseId: "${variantId}"
+        merchandiseId: $variantId
       }]) {
         cart {
           id
         }
       }
     }
-  `);
+  `,
+    {
+      variables: {
+        cartId,
+        variantId,
+      },
+    },
+  );
   return response;
 }
 

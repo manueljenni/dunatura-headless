@@ -8,6 +8,7 @@ const nextConfig = {
         pathname: "/s/files/**",
       },
     ],
+    domains: ["shopify"],
   },
   experimental: {
     typedRoutes: true,

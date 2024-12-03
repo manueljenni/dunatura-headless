@@ -1,4 +1,5 @@
 import { getAllProducts } from "@/api/fetch";
+import { Metafield } from "@/types/storefront.types";
 import { notFound } from "next/navigation";
 
 type Product = {
@@ -6,10 +7,11 @@ type Product = {
   title: string;
   description: string;
   rating: number;
-  reviewCount: number;
+  orderCount: number;
   price: number;
   subscriptionPrice: number;
   features: string[];
+  metafields: Metafield[];
 };
 
 export async function generateStaticParams() {
@@ -40,7 +42,10 @@ export default async function ProductPage({
       <div className="flex flex-col md:flex-row gap-8">
         <div className="md:w-1/2">
           <img
-            src={product.images.edges[0].node.originalSrc}
+            src={
+              product.metafield?.reference?.image?.originalSrc ||
+              product.images.edges[0]?.node.originalSrc
+            }
             alt={product.title}
             className="w-full rounded-lg"
           />
@@ -49,19 +54,7 @@ export default async function ProductPage({
         <div className="md:w-1/2">
           <h1 className="text-4xl font-medium mb-2">{product.title}</h1>
 
-          <div className="flex items-center gap-2 mb-4">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <span
-                  key={i}
-                  className={i < Math.floor(5) ? "text-black" : "text-gray-300"}>
-                  ★
-                </span>
-              ))}
-            </div>
-            <span className="font-medium">5</span>
-            <span className="text-gray-500">10 reviews</span>
-          </div>
+          <p className="mb-4 text-secondary">11'234+ mal bestellt</p>
 
           <p className="text-gray-600 mb-8">{product.description}</p>
 

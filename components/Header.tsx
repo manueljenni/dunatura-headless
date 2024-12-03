@@ -11,7 +11,8 @@ export default function Header() {
   const isProductsRoute = pathname.startsWith("/products");
 
   return (
-    <div className={`w-full ${isProductsRoute ? "bg-[#F2F1E9]" : "bg-lightBackground"}`}>
+    <div
+      className={`w-full text-primary ${isProductsRoute ? "bg-[#F2F1E9]" : "bg-lightBackground"}`}>
       <nav className="flex justify-between items-center px-4 py-4 h-18 font-medium max-w-6xl mx-auto">
         <div className="flex items-center gap-6">
           <Link href="/">
