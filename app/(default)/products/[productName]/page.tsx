@@ -1,18 +1,6 @@
 import { getAllProducts } from "@/api/fetch";
-import { Metafield } from "@/types/storefront.types";
 import { notFound } from "next/navigation";
-
-type Product = {
-  handle: string;
-  title: string;
-  description: string;
-  rating: number;
-  orderCount: number;
-  price: number;
-  subscriptionPrice: number;
-  features: string[];
-  metafields: Metafield[];
-};
+import PlanSelector from "./PlanSelector";
 
 export async function generateStaticParams() {
   const products = await getAllProducts();
@@ -56,52 +44,9 @@ export default async function ProductPage({
 
           <p className="mb-4 text-secondary">11'234+ mal bestellt</p>
 
-          <p className="text-gray-600 mb-8">{product.description}</p>
+          <p className="text-gray-600 mb-8">{product.description.slice(0, 200)}</p>
 
-          <div className="space-y-4">
-            <label className="block">
-              <input type="radio" name="purchase-type" className="mr-2" />
-              <span>One-time purchase</span>
-              <span className="float-right">
-                €{product.priceRange.minVariantPrice.amount}
-              </span>
-            </label>
-
-            <div className="border rounded-lg p-4 bg-white">
-              <label className="flex justify-between">
-                <div>
-                  <input
-                    type="radio"
-                    name="purchase-type"
-                    className="mr-2"
-                    defaultChecked
-                  />
-                  <span>1 month - Flexible Routine</span>
-                  <div className="ml-6 text-sm text-gray-500">28 packs, €1/day</div>
-                </div>
-                <div className="text-right">
-                  <div>€{product.priceRange.minVariantPrice.amount}/mo</div>
-                  <div className="text-sm text-gray-500">Save €8/mo</div>
-                </div>
-              </label>
-
-              <div className="mt-4 space-y-2 text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="bg-black text-white px-2 py-1 rounded-full text-xs">
-                    Most popular
-                  </span>
-                  <span>Reschedule or cancel anytime</span>
-                </div>
-                <div>✓ Delivered every 28 days</div>
-                <div>✓ Free shipping</div>
-                <div>✓ Subscriber benefits</div>
-              </div>
-            </div>
-
-            <button className="w-full bg-green-950 text-white py-3 rounded-lg hover:bg-green-900">
-              Add to cart
-            </button>
-          </div>
+          <PlanSelector variantId={product.variants.edges[0].node.id} />
 
           <div className="flex justify-center gap-8 mt-8">
             <div className="text-center">
