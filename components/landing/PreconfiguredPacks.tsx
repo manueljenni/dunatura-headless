@@ -5,7 +5,7 @@ export default async function PreconfiguredPacks() {
   const themenpacks = await getThemenpacksWithIngredients();
 
   return (
-    <div className="p-6 md:p-12 z-10 bg-white shadow-xl rounded-[32px] border border-[#E7E9D8] space-y-8 max-w-[1200px] mx-auto">
+    <div className="p-6 md:p-12 z-10 bg-white shadow-xl rounded-4xl border border-[#E7E9D8] space-y-8 max-w-[1200px] mx-auto">
       <div className="bg-primaryBackground px-3 py-1 rounded-full inline-flex text-center">
         <p className="text-primary font-medium whitespace-normal">
           Oder doch einfach schnell ausprobieren?

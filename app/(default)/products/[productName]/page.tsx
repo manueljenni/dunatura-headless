@@ -22,13 +22,13 @@ export default async function ProductPage({
   }
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="max-w-6xl mx-auto px-4">
       <div className="w-fit mx-auto py-2 px-4 text-center text-sm mb-8 rounded-full text-primary font-medium bg-[#E8E7DE]">
         Kostenloser Versand, innerhalb von 2 Tagen versendet
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
-        <div className="md:w-1/2">
+      <div className="flex flex-col md:flex-row w-full justify-between gap-8">
+        <div className="w-full md:w-1/2">
           <img
             src={
               product.metafield?.reference?.image?.originalSrc ||
@@ -39,7 +39,7 @@ export default async function ProductPage({
           />
         </div>
 
-        <div className="md:w-1/2">
+        <div className="w-full md:w-1/2">
           <h1 className="text-4xl font-medium mb-2">{product.title}</h1>
 
           <p className="mb-4 text-secondary">11'234+ mal bestellt</p>
