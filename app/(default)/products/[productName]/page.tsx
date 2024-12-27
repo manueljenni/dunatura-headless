@@ -1,4 +1,5 @@
 import { getAllProducts } from "@/api/fetch";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import PlanSelector from "./PlanSelector";
 
@@ -24,7 +25,10 @@ export default async function ProductPage({
   return (
     <div className="max-w-6xl mx-auto px-4">
       <div className="w-fit mx-auto py-2 px-4 text-center text-sm mb-8 rounded-full text-primary font-medium bg-[#E8E7DE]">
-        Kostenloser Versand, innerhalb von 2 Tagen versendet
+        <div className="flex items-center gap-2">
+          <Image src="/images/icons/truck.svg" alt="Truck" width={20} height={20} />
+          <p>Kostenloser Versand, innerhalb von 2 Tagen versendet</p>
+        </div>
       </div>
 
       <div className="flex flex-col md:flex-row w-full justify-between gap-8">
