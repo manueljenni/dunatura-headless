@@ -214,12 +214,14 @@ export async function getAllProducts() {
           }
         }
       `);
+
+  console.log(JSON.stringify(data, null, 2));
   return (
     data?.products.edges
       .map((edge) => edge.node)
-      .filter((product) => product.variants.edges[0]?.node.availableForSale)
-      .filter((product) => product.tags.includes("Themenpack")) || []
+      .filter((product) => product.variants.edges[0]?.node.availableForSale) || []
   );
+  //.filter((product) => product.tags.includes("Themenpack")) || []
 }
 
 export async function createCart() {

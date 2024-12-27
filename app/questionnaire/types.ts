@@ -14,7 +14,7 @@ import {
   Sparkles,
   Timer,
   User,
-  Zap
+  Zap,
 } from "lucide-react";
 
 // Enum
@@ -39,7 +39,7 @@ export const vitamins = {
     color: "#00783b",
     effects: [
       { text: "Herzgesundheit", icon: Heart },
-      { text: "Gehirnfunktion", icon: Brain }
+      { text: "Gehirnfunktion", icon: Brain },
     ],
   },
   HYALURONSAURE: {
@@ -52,7 +52,7 @@ export const vitamins = {
     color: "#BD9AC8",
     effects: [
       { text: "Hautstraffung", icon: Sparkle },
-      { text: "Gelenke", icon: Activity }
+      { text: "Gelenke", icon: Activity },
     ],
   },
   VIT_C: {
@@ -65,7 +65,7 @@ export const vitamins = {
     color: "#EA5D0B",
     effects: [
       { text: "Immunsystem", icon: Shield },
-      { text: "Kollagenbildung", icon: Flower2 }
+      { text: "Kollagenbildung", icon: Flower2 },
     ],
   },
   MSM: {
@@ -73,12 +73,13 @@ export const vitamins = {
     name: "MSM",
     subtitle: "500mg MSM",
     longTitle: "MSM - 500mg",
-    headline: "Schwefel - Bestandteil von Haut, Haaren, Muskeln, Sehnen, Knorpel und Bindegewebe.",
+    headline:
+      "Schwefel - Bestandteil von Haut, Haaren, Muskeln, Sehnen, Knorpel und Bindegewebe.",
     shopifyId: "msm",
     color: "#0166B3",
     effects: [
       { text: "Gelenke", icon: Activity },
-      { text: "Bindegewebe", icon: Layers }
+      { text: "Bindegewebe", icon: Layers },
     ],
   },
   KALIUM: {
@@ -91,7 +92,7 @@ export const vitamins = {
     color: "#00B4E6",
     effects: [
       { text: "Bindegewebe", icon: Layers },
-      { text: "Muskeln", icon: Activity }
+      { text: "Muskeln", icon: Activity },
     ],
   },
   L_ARGININ: {
@@ -104,7 +105,7 @@ export const vitamins = {
     color: "#008F9D",
     effects: [
       { text: "Gelenke", icon: Activity },
-      { text: "Bindegewebe", icon: Layers }
+      { text: "Bindegewebe", icon: Layers },
     ],
   },
   MAGNESIUM: {
@@ -117,7 +118,7 @@ export const vitamins = {
     color: "#D1D8DC",
     effects: [
       { text: "Muskeln", icon: Activity },
-      { text: "Bindegewebe", icon: Layers }
+      { text: "Bindegewebe", icon: Layers },
     ],
   },
   SELEN: {
@@ -130,7 +131,7 @@ export const vitamins = {
     color: "#D0CFE2",
     effects: [
       { text: "Haut", icon: User },
-      { text: "Haare", icon: CircleUser }
+      { text: "Haare", icon: CircleUser },
     ],
   },
   EISEN_VIT_C: {
@@ -143,7 +144,7 @@ export const vitamins = {
     color: "#F39973",
     effects: [
       { text: "Muskeln", icon: Activity },
-      { text: "Bindegewebe", icon: Layers }
+      { text: "Bindegewebe", icon: Layers },
     ],
   },
   KURKUMA_EXTRACT: {
@@ -156,7 +157,7 @@ export const vitamins = {
     color: "#FBB806",
     effects: [
       { text: "Haut", icon: User },
-      { text: "Gelenke", icon: Activity }
+      { text: "Gelenke", icon: Activity },
     ],
   },
   OPC_TRAUBENKERNEXTKRAKT: {
@@ -169,7 +170,7 @@ export const vitamins = {
     color: "#823C8A",
     effects: [
       { text: "Haut", icon: User },
-      { text: "Gelenke", icon: Activity }
+      { text: "Gelenke", icon: Activity },
     ],
   },
   VIT_D3_K2: {
@@ -182,7 +183,7 @@ export const vitamins = {
     color: "#FBBE5C",
     effects: [
       { text: "Knochen", icon: Activity },
-      { text: "Muskeln", icon: Activity }
+      { text: "Muskeln", icon: Activity },
     ],
   },
   COENZYM_Q10: {
@@ -195,7 +196,7 @@ export const vitamins = {
     color: "#f4c245",
     effects: [
       { text: "Herzgesundheit", icon: Heart },
-      { text: "Muskeln", icon: Activity }
+      { text: "Muskeln", icon: Activity },
     ],
   },
   ZINK: {
@@ -208,7 +209,7 @@ export const vitamins = {
     color: "#C4DAD1",
     effects: [
       { text: "Haut", icon: User },
-      { text: "Haare", icon: CircleUser }
+      { text: "Haare", icon: CircleUser },
     ],
   },
   VIT_B12_KOMPLEX: {
@@ -222,7 +223,7 @@ export const vitamins = {
     color: "#D53140",
     effects: [
       { text: "Muskeln", icon: Activity },
-      { text: "Gelenke", icon: Activity }
+      { text: "Gelenke", icon: Activity },
     ],
   },
   ASHWAGANDHA: {
@@ -235,7 +236,7 @@ export const vitamins = {
     color: "#AECAE7",
     effects: [
       { text: "Haut", icon: User },
-      { text: "Gelenke", icon: Activity }
+      { text: "Gelenke", icon: Activity },
     ],
   },
 } as const;

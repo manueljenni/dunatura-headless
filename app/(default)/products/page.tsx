@@ -1,17 +1,24 @@
 import { getAllProducts } from "@/api/fetch";
 import { Button } from "@/components/primitives/button";
+import Image from "next/image";
 import Link from "next/link";
+import ProductPreview from "./components/product-preview";
+import { ProductTypeNavigation } from "./components/product-type-navigation";
 
 export default async function ProductsPage() {
   const products = await getAllProducts();
-  const featuredProducts = products.slice(0, 2);
+  const tagespacks = products.filter((product) => product.tags.includes("Themenpack"));
+  const bottles = products.filter((product) => product.title.includes("Flasche"));
+  const sprays = products.filter((product) => product.title.includes("Spray"));
+  const cans = products.filter((product) => product.title.includes("Dose"));
+  const tea = products.filter((product) => product.title.includes("Tee"));
 
   return (
-    <>
+    <div className="space-y-8">
       {/* Hero Section */}
       <section className="py-16">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-12">
+          <div className="flex flex-col md:flex-row gap-12 text-primary">
             <div className="md:w-1/2">
               <h1 className="text-5xl font-medium mb-8">
                 Fühl dich bestens,
@@ -22,9 +29,11 @@ export default async function ProductsPage() {
                 Dein Körper ist einzigartig —<br />
                 deine Vitamine sollten es auch sein.
               </p>
-              <Button asChild variant="pillSecondary" size="pill-xl">
-                <Link href="/questionnaire">Zum Selbsttest →</Link>
-              </Button>
+              <Link href="/questionnaire">
+                <Button asChild variant="pillSecondary" size="pill-xl">
+                  Zum Selbsttest →
+                </Button>
+              </Link>
             </div>
             <div className="md:w-1/2">
               <img
@@ -37,31 +46,10 @@ export default async function ProductsPage() {
         </div>
       </section>
 
-      {/* Product Type Navigation */}
-      <section className="py-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {["Tagespacks", "Bottles", "Oral spray", "Cans", "Tea mixes"].map((type) => (
-              <Link
-                href={`/products/${type.toLowerCase()}`}
-                key={type}
-                className="text-center">
-                <div className="bg-[#E7E7DE] p-4 space-y-6 aspect-square rounded-3xl">
-                  <img
-                    src={`/images/product-types/${type.toLowerCase().replace(/\s+/g, "-")}.png`}
-                    alt={type}
-                    className="w-full"
-                  />
-                  <p className="text-primary text-lg font-medium">{type}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProductTypeNavigation />
 
       {/* Featured Products */}
-      {/* <section className="py-12">
+      {/* <section >
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-8">
             {featuredProducts.map((product, index) => (
@@ -90,43 +78,72 @@ export default async function ProductsPage() {
       </section> */}
 
       {/* Tagespacks Section */}
-      <section className="py-12">
+      <section id="tagespacks">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl font-medium mb-8">Tagespacks</h2>
+          <div className="flex justify-between">
+            <h2 className="text-3xl font-medium mb-6 text-primary">Tagespacks</h2>
+            <div>
+              <span className="bg-[#E8E7DE] px-4 py-2 rounded-full text-sm text-primary font-medium flex items-center gap-2">
+                <Image src="/images/icons/truck.svg" alt="Truck" width={20} height={20} />
+                Kostenloser Versand für Bestellungen über €50
+              </span>
+            </div>
+          </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <Link
-                href={`/products/${product.handle}`}
-                key={product.id}
-                className="block">
-                <div className="bg-[#FCFCF8] p-6 rounded-4xl border border-[#E2E1DC] text-center">
-                  <img
-                    src={
-                      product.metafield?.reference?.image?.originalSrc ||
-                      product.images.edges[0]?.node.originalSrc
-                    }
-                    alt={product.title}
-                    className="w-full mb-4"
-                  />
-                  <h3 className="text-lg font-medium mb-1">{product.title}</h3>
-                  <p className="text-[#808E80] mb-3">
-                    Ab €
-                    {Number(product.priceRange.minVariantPrice.amount).toLocaleString(
-                      "de-DE",
-                      { minimumFractionDigits: 2, maximumFractionDigits: 2 },
-                    )}
-                  </p>
-                  <div className="flex justify-center">
-                    <div className="bg-[#E8E7DE] text-primary px-6 py-2 rounded-full text-center font-medium">
-                      Zum Produkt
-                    </div>
-                  </div>
-                </div>
-              </Link>
+            {tagespacks.map((product) => (
+              <ProductPreview product={product} />
             ))}
           </div>
         </div>
       </section>
-    </>
+
+      {/* Flaschen Section */}
+      <section id="flaschen">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-medium mb-6 text-primary">Flaschen</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {bottles.map((product) => (
+              <ProductPreview product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sprays Section */}
+      <section id="sprays">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-medium mb-6 text-primary">Sprays</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {sprays.map((product) => (
+              <ProductPreview product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dosen Section */}
+      <section id="dosen">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-medium mb-6 text-primary">Dosen</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {cans.map((product) => (
+              <ProductPreview product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tee Section */}
+      <section id="tee">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl font-medium mb-6 text-primary">Tee</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {tea.map((product) => (
+              <ProductPreview product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
