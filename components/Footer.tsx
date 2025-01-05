@@ -90,7 +90,7 @@ export default function Footer() {
                 </Link>
               </div>
             </div>
-            <div className="mt-12 text-center text-gray-400 flex justify-between items-center">
+            <div className="mt-12 text-center text-gray-400 flex flex-col md:flex-row md:justify-between md:items-center items-start space-y-4 md:space-y-0">
               <Image src={logoWhite} alt="Logo" className="w-32" />
               <p className="text-right lg:text-left">
                 © 2024 dunatura - All rights reserved
