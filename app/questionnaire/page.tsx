@@ -93,7 +93,7 @@ export default function Questionnaire() {
               className="w-8 h-8 border rounded-full">
               <ArrowLeftIcon className="w-4 h-4 text-primary font-medium" />
             </Button>
-            <h1 className="text-lg font-medium text-primary">
+            <h1 className="text-lg font-medium text-primary max-w-[250px] md:max-w-3xl text-center line-clamp-1">
               {currentQuestion?.chapter}
             </h1>
             <span className="text-lg text-neutral-400 font-medium">
