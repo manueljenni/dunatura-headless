@@ -44,7 +44,6 @@ export class QuestionnaireEngine {
 
   getCurrentQuestion(): Question<QuestionId> | null {
     const question = this.data[this.currentIndex];
-    console.log("Current question:", question);
     return question ?? null;
   }
 
@@ -138,7 +137,7 @@ export class QuestionnaireEngine {
   }
 
   getName() {
-    return this.name ?? "PLACEHOLDER NAME";
+    return this.name;
   }
 
   goBack(): Question<QuestionId> | null {
@@ -224,13 +223,6 @@ export class QuestionnaireEngine {
       },
     );
 
-    console.log("Checking conditions for question:", {
-      questionId: question.id,
-      conditions: question.conditions,
-      answers: this.answers,
-      result,
-    });
-
     return result;
   }
 
@@ -238,11 +230,6 @@ export class QuestionnaireEngine {
     startIndex: number,
     answers: Partial<Answers>,
   ): number | null {
-    console.log("Finding next valid index:", {
-      startIndex,
-      dataLength: this.data.length,
-    });
-
     if (startIndex >= this.data.length) {
       return null;
     }
@@ -250,12 +237,6 @@ export class QuestionnaireEngine {
     for (let i = startIndex; i < this.data.length; i++) {
       const question = this.data[i];
       const conditionsMet = this.checkConditions(question);
-
-      console.log("Checking question:", {
-        index: i,
-        questionId: question.id,
-        conditionsMet,
-      });
 
       if (conditionsMet) {
         return i;

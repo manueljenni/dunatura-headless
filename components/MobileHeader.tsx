@@ -70,7 +70,7 @@ export default function MobileHeader({ onToggle }: MobileHeaderProps) {
           </button>
           <nav className="space-y-4">
             <Link
-              href="/"
+              href="/configure"
               className="block text-lg font-medium text-black hover:text-gray-700">
               Jetzt konfigurieren
             </Link>

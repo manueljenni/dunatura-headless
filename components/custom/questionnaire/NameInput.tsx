@@ -31,8 +31,20 @@ export default function NameInput({
     setInputValue(initialAnswers[0] || name);
   }, [initialAnswers, name]);
 
+  function handleSubmit() {
+    if (inputValue && inputValue.trim() !== "" && inputValue != null) {
+      onAnswer(inputValue);
+    }
+
+    // TODO: Else show error / toast
+
+    // TODO: Handle max name length - check with production about how much we can print
+  }
+
   useKeyboardNavigation({
-    onNext: () => onAnswer(inputValue),
+    onNext: () => {
+      handleSubmit();
+    },
     onBack: () => onBack(),
   });
 
@@ -41,7 +53,7 @@ export default function NameInput({
       <QuestionContainer
         question={question}
         showSubmitButton
-        onSubmit={() => onAnswer(inputValue)}
+        onSubmit={handleSubmit}
         isLastQuestion={isLastQuestion}>
         <div className="relative w-[350px] h-[350px] mx-auto">
           <Image

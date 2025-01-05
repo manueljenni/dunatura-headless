@@ -52,11 +52,15 @@ export default function SelectQuestion({
     }
 
     setSelectedAnswers(newSelectedAnswers);
-    if (newSelectedAnswers.length > 0 && !isMultiSelect) {
-      // Sleep 500 ms
+    if (
+      // If its a question with a single answer, we can automatically navigate to the next question on click of an option
+      (newSelectedAnswers.length > 0 && !isMultiSelect) ||
+      // Same goes for when the maximum steps have been reached
+      newSelectedAnswers.length === maxSteps
+    ) {
       setTimeout(() => {
         onAnswer(id, newSelectedAnswers);
-      }, 150);
+      }, 200);
     }
   };
 

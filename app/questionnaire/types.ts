@@ -241,6 +241,10 @@ export const vitamins = {
   },
 } as const;
 
+export const vitaminsArray = Object.keys(vitamins).map((id: any) => {
+  return vitamins[id as keyof typeof vitamins];
+});
+
 export const questionnaireData = [
   {
     id: 1,
@@ -286,6 +290,7 @@ export const questionnaireData = [
       },
     ],
     conditions: {},
+    chapter: "Gesundheitsziele",
   },
   {
     id: 3,
@@ -299,6 +304,7 @@ export const questionnaireData = [
       { value: { text: "Älter als 40", value: "over_40" }, scores: {} },
     ],
     conditions: {},
+    chapter: "Gesundheitsziele",
   },
   {
     id: 4,
@@ -306,6 +312,7 @@ export const questionnaireData = [
     type: QuestionType.TagespackPlaceholder,
     answers: [],
     conditions: {},
+    chapter: "Gesundheitsziele",
   },
   {
     id: 5,
@@ -316,6 +323,7 @@ export const questionnaireData = [
     maxSteps: 1,
     answers: [],
     conditions: {},
+    chapter: "Allgemeine Informationen",
   },
   {
     id: 6,
@@ -367,6 +375,7 @@ export const questionnaireData = [
       },
     ],
     conditions: {},
+    chapter: "Allgemeine Informationen",
   },
   {
     id: 7,
@@ -403,6 +412,7 @@ export const questionnaireData = [
       { value: { text: "Andere", value: "other" }, scores: {} },
     ],
     conditions: {},
+    chapter: "Allgemeine Informationen",
   },
   {
     id: 8,
@@ -428,6 +438,7 @@ export const questionnaireData = [
       // Gender must be female
       7: "female",
     },
+    chapter: "Allgemeine Informationen",
   },
   {
     id: 9,
@@ -473,6 +484,7 @@ export const questionnaireData = [
         },
       },
     ],
+    chapter: "Gesundheit & Wohlbefinden",
   },
   {
     id: 10,
@@ -527,6 +539,7 @@ export const questionnaireData = [
         },
       },
     ],
+    chapter: "Gesundheit & Wohlbefinden",
   },
   {
     id: 11,
@@ -587,6 +600,7 @@ export const questionnaireData = [
         },
       },
     ],
+    chapter: "Gesundheit & Wohlbefinden",
   },
   {
     id: 12,
@@ -673,6 +687,7 @@ export const questionnaireData = [
         },
       },
     ],
+    chapter: "Aktivitätslevel",
   },
   {
     id: 13,
@@ -735,6 +750,7 @@ export const questionnaireData = [
       },
     ],
     conditions: {},
+    chapter: "Aktivitätslevel",
   },
   {
     id: 14,
@@ -796,6 +812,7 @@ export const questionnaireData = [
       },
     ],
     conditions: {},
+    chapter: "Gewohnheiten",
   },
 ] as const;
 
@@ -832,6 +849,7 @@ export interface Question<T extends QuestionId> {
   }>;
   maxSteps?: number;
   conditions?: Partial<Record<QuestionId, AnswerType<QuestionId>>>;
+  chapter?: string;
 }
 
 export interface QuestionProps<T extends QuestionId> {

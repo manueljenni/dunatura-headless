@@ -82,9 +82,12 @@ export default function Footer() {
               <div className="flex flex-col space-y-2 w-full z-20">
                 <h3 className="text-lg font-semibold">Kontakt</h3>
                 <p className="text-gray-400">Schreib uns jederzeit</p>
-                <p className="text-white underline underline-offset-4">
+                <Link
+                  href="mailto:hello@dunatura.com"
+                  className="text-white underline underline-offset-4">
+                  {/* TODO: Fix mailto link */}
                   hello@dunatura.com
-                </p>
+                </Link>
               </div>
             </div>
             <div className="mt-12 text-center text-gray-400 flex justify-between items-center">

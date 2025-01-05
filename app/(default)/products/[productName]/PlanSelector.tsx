@@ -21,21 +21,24 @@ const PlanOption: React.FC<PlanOptionProps> = ({ planType, isSelected, onSelect 
     [PlanType.OneTime]: {
       title: "Einmaliger Kauf",
       price: "€38,90",
+      priceSubtitle: null,
       description: "",
     },
     [PlanType.Monthly]: {
-      title: "1 Monat - Flexible Routine",
-      price: "€30,90/Mo",
+      title: "Monatliches Abonnement",
+      price: "€30,90",
+      priceSubtitle: "pro Monat",
       description: "28 Packungen, €1/Tag",
     },
     [PlanType.Quarterly]: {
       title: "3 Monate - Konsistente Routine",
-      price: "€30,90/Mo",
+      price: "€30,90",
+      priceSubtitle: "pro Monat",
       description: "3x 28 Packungen, €1/Tag",
     },
   };
 
-  const { title, price, description } = planDetails[planType];
+  const { title, price, priceSubtitle, description } = planDetails[planType];
 
   return (
     <label
@@ -56,7 +59,10 @@ const PlanOption: React.FC<PlanOptionProps> = ({ planType, isSelected, onSelect 
             {description && <div className="text-gray-500">{description}</div>}
           </div>
         </div>
-        <span className="text-xl">{price}</span>
+        <div className="flex flex-col justify-center items-center">
+          <p className="text-xl font-medium">{price}</p>
+          {priceSubtitle && <p className="text-sm text-neutral-700">{priceSubtitle}</p>}
+        </div>
       </div>
     </label>
   );

@@ -215,7 +215,6 @@ export async function getAllProducts() {
         }
       `);
 
-  console.log(JSON.stringify(data, null, 2));
   return (
     data?.products.edges
       .map((edge) => edge.node)

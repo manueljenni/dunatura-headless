@@ -1,17 +1,24 @@
 "use client";
 
-import { Answers, healthGoalIcons, questionnaireData, VitaminId, vitaminIdToKey, vitamins } from "@/app/questionnaire/types";
+import {
+  Answers,
+  healthGoalIcons,
+  questionnaireData,
+  VitaminId,
+  vitaminIdToKey,
+  vitamins,
+} from "@/app/questionnaire/types";
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import Icon from "@/components/Icon";
 import { Button } from "@/components/primitives/button";
 import Image from "next/image";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 import Goal from "./completed/Goal";
 
 type Goal = {
   text: string;
   value: string;
-  icon: typeof healthGoalIcons[keyof typeof healthGoalIcons];
+  icon: (typeof healthGoalIcons)[keyof typeof healthGoalIcons];
 };
 
 type QuestionnaireCompleteProps = {
@@ -31,15 +38,23 @@ export default function QuestionnaireComplete({
     onBack: () => onBack(),
   });
 
-  const goals = answers[2]?.map(goalValue => {
-    const goalAnswer = questionnaireData[1].answers.find(
-      answer => answer.value.value === goalValue
+  const goals = answers[2]
+    ?.map((goalValue) => {
+      const goalAnswer = questionnaireData[1].answers.find(
+        (answer) => answer.value.value === goalValue,
+      );
+      return {
+        ...goalAnswer?.value,
+        icon: healthGoalIcons[goalValue as keyof typeof healthGoalIcons],
+      };
+    })
+    .filter(
+      (
+        goal,
+      ): goal is (typeof questionnaireData)[1]["answers"][number]["value"] & {
+        icon: (typeof healthGoalIcons)[keyof typeof healthGoalIcons];
+      } => !!goal,
     );
-    return {
-      ...goalAnswer?.value,
-      icon: healthGoalIcons[goalValue as keyof typeof healthGoalIcons]
-    };
-  }).filter((goal): goal is (typeof questionnaireData[1]['answers'][number]['value'] & { icon: typeof healthGoalIcons[keyof typeof healthGoalIcons] }) => !!goal);
 
   const scoresArray = Object.keys(scores)
     .map((key) => {
@@ -48,7 +63,10 @@ export default function QuestionnaireComplete({
       return {
         id: Number(key),
         value: scores[key],
-        explanation: "Weil du uns gesagt hast, dass du Schwierigkeiten beim Schlafen hast, wird " + vitamins[vitaminKey].name + " dir dabei helfen, besser zu schlafen und mehr Energie für den nächsten Tag zu haben."
+        explanation:
+          "Weil du uns gesagt hast, dass du Schwierigkeiten beim Schlafen hast, wird " +
+          vitamins[vitaminKey].name +
+          " dir dabei helfen, besser zu schlafen und mehr Energie für den nächsten Tag zu haben.",
       };
     })
     .filter((item): item is NonNullable<typeof item> => !!item)
@@ -68,31 +86,31 @@ export default function QuestionnaireComplete({
     };
 
     calculateOffset();
-    window.addEventListener('resize', calculateOffset);
-    return () => window.removeEventListener('resize', calculateOffset);
+    window.addEventListener("resize", calculateOffset);
+    return () => window.removeEventListener("resize", calculateOffset);
   }, []);
 
   const scrollToIndex = (index: number) => {
-    const container = document.querySelector('.pills-container');
-    const items = container?.querySelectorAll('.pill-item');
+    const container = document.querySelector(".pills-container");
+    const items = container?.querySelectorAll(".pill-item");
     if (container && items && items[index]) {
       container.scrollTo({
         left: items[index].getBoundingClientRect().left - offset! + container.scrollLeft,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(prev => prev - 1);
+      setCurrentIndex((prev) => prev - 1);
       scrollToIndex(currentIndex - 1);
     }
   };
 
   const handleNext = () => {
     if (currentIndex < scoresArray.length - 1) {
-      setCurrentIndex(prev => prev + 1);
+      setCurrentIndex((prev) => prev + 1);
       scrollToIndex(currentIndex + 1);
     }
   };
@@ -110,10 +128,10 @@ export default function QuestionnaireComplete({
                 {goals?.map((goal, index) => {
                   const IconComponent = goal.icon;
                   return (
-                    <Goal 
-                      key={index} 
-                      text={goal.text} 
-                      icon={<IconComponent className="w-6 h-6 text-primary" />} 
+                    <Goal
+                      key={index}
+                      text={goal.text}
+                      icon={<IconComponent className="w-6 h-6 text-primary" />}
                     />
                   );
                 })}
@@ -126,20 +144,20 @@ export default function QuestionnaireComplete({
         </div>
 
         <div className="md:max-w-2xl mx-auto w-full mb-4 flex items-center justify-between">
-          <h1 ref={titleRef} className="text-3xl font-medium text-primary">Unsere Empfehlung für dich</h1>
+          <h1 ref={titleRef} className="text-3xl font-medium text-primary">
+            Unsere Empfehlung für dich
+          </h1>
           <div className="flex gap-2">
             <button
               onClick={handlePrevious}
               disabled={currentIndex === 0}
-              className={`testimonial-nav ${currentIndex === 0 ? "disabled-button" : ""}`}
-            >
+              className={`testimonial-nav ${currentIndex === 0 ? "disabled-button" : ""}`}>
               <svg
                 width="40"
                 height="40"
                 viewBox="0 0 65 65"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+                xmlns="http://www.w3.org/2000/svg">
                 <rect
                   x="1"
                   y="0.740967"
@@ -160,15 +178,13 @@ export default function QuestionnaireComplete({
               disabled={currentIndex === scoresArray.length - 1}
               className={`testimonial-nav ${
                 currentIndex === scoresArray.length - 1 ? "disabled-button" : ""
-              }`}
-            >
+              }`}>
               <svg
                 width="40"
                 height="40"
                 viewBox="0 0 65 65"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+                xmlns="http://www.w3.org/2000/svg">
                 <rect
                   x="1"
                   y="0.740967"
@@ -186,41 +202,48 @@ export default function QuestionnaireComplete({
             </button>
           </div>
         </div>
-        
+
         <div className="relative w-screen -ml-4">
-          <div 
+          <div
             className={`pills-container flex gap-4 overflow-x-auto pb-4 px-4 no-scrollbar transition-opacity duration-500 ${
-              offset === null ? 'opacity-0' : 'opacity-100'
-            }`}
-          >
+              offset === null ? "opacity-0" : "opacity-100"
+            }`}>
             {offset !== null && (
               <>
-                <div className="shrink-0" style={{ width: offset - 32 }} aria-hidden="true" />
+                <div
+                  className="shrink-0"
+                  style={{ width: offset - 32 }}
+                  aria-hidden="true"
+                />
                 {scoresArray.map((vitamin, index) => {
                   const vitaminKey = vitaminIdToKey[vitamin.id as VitaminId];
                   if (vitaminKey) {
                     return (
-                      <div key={vitamin.id} className="pill-item w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border">
+                      <div
+                        key={vitamin.id}
+                        className="pill-item w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border">
                         <div className="space-y-4">
-                         <div className="space-y-2">
-                           <h2 className="text-2xl font-semibold text-primary">{vitamins[vitaminKey].name}</h2>
-                          <div className="flex gap-4 font-medium text-primary">
-                            {vitamins[vitaminKey].effects.map((effect, index) => (
-                              <div key={index} className="flex items-center gap-2">
-                                <Icon icon={effect.icon} color="#324033" size={20}  />
-                                <span>{effect.text}</span>
-                              </div>
-                            ))}
+                          <div className="space-y-2">
+                            <h2 className="text-2xl font-semibold text-primary">
+                              {vitamins[vitaminKey].name}
+                            </h2>
+                            <div className="flex gap-4 font-medium text-primary">
+                              {vitamins[vitaminKey].effects.map((effect, index) => (
+                                <div key={index} className="flex items-center gap-2">
+                                  <Icon icon={effect.icon} color="#324033" size={20} />
+                                  <span>{effect.text}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                         </div>
                           <div className="py-6">
                             <div className="relative h-[100px] w-full">
-                            <Image
-                              src={`/images/pills/pill-yellow.png`}
-                              alt={vitamins[vitaminKey].name}
-                              fill
-                              className="object-contain"
-                            />
+                              <Image
+                                src={`/images/pills/pill-yellow.png`}
+                                alt={vitamins[vitaminKey].name}
+                                fill
+                                className="object-contain"
+                              />
                             </div>
                           </div>
                           <p className="text-primary font-medium">

@@ -29,7 +29,7 @@ export default function Header() {
             />
           </Link>
           <div className="hidden lg:flex items-center gap-6">
-            <Link href="/">Jetzt konfigurieren</Link>
+            <Link href="/configure">Jetzt konfigurieren</Link>
             <Link href="/products">Alle Produkte</Link>
           </div>
         </div>

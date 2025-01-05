@@ -1,6 +1,6 @@
 import { getAllProducts } from "@/api/fetch";
+import FreeShippingPill from "@/components/custom/free-shipping-pill";
 import { Button } from "@/components/primitives/button";
-import Image from "next/image";
 import Link from "next/link";
 import ProductPreview from "./components/product-preview";
 import { ProductTypeNavigation } from "./components/product-type-navigation";
@@ -82,12 +82,7 @@ export default async function ProductsPage() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between">
             <h2 className="text-3xl font-medium mb-6 text-primary">Tagespacks</h2>
-            <div>
-              <span className="bg-[#E8E7DE] px-4 py-2 rounded-full text-sm text-primary font-medium flex items-center gap-2">
-                <Image src="/images/icons/truck.svg" alt="Truck" width={20} height={20} />
-                Kostenloser Versand für Bestellungen über €50
-              </span>
-            </div>
+            <FreeShippingPill />
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {tagespacks.map((product) => (
