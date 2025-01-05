@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { Button } from "./primitives/button";
 
 interface MobileHeaderProps {
   onToggle: (isOpen: boolean) => void;
@@ -79,6 +80,13 @@ export default function MobileHeader({ onToggle }: MobileHeaderProps) {
               className="block text-lg font-medium text-black hover:text-gray-700">
               Alle Produkte
             </Link>
+            <div>
+              <Link href="/questionnaire">
+                <Button asChild variant="pill" size={"pill-lg"}>
+                  <a>Zum Test</a>
+                </Button>
+              </Link>
+            </div>
             {/* <Link
               href="/"
               className="block text-lg font-medium text-black hover:text-gray-700">

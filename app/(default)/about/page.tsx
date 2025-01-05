@@ -2,6 +2,7 @@ import RoundedContainer from "@/components/custom/RoundedContainer";
 import { Button } from "@/components/primitives/button";
 import signature from "@/public/images/landing/signatures.png";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function page() {
   return (
@@ -18,6 +19,16 @@ export default function page() {
             <div>
               Wir verpacken alle unsere Bestellungen in unserem lokalen Standort in
               München, um sicherzustellen, dass alles die höchste Qualität hat.
+            </div>
+            <div>
+              Hast du Anregungen oder Wünsche? Schreibe uns an{" "}
+              <Link
+                href="mailto:hello@dunatura.com"
+                className="underline underline-offset-4">
+                {/* TODO: Fix mailto link */}
+                hello@dunatura.com
+              </Link>
+              !
             </div>
             <div className="space-y-4">
               <div>Mit Liebe, dein dunatura Team</div>
