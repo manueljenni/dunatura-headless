@@ -165,7 +165,7 @@ export async function getIngredients(ingredientsString: string): Promise<Ingredi
 export async function getAllProducts() {
   const { data } = await client.request(`#graphql
         query GetAllProducts {
-          products(sortKey: TITLE, first: 250) {
+          products(sortKey: TITLE, first: 250, query: "available_for_sale:true") {
             edges {
               node {
                 id
@@ -215,12 +215,7 @@ export async function getAllProducts() {
         }
       `);
 
-  return (
-    data?.products.edges
-      .map((edge) => edge.node)
-      .filter((product) => product.variants.edges[0]?.node.availableForSale) || []
-  );
-  //.filter((product) => product.tags.includes("Themenpack")) || []
+  return data?.products.edges.map((edge) => edge.node) || [];
 }
 
 export async function createCart() {

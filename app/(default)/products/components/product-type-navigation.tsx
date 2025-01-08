@@ -2,21 +2,36 @@
 
 type ProductType = {
   name: string;
+  count: number;
 };
 
-export function ProductTypeNavigation() {
+interface ProductTypeNavigationProps {
+  availableTypes: {
+    tagespacks: number;
+    bottles: number;
+    sprays: number;
+    cans: number;
+    tea: number;
+  };
+}
+
+export function ProductTypeNavigation(props: ProductTypeNavigationProps) {
+  const { availableTypes } = props;
   const productTypes: ProductType[] = [
-    { name: "Tagespacks" },
-    { name: "Flaschen" },
-    { name: "Sprays" },
-    { name: "Dosen" },
-    { name: "Tee" },
-  ];
+    { name: "Tagespacks", count: availableTypes.tagespacks },
+    { name: "Flaschen", count: availableTypes.bottles },
+    { name: "Sprays", count: availableTypes.sprays },
+    { name: "Dosen", count: availableTypes.cans },
+    { name: "Tee", count: availableTypes.tea },
+  ].filter((type) => type.count > 0);
+
+  if (productTypes.length === 0) return null;
 
   return (
     <section className="py-12">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div className="max-w-3xl">
+        <div
+          className={`grid grid-cols-2 md:grid-cols-${Math.min(3, productTypes.length)} lg:grid-cols-${Math.min(5, productTypes.length)} gap-4`}>
           {productTypes.map((type) => (
             <button
               key={type.name}

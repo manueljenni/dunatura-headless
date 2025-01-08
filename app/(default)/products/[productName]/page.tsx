@@ -1,5 +1,12 @@
 import { getAllProducts } from "@/api/fetch";
 import FreeShippingPill from "@/components/custom/free-shipping-pill";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/primitives/accordion";
+import { Leaf, MilkOff, Wheat } from "lucide-react";
 import { notFound } from "next/navigation";
 import PlanSelector from "./PlanSelector";
 
@@ -49,19 +56,42 @@ export default async function ProductPage({
 
           <PlanSelector variantId={product.variants.edges[0].node.id} />
 
-          <div className="flex justify-center gap-8 mt-8">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-neutral-100 rounded-full mb-2"></div>
+          <div className="flex justify-center items-center gap-8 mt-8">
+            <div className="text-center flex flex-col items-center">
+              <div className="w-12 h-12 border border-neutral-300 rounded-full mb-2 flex items-center justify-center">
+                <Leaf className="w-6 h-6 text-primary" />
+              </div>
               <span className="text-sm">Vegan</span>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-neutral-100 rounded-full mb-2"></div>
-              <span className="text-sm">Lactose-free</span>
+            <div className="text-center flex flex-col items-center">
+              <div className="w-12 h-12 border border-neutral-300 rounded-full mb-2 flex items-center justify-center">
+                <MilkOff className="w-6 h-6 text-primary" />
+              </div>
+              <span className="text-sm">Laktosefrei</span>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-neutral-100 rounded-full mb-2"></div>
-              <span className="text-sm">Gluten-free</span>
+            <div className="text-center flex flex-col items-center">
+              <div className="w-12 h-12 border border-neutral-300 rounded-full mb-2 flex items-center justify-center">
+                <Wheat className="w-6 h-6 text-primary" />
+              </div>
+              <span className="text-sm">Glutenfrei</span>
             </div>
+          </div>
+
+          <div className="mt-8">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="item-1">
+                <AccordionTrigger>Konsumation</AccordionTrigger>
+                <AccordionContent>
+                  Mit einem Glas Wasser und ohne Kauen einnehmen, nicht auf leeren Magen.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>Aufbewahrung</AccordionTrigger>
+                <AccordionContent>
+                  Bei Raumtemperatur und trocken aufbewahren.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </div>

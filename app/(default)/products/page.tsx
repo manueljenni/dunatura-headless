@@ -13,10 +13,12 @@ export default async function ProductsPage() {
   const cans = products.filter((product) => product.title.includes("Dose"));
   const tea = products.filter((product) => product.title.includes("Tee"));
 
+  console.log("Teas: ", tea);
+
   return (
     <div className="space-y-8">
       {/* Hero Section */}
-      <section className="py-16">
+      <section className="pt-16">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-12 text-primary">
             <div className="md:w-1/2">
@@ -46,7 +48,17 @@ export default async function ProductsPage() {
         </div>
       </section>
 
-      <ProductTypeNavigation />
+      <section className="py-12 max-w-6xl mx-auto px-4">
+        <ProductTypeNavigation
+          availableTypes={{
+            tagespacks: tagespacks.length,
+            bottles: bottles.length,
+            sprays: sprays.length,
+            cans: cans.length,
+            tea: tea.length,
+          }}
+        />
+      </section>
 
       {/* Featured Products */}
       {/* <section >
@@ -77,68 +89,75 @@ export default async function ProductsPage() {
         </div>
       </section> */}
 
-      {/* Tagespacks Section */}
-      <section id="tagespacks">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex justify-between">
-            <h2 className="text-3xl font-medium mb-6 text-primary">Tagespacks</h2>
-            <FreeShippingPill />
+      {tagespacks.length > 0 && (
+        <section id="tagespacks">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex flex-col md:flex-row justify-between">
+              <h2 className="text-3xl font-medium mb-6 text-primary">Tagespacks</h2>
+              <div className="w-fit">
+                <FreeShippingPill />
+              </div>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              {tagespacks.map((product) => (
+                <ProductPreview product={product} />
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {tagespacks.map((product) => (
-              <ProductPreview product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Flaschen Section */}
-      <section id="flaschen">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-medium mb-6 text-primary">Flaschen</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {bottles.map((product) => (
-              <ProductPreview product={product} />
-            ))}
+      {bottles.length > 0 && (
+        <section id="flaschen">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-medium mb-6 text-primary">Flaschen</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {bottles.map((product) => (
+                <ProductPreview product={product} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Sprays Section */}
-      <section id="sprays">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-medium mb-6 text-primary">Sprays</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {sprays.map((product) => (
-              <ProductPreview product={product} />
-            ))}
+      {sprays.length > 0 && (
+        <section id="sprays">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-medium mb-6 text-primary">Sprays</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {sprays.map((product) => (
+                <ProductPreview product={product} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Dosen Section */}
-      <section id="dosen">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-medium mb-6 text-primary">Dosen</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {cans.map((product) => (
-              <ProductPreview product={product} />
-            ))}
+      {cans.length > 0 && (
+        <section id="dosen">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-medium mb-6 text-primary">Dosen</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {cans.map((product) => (
+                <ProductPreview product={product} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Tee Section */}
-      <section id="tee">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-medium mb-6 text-primary">Tee</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {tea.map((product) => (
-              <ProductPreview product={product} />
-            ))}
+      {tea.length > 0 && (
+        <section id="tee">
+          <div className="max-w-6xl mx-auto px-4">
+            <h2 className="text-3xl font-medium mb-6 text-primary">Tee</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {tea.map((product) => (
+                <ProductPreview product={product} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }
