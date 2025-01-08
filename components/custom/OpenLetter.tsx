@@ -23,7 +23,7 @@ export default function OpenLetter() {
         <DialogTrigger asChild>
           <Button variant={"pillSecondary"}>Lese unseren Brief →</Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-h-[90vh] md:max-w-none overflow-y-auto max-w-[95vw] md:max-w-[85vw] px-4 md:px-6 rounded-xl md:rounded-none">
           <DialogHeader>
             <DialogTitle>Unser offener Brief: an Dich</DialogTitle>
             <DialogDescription>
