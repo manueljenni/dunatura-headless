@@ -120,12 +120,12 @@ export default async function ProductsPage() {
         </section>
       )}
 
-      {sprays.length > 0 && (
-        <section id="sprays">
+      {cans.length > 0 && (
+        <section id="dosen">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-3xl font-medium mb-6 text-primary">Sprays</h2>
+            <h2 className="text-3xl font-medium mb-6 text-primary">Dosen</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {sprays.map((product) => (
+              {cans.map((product) => (
                 <ProductPreview product={product} />
               ))}
             </div>
@@ -133,12 +133,12 @@ export default async function ProductsPage() {
         </section>
       )}
 
-      {cans.length > 0 && (
-        <section id="dosen">
+      {sprays.length > 0 && (
+        <section id="sprays">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-3xl font-medium mb-6 text-primary">Dosen</h2>
+            <h2 className="text-3xl font-medium mb-6 text-primary">Sprays</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {cans.map((product) => (
+              {sprays.map((product) => (
                 <ProductPreview product={product} />
               ))}
             </div>
