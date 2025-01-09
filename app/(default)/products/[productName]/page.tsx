@@ -95,6 +95,24 @@ export default async function ProductPage({
           </div>
         </div>
       </div>
+
+      <div className="mt-16">
+        <h2 className="text-3xl font-medium mb-6 text-primary text-center">
+          Was ist drin?
+        </h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {/* {product.metafield?.reference?.ingredients.map((ingredient) => (
+                <div className="flex flex-col items-center">
+                  <img
+                    src={ingredient.image}
+                    alt={ingredient.name}
+                    className="w-12 h-12"
+                  />
+                  <span className="text-sm">{ingredient.name}</span>
+                </div>
+              ))} */}
+        </div>
+      </div>
     </div>
   );
 }

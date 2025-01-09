@@ -63,7 +63,7 @@ export default async function ProductsPage() {
       {/* Featured Products */}
       {/* <section >
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-4">
             {featuredProducts.map((product, index) => (
               <div key={product.id} className="bg-white p-6 rounded-lg">
                 <div className="flex items-center justify-between mb-4">
@@ -98,7 +98,7 @@ export default async function ProductsPage() {
                 <FreeShippingPill />
               </div>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-4">
               {tagespacks.map((product) => (
                 <ProductPreview product={product} />
               ))}
@@ -111,7 +111,7 @@ export default async function ProductsPage() {
         <section id="flaschen">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl font-medium mb-6 text-primary">Flaschen</h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-4">
               {bottles.map((product) => (
                 <ProductPreview product={product} />
               ))}
@@ -124,7 +124,7 @@ export default async function ProductsPage() {
         <section id="dosen">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl font-medium mb-6 text-primary">Dosen</h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-4">
               {cans.map((product) => (
                 <ProductPreview product={product} />
               ))}
@@ -137,7 +137,7 @@ export default async function ProductsPage() {
         <section id="sprays">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl font-medium mb-6 text-primary">Sprays</h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-4">
               {sprays.map((product) => (
                 <ProductPreview product={product} />
               ))}
@@ -150,7 +150,7 @@ export default async function ProductsPage() {
         <section id="tee">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-3xl font-medium mb-6 text-primary">Tee</h2>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-3 gap-4">
               {tea.map((product) => (
                 <ProductPreview product={product} />
               ))}
