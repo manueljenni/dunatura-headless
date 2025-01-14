@@ -1,8 +1,42 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const denimINK = localFont({
+  src: [
+    {
+      path: "../public/fonts/DenimINK-Light.woff",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/DenimINK-Regular.woff",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/DenimINK-Medium.woff",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/DenimINK-SemiBold.woff",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/DenimINK-Bold.woff",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/DenimINK-Heavy.woff",
+      weight: "800",
+      style: "normal",
+    },
+  ],
+  variable: "--font-denimink",
+});
 
 export const metadata: Metadata = {
   title: "dunatura | Personalisierte Mikronährstoffe",
@@ -15,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de">
+    <html lang="de" className={`${denimINK.variable}`}>
       <body>{children}</body>
     </html>
   );

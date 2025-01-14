@@ -5,7 +5,6 @@ import {
   vitaminsArray,
   type Vitamin,
 } from "@/app/questionnaire/types";
-import pillOmega from "@/public/images/pills/pill-yellow.png";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -46,7 +45,7 @@ export default function ConfigurePage() {
           <h1 className="text-[#9CA29E] text-xl font-medium">
             Erstelle deine tägliche Routine
           </h1>
-          <h2 className="text-[#0F231C] text-3xl font-medium pb-4">
+          <h2 className="text-[#0F231C] text-3xl font-medium pb-4 font-denimink">
             Wähle 4-8 Vitamine & Mikronährstoffe
           </h2>
           <hr className="border-t border-gray-300" />
@@ -89,7 +88,9 @@ export default function ConfigurePage() {
                       width={80}
                       height={80}
                     />
-                    <h3 className="font-medium text-xl mb-6">{vitamin.name}</h3>
+                    <h3 className="font-medium font-denimink text-xl mb-6">
+                      {vitamin.name}
+                    </h3>
                     <p className="text-gray-500 text-sm">{vitamin.headline}</p>
                   </div>
                 </div>
@@ -108,12 +109,14 @@ export default function ConfigurePage() {
                 className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
                 <div className="flex items-center gap-3">
                   <Image
-                    src={pillOmega}
+                    src={vitamin.getImageSrc()}
                     alt={vitamin.name}
                     className="w-10 h-10 object-contain"
+                    width={40}
+                    height={40}
                   />
                   <div>
-                    <p className="font-medium">{vitamin.name}</p>
+                    <p className="font-medium font-denimink">{vitamin.name}</p>
                     <p className="text-gray-500 text-sm">€7,20</p>
                   </div>
                 </div>
@@ -135,7 +138,7 @@ export default function ConfigurePage() {
 
         <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6 space-y-6">
           <div>
-            <h4 className="text-2xl font-medium mb-4">Deine Routine</h4>
+            <h4 className="text-2xl font-medium mb-4 font-denimink">Deine Routine</h4>
           </div>
 
           <div className="border-t pt-4">
