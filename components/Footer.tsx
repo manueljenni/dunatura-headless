@@ -7,8 +7,8 @@ import { usePathname } from "next/navigation";
 export default function Footer() {
   const pathname = usePathname();
   const isProductsRoute = pathname.startsWith("/products");
-  const bgColor = isProductsRoute ? "#F2F1E9" : "#fbfcf8";
-
+  const isConfigureRoute = pathname.startsWith("/configure");
+  const bgColor = isProductsRoute || isConfigureRoute ? "#F2F1E9" : "#fbfcf8";
   return (
     <div className="relative overflow-hidden">
       <div

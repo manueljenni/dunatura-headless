@@ -1,60 +1,19 @@
 "use client";
 
-import { vitaminsArray } from "@/app/questionnaire/types";
+import {
+  vitaminCategories,
+  vitaminsArray,
+  type Vitamin,
+} from "@/app/questionnaire/types";
 import pillOmega from "@/public/images/pills/pill-yellow.png";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
-type Vitamin = {
-  id: string;
-  name: string;
-  price: number;
-  description: string;
-  category: "general" | "energy";
-};
-
-type VitaminCardProps = {
-  vitamin: Vitamin;
-  selected: boolean;
-  onSelect: (vitamin: Vitamin) => void;
-};
-
-function VitaminCard({ vitamin, selected, onSelect }: VitaminCardProps) {
-  return (
-    <div
-      className={`relative p-6 rounded-3xl border cursor-pointer transition-all
-        ${
-          selected ? "border-primary bg-white shadow-sm" : "border-[#E2E1DC] bg-[#FCFCF8]"
-        }`}
-      onClick={() => onSelect(vitamin)}>
-      {selected && (
-        <div className="absolute top-4 right-4">
-          <div className="bg-primary rounded-full p-1">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M20 6L9 17L4 12"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-        </div>
-      )}
-      <div className="flex flex-col items-center text-center">
-        <Image
-          src={pillOmega}
-          alt={vitamin.name}
-          className="w-20 h-20 object-contain mb-4"
-        />
-        <h3 className="font-medium text-xl mb-2">{vitamin.name}</h3>
-        <p className="text-gray-500 text-sm mb-4">{vitamin.description}</p>
-        <p className="text-sm font-medium">€{vitamin.price}/day</p>
-      </div>
-    </div>
-  );
-}
+const categories = Object.values(vitaminCategories).map((category) => ({
+  ...category,
+  vitamins: vitaminsArray.filter((v) => category.vitaminIds.includes(v.id as never)),
+}));
 
 export default function ConfigurePage() {
   const [selectedVitamins, setSelectedVitamins] = useState<Vitamin[]>([]);
@@ -75,90 +34,146 @@ export default function ConfigurePage() {
     });
   };
 
-  const generalVitamins: Vitamin[] = vitaminsArray.map((v) => ({
-    id: v.id.toString(),
-    name: v.name,
-    price: 7.2,
-    description: "The complex for tissue growth and cell division.",
-    category: "general",
-  }));
-
-  const energyVitamins: Vitamin[] = vitaminsArray.slice(0, 3).map((v) => ({
-    id: `energy-${v.id}`,
-    name: v.name,
-    price: 7.2,
-    description: "The complex for tissue growth and cell division.",
-    category: "energy",
-  }));
-
   const isVitaminSelected = (vitamin: Vitamin) =>
     selectedVitamins.some((v) => v.id === vitamin.id);
 
-  const totalPrice = selectedVitamins.reduce((sum, vitamin) => sum + vitamin.price, 0);
+  const totalPrice = selectedVitamins.reduce((sum, vitamin) => sum + 7.2, 0);
 
   return (
-    <div className="space-y-8 pb-32 max-w-6xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-medium mb-2">Build your daily routine</h1>
-        <h2 className="text-2xl mb-6">Choose 4-8 vitamins & micronutrients</h2>
-      </div>
-
-      <div>
-        <h3 className="text-xl font-medium mb-4">General health</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {generalVitamins.map((vitamin) => (
-            <VitaminCard
-              key={vitamin.id}
-              vitamin={vitamin}
-              selected={isVitaminSelected(vitamin)}
-              onSelect={handleVitaminSelect}
-            />
-          ))}
+    <div className="flex gap-8 max-w-6xl mx-auto pb-8 px-4">
+      <div className="space-y-8 flex-1">
+        <div className="space-y-2">
+          <h1 className="text-[#9CA29E] text-xl font-medium">
+            Erstelle deine tägliche Routine
+          </h1>
+          <h2 className="text-[#0F231C] text-3xl font-medium pb-4">
+            Wähle 4-8 Vitamine & Mikronährstoffe
+          </h2>
+          <hr className="border-t border-gray-300" />
         </div>
-      </div>
 
-      <div>
-        <h3 className="text-xl font-medium mb-4">Energy</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {energyVitamins.map((vitamin) => (
-            <VitaminCard
-              key={vitamin.id}
-              vitamin={vitamin}
-              selected={isVitaminSelected(vitamin)}
-              onSelect={handleVitaminSelect}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="fixed bottom-0 left-0 right-0 bg-white p-4 border-t">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div>
-            <h4 className="text-2xl font-medium">Review your routine</h4>
-            <div className="flex gap-4 items-center">
-              <div className="flex -space-x-2">
-                {selectedVitamins.map((vitamin, i) => (
-                  <Image
-                    key={vitamin.id}
-                    src={pillOmega}
-                    alt={vitamin.name}
-                    className="w-8 h-8 object-contain"
-                  />
-                ))}
-              </div>
-              <span className="text-gray-500">{selectedVitamins.length} selected</span>
-              <span className="font-medium">€{totalPrice.toFixed(2)}/day</span>
+        {categories.map((category) => (
+          <div key={category.id}>
+            <h3 className="text-xl font-medium mb-4">{category.title}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {category.vitamins.map((vitamin) => (
+                <div
+                  key={vitamin.id}
+                  className={`relative p-6 rounded-3xl cursor-pointer transition-all
+                    ${
+                      isVitaminSelected(vitamin)
+                        ? "bg-[#F2F7F3] ring-2 ring-primary"
+                        : "bg-[#FCFCF8] ring-1 ring-[#E2E1DC]"
+                    }`}
+                  onClick={() => handleVitaminSelect(vitamin)}>
+                  {isVitaminSelected(vitamin) && (
+                    <div className="absolute top-4 left-4">
+                      <div className="bg-primary rounded-full p-1">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                          <path
+                            d="M20 6L9 17L4 12"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex flex-col items-center text-center">
+                    <Image
+                      src={pillOmega}
+                      alt={vitamin.name}
+                      className="w-20 h-20 object-contain mb-4"
+                    />
+                    <h3 className="font-medium text-xl mb-6">{vitamin.name}</h3>
+                    <p className="text-gray-500 text-sm">{vitamin.headline}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-          <button
-            className={`px-8 py-3 rounded-full font-medium transition-all
-              ${
-                selectedVitamins.length >= 4
-                  ? "bg-primary text-white"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
-              }`}
-            disabled={selectedVitamins.length < 4}>
-            Continue
+        ))}
+      </div>
+
+      <div className="w-[400px] sticky top-4 h-fit space-y-6">
+        {selectedVitamins.length > 0 && (
+          <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6">
+            {selectedVitamins.map((vitamin) => (
+              <div
+                key={vitamin.id}
+                className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={pillOmega}
+                    alt={vitamin.name}
+                    className="w-10 h-10 object-contain"
+                  />
+                  <div>
+                    <p className="font-medium">{vitamin.name}</p>
+                    <p className="text-gray-500 text-sm">€7,20</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleVitaminSelect(vitamin)}
+                    className="w-8 h-8 rounded-full bg-[#F6F6F3] flex items-center justify-center text-gray-600 hover:bg-[#EEEEE9]">
+                    -
+                  </button>
+                  <span className="w-6 text-center">1</span>
+                  <button className="w-8 h-8 rounded-full bg-[#F6F6F3] flex items-center justify-center text-gray-600 hover:bg-[#EEEEE9]">
+                    +
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6 space-y-6">
+          <div>
+            <h4 className="text-2xl font-medium mb-4">Deine Routine</h4>
+          </div>
+
+          <div className="border-t pt-4">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-gray-500">Tagespreis</span>
+              <span className="font-medium">€{(totalPrice / 28).toFixed(2)}/Tag</span>
+            </div>
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-gray-500">Monatspreis</span>
+              <span className="font-medium">€{totalPrice.toFixed(2)}/Monat</span>
+            </div>
+            <button
+              className={`w-full py-3 rounded-full font-medium transition-all text-center
+                ${
+                  selectedVitamins.length >= 4
+                    ? "bg-primary text-white"
+                    : "bg-background text-[#9CA29E] cursor-not-allowed"
+                }`}
+              disabled={selectedVitamins.length < 4}>
+              Weiter
+            </button>
+            {selectedVitamins.length < 4 && (
+              <p className="text-center text-sm text-gray-500 mt-2">
+                Wähle noch {4 - selectedVitamins.length} weitere Zutaten aus
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-[#E8E7DE] rounded-3xl p-6 space-y-4">
+          <h4 className="text-[#0F231C] text-xl font-medium">
+            Möchtest du eine personalisierte Empfehlung basierend auf deinem Lebensstil
+            und deinen Zielen?
+          </h4>
+          <button className="w-fit py-2 px-4 rounded-full bg-white font-semibold text-[#0F231C] text-left flex items-center justify-between group hover:bg-gray-50">
+            <p className="mr-2">Mache den Test</p>
+            <ChevronRight
+              size={18}
+              className="transform transition-transform group-hover:translate-x-1 font-medium"
+            />
           </button>
         </div>
       </div>

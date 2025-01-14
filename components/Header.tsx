@@ -34,7 +34,7 @@ export default function Header() {
             <Link href="/products">Alle Produkte</Link>
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center">
           <Link href="/" className="hidden lg:inline-block">
             <Link href="/questionnaire">
               <Button asChild variant="pill" size={"pill-lg"}>

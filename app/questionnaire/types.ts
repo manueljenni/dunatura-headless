@@ -178,7 +178,7 @@ export const vitamins = {
     name: "Vitamin D3+K2",
     subtitle: "1.000IE D3 + 200µg K2",
     longTitle: "Vitamin D3 1.000IE + K2 200µg",
-    headline: "Das Sonnenvitamin mit seinem Cofaktor.",
+    headline: "Das Sonnenvitamin für starke Knochen und ein gesundes Immunsystem.",
     shopifyId: "vitamin-d2k3",
     color: "#FBBE5C",
     effects: [
@@ -191,7 +191,7 @@ export const vitamins = {
     name: "Coenzym Q10",
     subtitle: "200mg Q10",
     longTitle: "Coenzym Q10 - 200mg",
-    headline: "Bestandteil aller Zellen, besonders Lunge, Leber und Herz.",
+    headline: "Natürlicher Energielieferant für Herz, Muskeln und Nervensystem.",
     shopifyId: "q10",
     color: "#f4c245",
     effects: [
@@ -204,7 +204,7 @@ export const vitamins = {
     name: "Zink",
     subtitle: "25mg Zink",
     longTitle: "Zink - 25mg",
-    headline: "Das Multitalent für Immunsystem, Haut, Haare und Fingernägel.",
+    headline: "Essentielles Spurenelement für Immunsystem, Haut und Hormone.",
     shopifyId: "zink",
     color: "#C4DAD1",
     effects: [
@@ -217,8 +217,7 @@ export const vitamins = {
     name: "Vitamin B12 + Komplex",
     subtitle: "B12 + Komplex",
     longTitle: "Vitamin B12 250µg + Folat 400µg + Komplex",
-    headline:
-      "Hochdosiertes Vitamin B12 und Folat - ergänzt mit den weiteren B-Vitaminen.",
+    headline: "Der B-Vitamin Komplex für Energie, Nervensystem und Blutbildung.",
     shopifyId: "vitamin-b12-folat",
     color: "#D53140",
     effects: [
@@ -231,7 +230,7 @@ export const vitamins = {
     name: "Ashwagandha",
     subtitle: "mit 25mg Withanoliden",
     longTitle: "Ashwaghandha 500mg reines Wurzelextrakt",
-    headline: "Ashwaghanda",
+    headline: "Traditionelles Adaptogen für Entspannung und mentale Balance.",
     shopifyId: "ashwagandha",
     color: "#AECAE7",
     effects: [
@@ -240,6 +239,8 @@ export const vitamins = {
     ],
   },
 } as const;
+
+export type Vitamin = (typeof vitamins)[keyof typeof vitamins];
 
 export const vitaminsArray = Object.keys(vitamins).map((id: any) => {
   return vitamins[id as keyof typeof vitamins];
@@ -883,3 +884,32 @@ export const healthGoalIcons = {
 } as const;
 
 export type HealthGoal = keyof typeof healthGoalIcons;
+
+export const vitaminCategories = {
+  GENERAL: {
+    id: "general",
+    title: "Allgemeine Gesundheit",
+    vitaminIds: [vitamins.VIT_D3_K2.id, vitamins.VIT_B12_KOMPLEX.id, vitamins.ZINK.id],
+  },
+  ENERGY: {
+    id: "energy",
+    title: "Energie & Leistung",
+    vitaminIds: [vitamins.COENZYM_Q10.id, vitamins.EISEN_VIT_C.id, vitamins.MAGNESIUM.id],
+  },
+  IMMUNITY_BEAUTY: {
+    id: "immunity_beauty",
+    title: "Immunsystem & Schönheit",
+    vitaminIds: [
+      vitamins.VIT_C.id,
+      vitamins.HYALURONSAURE.id,
+      vitamins.OPC_TRAUBENKERNEXTKRAKT.id,
+    ],
+  },
+  JOINTS_RELAX: {
+    id: "joints_relax",
+    title: "Gelenke & Entspannung",
+    vitaminIds: [vitamins.MSM.id, vitamins.OMEGA_3.id, vitamins.ASHWAGANDHA.id],
+  },
+} as const;
+
+export type VitaminCategory = (typeof vitaminCategories)[keyof typeof vitaminCategories];
