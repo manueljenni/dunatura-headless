@@ -9,10 +9,11 @@ import { Button } from "./primitives/button";
 export default function Header() {
   const pathname = usePathname();
   const isProductsRoute = pathname.startsWith("/products");
+  const isConfigureRoute = pathname.startsWith("/configure");
 
   return (
     <div
-      className={`w-full text-primary ${isProductsRoute ? "bg-[#F2F1E9]" : "bg-lightBackground"}`}>
+      className={`w-full text-primary ${isProductsRoute || isConfigureRoute ? "bg-[#F2F1E9]" : "bg-lightBackground"}`}>
       <nav className="flex justify-between items-center px-4 py-4 h-18 font-medium max-w-6xl mx-auto">
         <div className="flex items-center gap-6">
           <Link href="/">
