@@ -83,9 +83,11 @@ export default function ConfigurePage() {
                   )}
                   <div className="flex flex-col items-center text-center">
                     <Image
-                      src={pillOmega}
+                      src={vitamin.getImageSrc()}
                       alt={vitamin.name}
                       className="w-20 h-20 object-contain mb-4"
+                      width={80}
+                      height={80}
                     />
                     <h3 className="font-medium text-xl mb-6">{vitamin.name}</h3>
                     <p className="text-gray-500 text-sm">{vitamin.headline}</p>

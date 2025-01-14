@@ -28,8 +28,18 @@ export enum QuestionType {
   TagespackPlaceholder = "tagespack_placeholder",
 }
 
+const baseVitamin = {
+  getImageSrc: function (this: any) {
+    const key = Object.keys(vitamins).find(
+      (k) => vitamins[k as keyof typeof vitamins] === this,
+    );
+    return `/images/pills/${key?.toLowerCase().replace(/_/g, "-")}.png`;
+  },
+};
+
 export const vitamins = {
   OMEGA_3: {
+    ...baseVitamin,
     id: 8,
     name: "Omega 3",
     subtitle: "300mg Omega 3",
@@ -43,6 +53,7 @@ export const vitamins = {
     ],
   },
   HYALURONSAURE: {
+    ...baseVitamin,
     id: 10,
     name: "Hyaluronsäure",
     subtitle: "360mg Hyaluronsäure",
@@ -56,6 +67,7 @@ export const vitamins = {
     ],
   },
   VIT_C: {
+    ...baseVitamin,
     id: 11,
     name: "Vitamin C",
     subtitle: "100mg Vitamin C",
@@ -69,6 +81,7 @@ export const vitamins = {
     ],
   },
   MSM: {
+    ...baseVitamin,
     id: 14,
     name: "MSM",
     subtitle: "500mg MSM",
@@ -83,6 +96,7 @@ export const vitamins = {
     ],
   },
   KALIUM: {
+    ...baseVitamin,
     id: 15,
     name: "Kalium",
     subtitle: "180mg Kalium",
@@ -96,6 +110,7 @@ export const vitamins = {
     ],
   },
   L_ARGININ: {
+    ...baseVitamin,
     id: 16,
     name: "L-Arginin",
     subtitle: "620mg L-Arginin",
@@ -109,6 +124,7 @@ export const vitamins = {
     ],
   },
   MAGNESIUM: {
+    ...baseVitamin,
     id: 17,
     name: "Magnesium",
     subtitle: "75mg Magnesium",
@@ -122,6 +138,7 @@ export const vitamins = {
     ],
   },
   SELEN: {
+    ...baseVitamin,
     id: 18,
     name: "Selen",
     subtitle: "70µg Selen",
@@ -135,6 +152,7 @@ export const vitamins = {
     ],
   },
   EISEN_VIT_C: {
+    ...baseVitamin,
     id: 19,
     name: "Eisen + Vitamin C",
     subtitle: "14mg Eisen + 40mg Vitamin C",
@@ -148,6 +166,7 @@ export const vitamins = {
     ],
   },
   KURKUMA_EXTRACT: {
+    ...baseVitamin,
     id: 29,
     name: "Kurkuma Extrakt",
     subtitle: "300mg Curcumin",
@@ -161,6 +180,7 @@ export const vitamins = {
     ],
   },
   OPC_TRAUBENKERNEXTKRAKT: {
+    ...baseVitamin,
     id: 30,
     name: "OPC Traubenkernextrakt",
     subtitle: "40% OPC",
@@ -174,6 +194,7 @@ export const vitamins = {
     ],
   },
   VIT_D3_K2: {
+    ...baseVitamin,
     id: 41,
     name: "Vitamin D3+K2",
     subtitle: "1.000IE D3 + 200µg K2",
@@ -187,6 +208,7 @@ export const vitamins = {
     ],
   },
   COENZYM_Q10: {
+    ...baseVitamin,
     id: 44,
     name: "Coenzym Q10",
     subtitle: "200mg Q10",
@@ -200,6 +222,7 @@ export const vitamins = {
     ],
   },
   ZINK: {
+    ...baseVitamin,
     id: 55,
     name: "Zink",
     subtitle: "25mg Zink",
@@ -213,6 +236,7 @@ export const vitamins = {
     ],
   },
   VIT_B12_KOMPLEX: {
+    ...baseVitamin,
     id: 56,
     name: "Vitamin B12 + Komplex",
     subtitle: "B12 + Komplex",
@@ -226,6 +250,7 @@ export const vitamins = {
     ],
   },
   ASHWAGANDHA: {
+    ...baseVitamin,
     id: 60,
     name: "Ashwagandha",
     subtitle: "mit 25mg Withanoliden",
@@ -913,3 +938,7 @@ export const vitaminCategories = {
 } as const;
 
 export type VitaminCategory = (typeof vitaminCategories)[keyof typeof vitaminCategories];
+
+export const getVitaminImage = (vitamin: Vitamin): string => {
+  return `/images/pills/${vitamin.shopifyId}.png`;
+};

@@ -13,8 +13,6 @@ export default async function ProductsPage() {
   const cans = products.filter((product) => product.title.includes("Dose"));
   const tea = products.filter((product) => product.title.includes("Tee"));
 
-  console.log("Teas: ", tea);
-
   return (
     <div className="space-y-8">
       {/* Hero Section */}

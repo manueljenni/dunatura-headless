@@ -218,6 +218,30 @@ export async function getAllProducts() {
   return data?.products.edges.map((edge) => edge.node) || [];
 }
 
+export async function getAllVitamins() {
+  const { data } = await client.request(`#graphql
+    query GetAllVitamins {
+      products(sortKey: TITLE, first: 250, query: "available_for_sale:true AND product_type:'Rohstoff'") {
+        edges {
+          node {
+            id
+            title
+            images(first: 10) {
+              edges {
+                node {
+                  originalSrc
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  return data?.products.edges.map((edge) => edge.node) || [];
+}
+
 export async function createCart() {
   const cartCreateMutation = `#graphql
   mutation CartCreate($input: CartInput!, $country: CountryCode, $language: LanguageCode) 
