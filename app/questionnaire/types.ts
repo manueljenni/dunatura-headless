@@ -154,7 +154,7 @@ export const vitamins = {
   EISEN_VIT_C: {
     ...baseVitamin,
     id: 19,
-    name: "Eisen + Vitamin C",
+    name: "Eisen + Vit. C",
     subtitle: "14mg Eisen + 40mg Vitamin C",
     longTitle: "Eisen 14mg + natürliches Vitamin C",
     headline: "Die Kombination für den Energiestoffwechsel.",
@@ -182,7 +182,7 @@ export const vitamins = {
   OPC_TRAUBENKERNEXTKRAKT: {
     ...baseVitamin,
     id: 30,
-    name: "OPC Traubenkernextrakt",
+    name: "OPC",
     subtitle: "40% OPC",
     longTitle: "OPC Traubenkernextrakt - 380mg",
     headline: "Das starke Antioxidans aus der Natur.",
