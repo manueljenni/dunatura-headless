@@ -29,6 +29,7 @@ export default function ConfigurePage() {
   const router = useRouter();
   const [showFloatingPill, setShowFloatingPill] = useState(false);
   const checkoutRef = useRef<HTMLDivElement>(null);
+  const routineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +44,16 @@ export default function ConfigurePage() {
 
   const scrollToCheckout = () => {
     checkoutRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToRoutine = () => {
+    if (routineRef.current) {
+      const yOffset = -40;
+      const element = routineRef.current;
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
 
   const getTotalItems = () =>
@@ -213,7 +224,7 @@ export default function ConfigurePage() {
           )}
 
           <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6 space-y-6">
-            <div>
+            <div ref={routineRef}>
               <h4 className="text-2xl text-primary font-medium mb-4 font-denimink">
                 Deine Routine
               </h4>
@@ -228,19 +239,21 @@ export default function ConfigurePage() {
                 <span className="text-gray-500">Monatspreis</span>
                 <span className="font-medium">€{totalPrice.toFixed(2)}/Monat</span>
               </div>
-              <button
-                className={`w-full py-3 rounded-full font-medium transition-all text-center
+              <Button
+                className={`w-full transition-all
                   ${
                     totalItems >= 4
-                      ? "bg-primary text-white"
+                      ? "bg-primary text-white hover:bg-primary/90"
                       : "bg-background text-[#9CA29E] cursor-not-allowed"
                   }`}
-                disabled={totalItems < 4}>
+                disabled={totalItems < 4}
+                variant="pill"
+                size="pill-xl">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-600">Weiter</span>
-                  <ChevronRight size={16} className="text-gray-400" />
+                  <span className="font-medium">Weiter</span>
+                  <ChevronRight size={16} />
                 </div>
-              </button>
+              </Button>
               {totalItems < 4 && (
                 <p className="text-center text-sm text-secondary mt-4">
                   Wähle noch {4 - totalItems} weitere Zutaten aus
@@ -256,13 +269,13 @@ export default function ConfigurePage() {
             </h4>
             <Button
               variant="pill"
-              size="pill"
-              className="bg-white text-[#0F231C] hover:bg-gray-50 font-semibold"
+              size="pill-lg"
+              className="w-fit bg-white text-[#0F231C] hover:bg-gray-50 flex items-center justify-center gap-2"
               onClick={() => router.push("/questionnaire")}>
-              <p className="mr-2">Mache den Test</p>
+              <span className="font-medium">Mache den Test</span>
               <ChevronRight
                 size={18}
-                className="transform transition-transform group-hover:translate-x-1 font-medium"
+                className="transform transition-transform group-hover:translate-x-1"
               />
             </Button>
           </div>
@@ -270,38 +283,40 @@ export default function ConfigurePage() {
       </div>
 
       {/* Floating Pill */}
-      {showFloatingPill && selectedVitamins.length > 0 && (
-        <div
-          onClick={scrollToCheckout}
-          className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg py-1.5 px-3 flex items-center gap-2 lg:hidden cursor-pointer border border-neutral-300">
-          <div className="flex items-center">
-            {selectedVitamins.slice(0, 2).map((item, index) => (
-              <div
-                key={item.vitamin.id}
-                className={`w-8 h-8 rounded-full bg-[#F6F6F3] flex items-center justify-center border-2 border-white ${
-                  index > 0 ? "-ml-3" : ""
-                }`}>
-                <Image
-                  src={item.vitamin.getImageSrc()}
-                  alt={item.vitamin.name}
-                  width={20}
-                  height={20}
-                  className="w-5 h-5 object-contain"
-                />
-              </div>
-            ))}
-            {selectedVitamins.length > 2 && (
-              <div className="w-8 h-8 rounded-full bg-[#F6F6F3] flex items-center justify-center text-xs font-medium -ml-3 border-2 border-white">
-                +{selectedVitamins.length - 2}
-              </div>
-            )}
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="font-medium text-primary">Weiter</span>
-            <ChevronRight size={16} className="text-primary" />
-          </div>
+      <div
+        className={`fixed bottom-4 left-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg py-1.5 px-3 flex items-center gap-2 lg:hidden cursor-pointer border border-neutral-300 transition-all duration-300 ${
+          showFloatingPill && selectedVitamins.length > 0
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+        onClick={scrollToRoutine}>
+        <div className="flex items-center">
+          {selectedVitamins.slice(0, 2).map((item, index) => (
+            <div
+              key={item.vitamin.id}
+              className={`w-8 h-8 rounded-full bg-[#F6F6F3] flex items-center justify-center border-2 border-white ${
+                index > 0 ? "-ml-3" : ""
+              }`}>
+              <Image
+                src={item.vitamin.getImageSrc()}
+                alt={item.vitamin.name}
+                width={20}
+                height={20}
+                className="w-5 h-5 object-contain"
+              />
+            </div>
+          ))}
+          {selectedVitamins.length > 2 && (
+            <div className="w-8 h-8 rounded-full bg-[#F6F6F3] flex items-center justify-center text-xs font-medium -ml-3 border-2 border-white">
+              +{selectedVitamins.length - 2}
+            </div>
+          )}
         </div>
-      )}
+        <div className="flex items-center gap-1">
+          <span className="font-medium text-primary">Weiter</span>
+          <ChevronRight size={16} className="text-primary" />
+        </div>
+      </div>
     </>
   );
 }
