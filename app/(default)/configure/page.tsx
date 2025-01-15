@@ -6,6 +6,7 @@ import {
   type Vitamin,
 } from "@/app/questionnaire/types";
 import { useToast } from "@/hooks/use-toast";
+import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { CartItem } from "./_components/CartItem";
 import { FloatingPill } from "./_components/FloatingPill";
@@ -146,14 +147,16 @@ export default function ConfigurePage() {
           className="w-full lg:w-[400px] lg:sticky lg:top-4 h-fit space-y-6">
           {selectedVitamins.length > 0 && (
             <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6">
-              {selectedVitamins.map((item) => (
-                <CartItem
-                  key={item.vitamin.id}
-                  vitamin={item.vitamin}
-                  quantity={item.quantity}
-                  onUpdateQuantity={updateQuantity}
-                />
-              ))}
+              <AnimatePresence>
+                {selectedVitamins.map((item) => (
+                  <CartItem
+                    key={item.vitamin.id}
+                    vitamin={item.vitamin}
+                    quantity={item.quantity}
+                    onUpdateQuantity={updateQuantity}
+                  />
+                ))}
+              </AnimatePresence>
             </div>
           )}
 

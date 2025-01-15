@@ -98,7 +98,7 @@ export default async function ProductsPage() {
             </div>
             <div className="grid md:grid-cols-3 gap-4">
               {tagespacks.map((product) => (
-                <ProductPreview product={product} />
+                <ProductPreview product={product} key={product.id} />
               ))}
             </div>
           </div>
