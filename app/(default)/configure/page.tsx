@@ -18,7 +18,7 @@ const categories = Object.values(vitaminCategories).map((category) => ({
   vitamins: vitaminsArray.filter((v) => category.vitaminIds.includes(v.id as never)),
 }));
 
-interface SelectedVitamin {
+export interface SelectedVitamin {
   vitamin: Vitamin;
   quantity: number;
 }
@@ -120,7 +120,7 @@ export default function ConfigurePage() {
       <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto pb-8 px-4">
         <div className="space-y-8 lg:flex-1">
           <div className="space-y-2">
-            <h1 className="text-[#9CA29E] text-xl font-medium">
+            <h1 className="text-[#939E90] text-xl font-semibold">
               Erstelle deine tägliche Routine
             </h1>
             <h2 className="text-primary text-3xl font-medium pb-4 font-denimink">
