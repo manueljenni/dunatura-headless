@@ -1,5 +1,6 @@
 "use server";
 
+import { createAdminApiClient } from "@shopify/admin-api-client";
 import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 import axios from "axios";
 import fs from "fs/promises";
@@ -17,6 +18,12 @@ const client = createStorefrontApiClient({
   storeDomain: storeDomain,
   apiVersion: "2024-10",
   publicAccessToken: publicAccessToken,
+});
+
+const adminClient = createAdminApiClient({
+  storeDomain: process.env.SHOPIFY_STORE_DOMAIN!,
+  accessToken: process.env.SHOPIFY_ADMIN_ACCESS_TOKEN!,
+  apiVersion: "2024-01",
 });
 
 export async function getThemenpacksWithIngredients(): Promise<Tagespack[]> {

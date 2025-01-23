@@ -1,21 +1,6 @@
-export type Tagespack = {
-  shopifyId: string;
-  title: string;
-  description: string | null;
-  price: number;
-  pricePer100g: number;
-  ingredients: Ingredient[];
-};
-
-export type Ingredient = {
-  shopifyId: string;
-  title: string;
-  image: string;
-};
-
 export interface ShopifyOrder {
   id: string;
-  orderNumber: number;
+  orderNumber: string;
   email: string;
   createdAt: string;
   totalPrice: string;
