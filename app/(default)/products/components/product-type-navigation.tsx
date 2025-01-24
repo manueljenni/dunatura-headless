@@ -27,11 +27,13 @@ export function ProductTypeNavigation(props: ProductTypeNavigationProps) {
 
   if (productTypes.length === 0) return null;
 
+  console.log(productTypes.length);
+
   return (
     <section className="py-12">
-      <div className="max-w-3xl">
+      <div className="">
         <div
-          className={`grid grid-cols-2 md:grid-cols-${Math.min(3, productTypes.length)} lg:grid-cols-${Math.min(5, productTypes.length)} gap-4`}>
+          className={`grid grid-cols-2 md:grid-cols-${Math.min(3, productTypes.length + 1)} lg:grid-cols-${productTypes.length + 1} gap-4`}>
           {productTypes.map((type) => (
             <button
               key={type.name}

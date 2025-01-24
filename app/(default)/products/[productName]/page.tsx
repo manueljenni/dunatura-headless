@@ -1,4 +1,5 @@
-import { getAllProducts } from "@/api/fetch";
+import { getAllProducts, getThemenpacksWithIngredients } from "@/api/fetch";
+import { vitamins } from "@/app/questionnaire/types";
 import FreeShippingPill from "@/components/custom/free-shipping-pill";
 import {
   Accordion,
@@ -22,12 +23,17 @@ export default async function ProductPage({
 }: {
   params: { productName: string };
 }) {
-  const products = await getAllProducts();
+  const products = await getThemenpacksWithIngredients();
   const product = products.find((p) => p.handle === productName);
 
   if (!product) {
     notFound();
   }
+
+  const getVitaminByName = (name: string) => {
+    console.log(name);
+    return Object.values(vitamins).find((v) => v.name === name);
+  };
 
   return (
     <div className="max-w-6xl mx-auto px-4">
@@ -38,10 +44,7 @@ export default async function ProductPage({
       <div className="flex flex-col md:flex-row w-full justify-between gap-8">
         <div className="w-full md:w-1/2">
           <img
-            src={
-              product.metafield?.reference?.image?.originalSrc ||
-              product.images.edges[0]?.node.originalSrc
-            }
+            src={product.images.edges[0]?.node.originalSrc}
             alt={product.title}
             className="w-full rounded-lg"
           />
@@ -96,21 +99,35 @@ export default async function ProductPage({
         </div>
       </div>
 
-      <div className="mt-16">
+      <div className="mt-16 max-w-lg mx-auto">
         <h2 className="text-3xl font-medium mb-6 text-primary text-center">
           Was ist drin?
         </h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {/* {product.metafield?.reference?.ingredients.map((ingredient) => (
-                <div className="flex flex-col items-center">
+        <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6">
+          {JSON.parse(product.ingredients?.value || "[]").map((ingredient: any) => {
+            const vitamin = getVitaminByName(ingredient.name);
+            return (
+              <div
+                key={ingredient.id}
+                className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
+                <div className="flex items-center gap-3">
                   <img
-                    src={ingredient.image}
-                    alt={ingredient.name}
-                    className="w-12 h-12"
+                    src={vitamin?.getImageSrc() || ingredient.image}
+                    alt={vitamin?.name || ingredient.name}
+                    className="w-10 h-10 object-contain"
                   />
-                  <span className="text-sm">{ingredient.name}</span>
+                  <div>
+                    <p className="font-medium text-xl font-primary font-denimink">
+                      {vitamin?.name || ingredient.name}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {vitamin?.effects?.map((effect) => effect.text).join(", ") || ""}
+                    </p>
+                  </div>
                 </div>
-              ))} */}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

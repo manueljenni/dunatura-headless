@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/primitives/table";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { StatusFilter } from "./_components/StatusFilter";
 
@@ -86,7 +87,13 @@ export default function OrdersPage() {
           <TableBody>
             {filteredOrders.map((order) => (
               <TableRow key={order.id}>
-                <TableCell className="font-medium">#{order.orderNumber}</TableCell>
+                <TableCell className="font-medium">
+                  <Link
+                    href={`/admin/orders/${encodeURIComponent(order.id)}`}
+                    className="hover:underline">
+                    #{order.orderNumber}
+                  </Link>
+                </TableCell>
                 <TableCell>{formatDate(order.createdAt)}</TableCell>
                 <TableCell>
                   {order.customer ? (

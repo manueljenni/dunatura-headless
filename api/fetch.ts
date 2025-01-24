@@ -1,11 +1,10 @@
 "use server";
 
-import { createAdminApiClient } from "@shopify/admin-api-client";
 import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 import axios from "axios";
 import fs from "fs/promises";
 import path from "path";
-import { Ingredient, Tagespack } from "./types";
+import { Ingredient } from "./types";
 
 const storeDomain = process.env.SHOPIFY_STORE_DOMAIN;
 const publicAccessToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
@@ -20,63 +19,46 @@ const client = createStorefrontApiClient({
   publicAccessToken: publicAccessToken,
 });
 
-const adminClient = createAdminApiClient({
-  storeDomain: process.env.SHOPIFY_STORE_DOMAIN!,
-  accessToken: process.env.SHOPIFY_ADMIN_ACCESS_TOKEN!,
-  apiVersion: "2024-01",
-});
-
-export async function getThemenpacksWithIngredients(): Promise<Tagespack[]> {
+export async function getThemenpacksWithIngredients() {
   const { data } = await client.request(`#graphql
-        query GetAllProductsWithMetafields {
-          products(sortKey: TITLE, first: 250) {
-            edges {
-              node {
-                id
-                title
-                description
-                handle
-                priceRange {
-                  minVariantPrice {
-                    amount
-                    currencyCode
-                  }
-                  maxVariantPrice {
-                    amount
-                    currencyCode
-                  }
-                }
-                variants(first: 1) {
-                  edges {
-                    node {
-                      id
-                      title
-                      availableForSale
-                      unitPrice {
-                        amount
-                        currencyCode
-                      }
-                      unitPriceMeasurement {
-                        referenceUnit
-                        referenceValue
-                        quantityUnit
-                        quantityValue
-                      }
-                    }
-                  }
-                }
-                tags
-                ingredients: metafield(namespace: "custom", key: "ingredients_product_list") {
-                  value
-                }
-                shortDescription: metafield(namespace: "product", key: "short_desc") {
-                  value
+    query GetAllProductsWithMetafields {
+      products(sortKey: TITLE, first: 250) {
+        edges {
+          node {
+            id
+            title
+            description
+            handle
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            images(first: 1) {
+              edges {
+                node {
+                  originalSrc
                 }
               }
             }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                  availableForSale
+                }
+              }
+            }
+            tags
+            ingredients: metafield(namespace: "custom", key: "ingredients_product_list") {
+              value
+            }
           }
         }
-      `);
+      }
+    }
+  `);
 
   const products =
     data?.products.edges
@@ -85,30 +67,26 @@ export async function getThemenpacksWithIngredients(): Promise<Tagespack[]> {
       .filter((product) => product.tags.includes("Themenpack"))
       .filter((product) => !product.title.includes("Barber Shop")) || [];
 
-  const themenpacks = await Promise.all(
+  return await Promise.all(
     products.map(async (product) => {
-      let ingredientIds = [];
-      try {
-        ingredientIds = JSON.parse(product.ingredients?.value || "[]");
-      } catch (error) {
-        console.error(`Error parsing ingredients for product ${product.id}:`, error);
-      }
-
-      const ingredients = await Promise.all(ingredientIds.map(getIngredients));
+      const ingredientIds = JSON.parse(product.ingredients?.value || "[]");
+      const ingredients = await Promise.all(
+        ingredientIds.map(async (id: string) => {
+          const ingredient = await getIngredients(id);
+          return {
+            id,
+            name: ingredient.title,
+            image: ingredient.image,
+          };
+        }),
+      );
 
       return {
-        shopifyId: product.id,
-        title: product.title,
-        description: product.shortDescription?.value || null,
-        price: product.priceRange.minVariantPrice.amount,
-        pricePer100g:
-          product.variants.edges[0]?.node.unitPriceMeasurement?.quantityValue || 0,
-        ingredients: ingredients,
+        ...product,
+        ingredients: { value: JSON.stringify(ingredients) },
       };
     }),
   );
-
-  return themenpacks;
 }
 
 export async function getIngredients(ingredientsString: string): Promise<Ingredient> {
