@@ -1,6 +1,7 @@
 import { getAllProducts, getThemenpacksWithIngredients } from "@/api/fetch";
 import { vitamins } from "@/app/questionnaire/types";
 import FreeShippingPill from "@/components/custom/free-shipping-pill";
+import TagespackFAQ from "@/components/custom/tagespack-faq";
 import {
   Accordion,
   AccordionContent,
@@ -130,6 +131,8 @@ export default async function ProductPage({
           })}
         </div>
       </div>
+
+      <TagespackFAQ />
     </div>
   );
 }
