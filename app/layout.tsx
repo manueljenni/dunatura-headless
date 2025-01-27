@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/primitives/toaster";
+import { CartProvider } from "@/contexts/CartContext";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -52,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="de" className={`${denimINK.variable}`}>
       <body>
-        {children}
+        <CartProvider>{children}</CartProvider>
         <Toaster />
       </body>
     </html>

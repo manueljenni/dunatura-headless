@@ -1,11 +1,14 @@
 "use client";
-import { Ingredient, Tagespack } from "@/api/types";
+import { Tagespack } from "@/api/fetch";
+import { Ingredient } from "@/api/types";
 import Image from "next/image";
 import { useState } from "react";
 import AddToCartButton from "../custom/button/AddToCartButton";
 
 export default function PacksContent(props: { themenpacks: Tagespack[] }) {
   const [selectedCategory, setSelectedCategory] = useState(props.themenpacks[0]);
+
+  console.log(selectedCategory);
 
   function CategoryItem({
     category,
@@ -91,7 +94,8 @@ export default function PacksContent(props: { themenpacks: Tagespack[] }) {
           <div className="overflow-x-auto no-scrollbar">
             <div className="flex gap-4 w-max">
               {selectedCategory &&
-                selectedCategory.ingredients?.map((ingredient) => (
+                selectedCategory.ingredients &&
+                selectedCategory.ingredients?.map((ingredient: Ingredient) => (
                   <PillItem key={ingredient.shopifyId} pill={ingredient} />
                 ))}
             </div>

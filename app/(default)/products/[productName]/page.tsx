@@ -1,6 +1,7 @@
 import { getAllProducts, getThemenpacksWithIngredients } from "@/api/fetch";
 import { vitamins } from "@/app/questionnaire/types";
 import FreeShippingPill from "@/components/custom/free-shipping-pill";
+import Reviews from "@/components/custom/reviews";
 import TagespackFAQ from "@/components/custom/tagespack-faq";
 import {
   Accordion,
@@ -32,8 +33,7 @@ export default async function ProductPage({
   }
 
   const getVitaminByName = (name: string) => {
-    console.log(name);
-    return Object.values(vitamins).find((v) => v.name === name);
+    return Object.values(vitamins).find((v) => v.name.startsWith(name));
   };
 
   return (
@@ -133,6 +133,7 @@ export default async function ProductPage({
       </div>
 
       <TagespackFAQ />
+      <Reviews />
     </div>
   );
 }

@@ -47,6 +47,14 @@ export async function getThemenpacksWithIngredients() {
                 node {
                   id
                   availableForSale
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  unitPrice {
+                    amount
+                    currencyCode
+                  }
                 }
               }
             }
@@ -73,21 +81,22 @@ export async function getThemenpacksWithIngredients() {
       const ingredients = await Promise.all(
         ingredientIds.map(async (id: string) => {
           const ingredient = await getIngredients(id);
-          return {
-            id,
-            name: ingredient.title,
-            image: ingredient.image,
-          };
+          return ingredient;
         }),
       );
 
       return {
         ...product,
-        ingredients: { value: JSON.stringify(ingredients) },
+        shopifyId: product.variants.edges[0].node.id,
+        price: parseFloat(product.variants.edges[0].node.price.amount),
+        pricePer100g: parseFloat(product.variants.edges[0].node.unitPrice?.amount || "0"),
+        ingredients,
       };
     }),
   );
 }
+
+export type Tagespack = Awaited<ReturnType<typeof getThemenpacksWithIngredients>>[number];
 
 export async function getIngredients(ingredientsString: string): Promise<Ingredient> {
   const { data } = await client.request(
@@ -228,69 +237,193 @@ export async function getAllVitamins() {
 }
 
 export async function createCart() {
-  const cartCreateMutation = `#graphql
-  mutation CartCreate($input: CartInput!, $country: CountryCode, $language: LanguageCode) 
-  @inContext(country: $country, language: $language) {
-    cartCreate(input: $input) {
-      userErrors {
-        message
-        code
-        field
-      }
-      cart {
-        id
-        checkoutUrl
-      }
-    }
-  }
-`;
-
-  const { data } = await client.request(cartCreateMutation);
-  if (!data?.cartCreate?.cart?.id) {
-    throw new Error("Failed to create cart");
-  }
-
-  return data.cartCreate.cart.id;
-}
-
-export async function addToCart(cartId: string, variantId: string) {
-  if (!cartId) {
-    cartId = await createCart();
-  }
-  const response = await client.request(
-    `#graphql
-    mutation CartLinesAdd($cartId: ID!, $variantId: ID!) {
-      cartLinesAdd(cartId: $cartId, lines: [{
-        quantity: 1,
-        merchandiseId: $variantId
-      }]) {
-        cart {
-          id
+  try {
+    console.log("Creating new cart...");
+    const { data } = await client.request(`#graphql
+      mutation CreateNewCart {
+        cartCreate {
+          cart {
+            id
+            checkoutUrl
+            lines(first: 10) {
+              edges {
+                node {
+                  quantity
+                  merchandise {
+                    ... on ProductVariant {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
+    `);
+
+    console.log("Cart creation response:", data);
+
+    if (!data?.cartCreate?.cart?.id) {
+      throw new Error("Failed to create cart");
     }
-  `,
-    {
-      variables: {
-        cartId,
-        variantId,
+
+    return {
+      cartId: data.cartCreate.cart.id,
+      checkoutUrl: data.cartCreate.cart.checkoutUrl,
+    };
+  } catch (error) {
+    console.error("Cart creation failed:", error);
+    throw error;
+  }
+}
+
+export async function addToCart(cartId: string, variantId: string, quantity = 1) {
+  try {
+    console.log(
+      `Adding to cart - CartID: ${cartId}, VariantID: ${variantId}, Quantity: ${quantity}`,
+    );
+
+    const { data } = await client.request(
+      `#graphql
+      mutation AddItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
+        cartLinesAdd(cartId: $cartId, lines: $lines) {
+          cart {
+            id
+            lines(first: 10) {
+              edges {
+                node {
+                  quantity
+                  merchandise {
+                    ... on ProductVariant {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+          userErrors {
+            field
+            message
+          }
+        }
+      }
+    `,
+      {
+        variables: {
+          cartId,
+          lines: [
+            {
+              merchandiseId: variantId,
+              quantity,
+            },
+          ],
+        },
       },
-    },
-  );
-  return response;
+    );
+
+    console.log("Add to cart response:", data);
+    return data;
+  } catch (error) {
+    console.error("Add to cart failed:", error);
+    throw error;
+  }
 }
 
 export async function getCheckoutUrl(cartId: string) {
-  const response = await client.request(
-    `#graphql
-    query GetCart {
-      cart(id: "${cartId}") {
-        checkoutUrl
-      }
-    }`,
-  );
+  try {
+    console.log(`Getting checkout URL for cart: ${cartId}`);
 
-  return response.data.cart.checkoutUrl;
+    const { data } = await client.request(
+      `#graphql
+      query GetCartDetails($cartId: ID!) {
+        cart(id: $cartId) {
+          checkoutUrl
+          lines(first: 10) {
+            edges {
+              node {
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                  }
+                }
+              }
+            }
+          }
+        }
+      }`,
+      {
+        variables: {
+          cartId,
+        },
+      },
+    );
+
+    console.log("Cart checkout response:", data);
+
+    if (!data?.cart?.checkoutUrl) {
+      console.log(
+        "Cart not found or expired, creating new cart and transferring items...",
+      );
+
+      const items =
+        data?.cart?.lines?.edges?.map((edge: any) => ({
+          variantId: edge.node.merchandise.id,
+          quantity: edge.node.quantity,
+        })) || [];
+
+      const { data: newCartData } = await client.request(`#graphql
+        mutation CreateReplacementCart {
+          cartCreate {
+            cart {
+              id
+              checkoutUrl
+            }
+          }
+        }
+      `);
+
+      const newCartId = newCartData?.cartCreate?.cart?.id;
+      if (!newCartId) {
+        throw new Error("Failed to create new cart");
+      }
+
+      if (items.length > 0) {
+        console.log("Transferring items to new cart:", items);
+        const { data: addItemsData } = await client.request(
+          `#graphql
+          mutation TransferItemsToCart($cartId: ID!, $lines: [CartLineInput!]!) {
+            cartLinesAdd(cartId: $cartId, lines: $lines) {
+              cart {
+                checkoutUrl
+              }
+            }
+          }
+        `,
+          {
+            variables: {
+              cartId: newCartId,
+              lines: items.map((item) => ({
+                merchandiseId: item.variantId,
+                quantity: item.quantity,
+              })),
+            },
+          },
+        );
+
+        return addItemsData?.cartLinesAdd?.cart?.checkoutUrl;
+      }
+
+      return newCartData?.cartCreate?.cart?.checkoutUrl;
+    }
+
+    return data.cart.checkoutUrl;
+  } catch (error) {
+    console.error("Get checkout URL failed:", error);
+    throw error;
+  }
 }
 
 // export async function clearCart(cartId: string) {

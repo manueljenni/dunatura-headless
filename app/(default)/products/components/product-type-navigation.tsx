@@ -27,8 +27,6 @@ export function ProductTypeNavigation(props: ProductTypeNavigationProps) {
 
   if (productTypes.length === 0) return null;
 
-  console.log(productTypes.length);
-
   return (
     <section className="py-12">
       <div className="">
