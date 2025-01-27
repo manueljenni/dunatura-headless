@@ -1,4 +1,4 @@
-import { getAllProducts, getThemenpacksWithIngredients } from "@/api/fetch";
+import { getAllProducts } from "@/api/fetch";
 import { vitamins } from "@/app/questionnaire/types";
 import FreeShippingPill from "@/components/custom/free-shipping-pill";
 import Reviews from "@/components/custom/reviews";
@@ -25,14 +25,17 @@ export default async function ProductPage({
 }: {
   params: { productName: string };
 }) {
-  const products = await getThemenpacksWithIngredients();
+  const products = await getAllProducts();
   const product = products.find((p) => p.handle === productName);
 
   if (!product) {
     notFound();
   }
 
+  console.log("here - ", product.ingredients);
+
   const getVitaminByName = (name: string) => {
+    console.log(name);
     return Object.values(vitamins).find((v) => v.name.startsWith(name));
   };
 
@@ -110,20 +113,20 @@ export default async function ProductPage({
         </h2>
         <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6">
           {product.ingredients.map((ingredient: any) => {
-            const vitamin = getVitaminByName(ingredient.name);
+            const vitamin = getVitaminByName(ingredient.title);
             return (
               <div
-                key={ingredient.id}
+                key={ingredient.shopifyId}
                 className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
                 <div className="flex items-center gap-3">
                   <img
                     src={vitamin?.getImageSrc() || ingredient.image}
-                    alt={vitamin?.name || ingredient.name}
+                    alt={vitamin?.name || ingredient.title}
                     className="w-10 h-10 object-contain"
                   />
                   <div>
                     <p className="font-medium text-xl font-primary font-denimink">
-                      {vitamin?.name || ingredient.name}
+                      {vitamin?.name || ingredient.title}
                     </p>
                     <p className="text-sm text-gray-600">
                       {vitamin?.effects?.map((effect) => effect.text).join(", ") || ""}

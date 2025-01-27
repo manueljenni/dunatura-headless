@@ -41,7 +41,7 @@ export const vitamins = {
   OMEGA_3: {
     ...baseVitamin,
     id: 8,
-    name: "Omega 3",
+    name: "Omega-3 Fettsäuren (Vegan)",
     subtitle: "300mg Omega 3",
     longTitle: "Omega 3 - 300mg gesamt mit DHA und EPA",
     headline: "Algenöl mit dem Baustein für Herzfunktion, Blutdruck und Gehirnfunktion.",
@@ -126,7 +126,7 @@ export const vitamins = {
   MAGNESIUM: {
     ...baseVitamin,
     id: 17,
-    name: "Magnesium",
+    name: "Tri-Magnesiumdicitrat",
     subtitle: "75mg Magnesium",
     longTitle: "Tri-Magnesiumdicitrat - 75mg",
     headline: "Der schnell verfügbare Beitrag für deine Muskelfunktion.",
@@ -154,7 +154,7 @@ export const vitamins = {
   EISEN_VIT_C: {
     ...baseVitamin,
     id: 19,
-    name: "Eisen + Vit. C",
+    name: "Eisen + Vitamin C",
     subtitle: "14mg Eisen + 40mg Vitamin C",
     longTitle: "Eisen 14mg + natürliches Vitamin C",
     headline: "Die Kombination für den Energiestoffwechsel.",
@@ -182,7 +182,7 @@ export const vitamins = {
   OPC_TRAUBENKERNEXTKRAKT: {
     ...baseVitamin,
     id: 30,
-    name: "OPC",
+    name: "OPC Traubenkernextrakt",
     subtitle: "40% OPC",
     longTitle: "OPC Traubenkernextrakt - 380mg",
     headline: "Das starke Antioxidans aus der Natur.",

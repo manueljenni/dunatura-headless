@@ -90,7 +90,7 @@ export async function getThemenpacksWithIngredients() {
         shopifyId: product.variants.edges[0].node.id,
         price: parseFloat(product.variants.edges[0].node.price.amount),
         pricePer100g: parseFloat(product.variants.edges[0].node.unitPrice?.amount || "0"),
-        ingredients,
+        ingredients: ingredients as Ingredient[],
       };
     }),
   );
@@ -157,59 +157,98 @@ export async function getIngredients(ingredientsString: string): Promise<Ingredi
 }
 
 export async function getAllProducts() {
-  const { data } = await client.request(`#graphql
-        query GetAllProducts {
-          products(sortKey: TITLE, first: 250, query: "available_for_sale:true") {
-            edges {
-              node {
-                id
-                title
-                description
-                handle
-                priceRange {
-                  minVariantPrice {
+  const { data } = await client.request(
+    `#graphql
+    query Products {
+      products(first: 50) {
+        edges {
+          node {
+            id
+            title
+            handle
+            description
+            tags
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            images(first: 10) {
+              edges {
+                node {
+                  originalSrc
+                  altText
+                }
+              }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                  title
+                  availableForSale
+                  price {
                     amount
-                    currencyCode
                   }
-                  maxVariantPrice {
+                  unitPrice {
                     amount
-                    currencyCode
-                  }
-                }
-                images(first: 1) {
-                  edges {
-                    node {
-                      originalSrc
-                      altText
-                    }
-                  }
-                }
-                variants(first: 1) {
-                  edges {
-                    node {
-                      id
-                      title
-                      availableForSale
-                    }
-                  }
-                }
-                tags
-                metafield(namespace: "custom", key: "cover_image") {
-                  reference {
-                    ... on MediaImage {
-                      image {
-                        originalSrc
-                      }
-                    }
                   }
                 }
               }
             }
+            metafields(
+              identifiers: [
+                { namespace: "custom", key: "ingredients_product_list" }
+              ]
+            ) {
+              key
+              value
+            }
           }
         }
-      `);
+      }
+    }`,
+  );
 
-  return data?.products.edges.map((edge) => edge.node) || [];
+  const products = await Promise.all(
+    data?.products.edges.map(async (edge) => {
+      const ingredientsMetafield = edge.node.metafields.find(
+        (metafield) => metafield?.key === "ingredients_product_list",
+      );
+
+      const ingredientsIds: string[] = ingredientsMetafield
+        ? JSON.parse(ingredientsMetafield.value)
+        : [];
+
+      const ingredients = await Promise.all(
+        ingredientsIds.map(async (id) => getIngredients(id)),
+      );
+
+      return {
+        id: edge.node.id,
+        title: edge.node.title,
+        handle: edge.node.handle,
+        description: edge.node.description,
+        tags: edge.node.tags,
+        priceRange: edge.node.priceRange,
+        shopifyId: edge.node.variants.edges[0].node.id,
+        price: parseFloat(edge.node.variants.edges[0].node.price.amount),
+        pricePer100g: parseFloat(
+          edge.node.variants.edges[0].node.unitPrice?.amount || "0",
+        ),
+        images: edge.node.images,
+        variants: edge.node.variants,
+        ingredients,
+      };
+    }) || [],
+  );
+
+  return products;
 }
 
 export type Product = Awaited<ReturnType<typeof getAllProducts>>[number];

@@ -39,8 +39,6 @@ export default function CartSheet() {
     });
   };
 
-  console.log(items);
-
   return (
     <Sheet>
       <SheetTrigger asChild>

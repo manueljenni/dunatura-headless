@@ -1,16 +1,16 @@
-import { getAllProducts } from "@/api/fetch";
+import { Product } from "@/api/fetch";
 import Link from "next/link";
 
-export default function ProductPreview(props: {
-  product: Awaited<ReturnType<typeof getAllProducts>>[number];
-}) {
+export default function ProductPreview(props: { product: Product }) {
   const { product } = props;
+
+  console.log(product);
   return (
     <Link href={`/products/${product.handle}`} key={product.id} className="block">
       <div className="bg-[#FCFCF8] p-6 rounded-4xl border border-[#E2E1DC] text-center hover:shadow transition-all duration-200">
         <img
           src={
-            product.metafield?.reference?.image?.originalSrc ||
+            product.images.edges[0]?.node.originalSrc ||
             product.images.edges[0]?.node.originalSrc
           }
           alt={product.title}
