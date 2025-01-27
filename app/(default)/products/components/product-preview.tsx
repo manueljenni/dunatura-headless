@@ -4,7 +4,6 @@ import Link from "next/link";
 export default function ProductPreview(props: { product: Product }) {
   const { product } = props;
 
-  console.log(product);
   return (
     <Link href={`/products/${product.handle}`} key={product.id} className="block">
       <div className="bg-[#FCFCF8] p-6 rounded-4xl border border-[#E2E1DC] text-center hover:shadow transition-all duration-200">

@@ -14,31 +14,45 @@ interface PlanOptionProps {
   planType: PlanType;
   isSelected: boolean;
   onSelect: (planType: PlanType) => void;
+  price: number;
 }
 
-const PlanOption: React.FC<PlanOptionProps> = ({ planType, isSelected, onSelect }) => {
-  const planDetails = {
+const PlanOption: React.FC<PlanOptionProps> = ({
+  planType,
+  isSelected,
+  onSelect,
+  price,
+}) => {
+  const planDetails: {
+    [key in PlanType]: {
+      title: string;
+      priceMultiplier: number;
+      priceSubtitle: string | null;
+      description: string;
+    };
+  } = {
     [PlanType.OneTime]: {
       title: "Einmaliger Kauf",
-      price: "€38,90",
+      priceMultiplier: 1,
       priceSubtitle: null,
       description: "",
     },
     [PlanType.Monthly]: {
       title: "Monatliches Abonnement",
-      price: "€30,90",
+      priceMultiplier: 0.8,
       priceSubtitle: "pro Monat",
       description: "28 Packungen, €1/Tag",
     },
     [PlanType.Quarterly]: {
       title: "3 Monate - Routine",
-      price: "€30,90",
+      priceMultiplier: 0.8,
       priceSubtitle: "pro Monat",
       description: "3x 28 Packungen, €1/Tag",
     },
   };
 
-  const { title, price, priceSubtitle, description } = planDetails[planType];
+  const { title, priceMultiplier, priceSubtitle, description } = planDetails[planType];
+  const finalPrice = `€${(price * priceMultiplier).toFixed(2)}`;
 
   return (
     <label
@@ -62,7 +76,7 @@ const PlanOption: React.FC<PlanOptionProps> = ({ planType, isSelected, onSelect 
           </div>
         </div>
         <div className="flex flex-col justify-center items-center">
-          <p className="text-xl font-medium">{price}</p>
+          <p className="text-xl font-medium">{finalPrice}</p>
           {priceSubtitle && <p className="text-sm text-neutral-700">{priceSubtitle}</p>}
         </div>
       </div>
@@ -70,15 +84,21 @@ const PlanOption: React.FC<PlanOptionProps> = ({ planType, isSelected, onSelect 
   );
 };
 
+interface PlanSelectorProps {
+  variantId: string;
+  title: string;
+  image: string;
+  price: number;
+  pricePer100g: number;
+}
+
 export default function PlanSelector({
   variantId,
   title,
   image,
-}: {
-  variantId: string;
-  title: string;
-  image: string;
-}) {
+  price,
+  pricePer100g,
+}: PlanSelectorProps) {
   const [isSelected, setIsSelected] = useState<PlanType>(PlanType.Monthly);
 
   const handleSelect = (value: PlanType) => {
@@ -91,16 +111,19 @@ export default function PlanSelector({
         planType={PlanType.OneTime}
         isSelected={isSelected === PlanType.OneTime}
         onSelect={handleSelect}
+        price={price}
       />
       <PlanOption
         planType={PlanType.Monthly}
         isSelected={isSelected === PlanType.Monthly}
         onSelect={handleSelect}
+        price={price}
       />
       <PlanOption
         planType={PlanType.Quarterly}
         isSelected={isSelected === PlanType.Quarterly}
         onSelect={handleSelect}
+        price={price}
       />
       <div className="pt-4">
         <AddToCartButton
@@ -110,7 +133,7 @@ export default function PlanSelector({
           className="w-full"
           title={title}
           image={image}
-          price={38.9}
+          price={isSelected === PlanType.OneTime ? price : price * 0.8}
         />
       </div>
     </div>

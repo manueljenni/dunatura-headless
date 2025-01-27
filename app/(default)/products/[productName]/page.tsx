@@ -32,10 +32,7 @@ export default async function ProductPage({
     notFound();
   }
 
-  console.log("here - ", product.ingredients);
-
   const getVitaminByName = (name: string) => {
-    console.log(name);
     return Object.values(vitamins).find((v) => v.name.startsWith(name));
   };
 
@@ -65,6 +62,8 @@ export default async function ProductPage({
             variantId={product.variants.edges[0].node.id}
             title={product.title}
             image={product.images.edges[0]?.node.originalSrc}
+            price={product.price}
+            pricePer100g={product.pricePer100g}
           />
 
           <div className="flex justify-center items-center gap-8 mt-8">
@@ -112,30 +111,43 @@ export default async function ProductPage({
           Was ist drin?
         </h2>
         <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6">
-          {product.ingredients.map((ingredient: any) => {
-            const vitamin = getVitaminByName(ingredient.title);
-            return (
-              <div
-                key={ingredient.shopifyId}
-                className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={vitamin?.getImageSrc() || ingredient.image}
-                    alt={vitamin?.name || ingredient.title}
-                    className="w-10 h-10 object-contain"
-                  />
-                  <div>
-                    <p className="font-medium text-xl font-primary font-denimink">
-                      {vitamin?.name || ingredient.title}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {vitamin?.effects?.map((effect) => effect.text).join(", ") || ""}
-                    </p>
+          {product.ingredients.length > 0 ? (
+            product.ingredients.map((ingredient: any) => {
+              const vitamin = getVitaminByName(ingredient.title);
+              return (
+                <div
+                  key={ingredient.shopifyId}
+                  className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={vitamin?.getImageSrc() || ingredient.image}
+                      alt={vitamin?.name || ingredient.title}
+                      className="w-10 h-10 object-contain"
+                    />
+                    <div>
+                      <p className="font-medium text-xl font-primary font-denimink">
+                        {vitamin?.name || ingredient.title}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {vitamin?.effects?.map((effect) => effect.text).join(", ") || ""}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <div className="flex flex-col items-center">
+              <img
+                src={product.images.edges[0]?.node.originalSrc}
+                alt={product.title}
+                className="w-48 h-48 object-contain"
+              />
+              <p className="mt-4 text-xl font-medium text-primary font-denimink">
+                {product.title}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
