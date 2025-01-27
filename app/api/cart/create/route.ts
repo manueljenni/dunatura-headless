@@ -10,7 +10,7 @@ export async function POST() {
 
     // Ensure we're returning a string for cartId
     return NextResponse.json({
-      cartId: typeof cartId === "object" ? cartId.toString() : cartId,
+      cartId: cartId,
       checkoutUrl,
     });
   } catch (error) {

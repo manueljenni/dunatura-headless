@@ -8,7 +8,7 @@ import { ShoppingCart } from "lucide-react";
 interface AddToCartButtonProps {
   variantId: string;
   variant?: "default" | "pill";
-  size?: "default" | "pill-lg" | "pill-xl";
+  size?: "default" | "pill-lg" | "pill-xl" | "pill-2xl";
   className?: string;
 }
 

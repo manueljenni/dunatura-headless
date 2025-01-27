@@ -105,7 +105,7 @@ export default async function ProductPage({
           Was ist drin?
         </h2>
         <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6">
-          {JSON.parse(product.ingredients?.value || "[]").map((ingredient: any) => {
+          {product.ingredients.map((ingredient: any) => {
             const vitamin = getVitaminByName(ingredient.name);
             return (
               <div
