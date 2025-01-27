@@ -70,7 +70,15 @@ const PlanOption: React.FC<PlanOptionProps> = ({ planType, isSelected, onSelect 
   );
 };
 
-export default function PlanSelector({ variantId }: { variantId: string }) {
+export default function PlanSelector({
+  variantId,
+  title,
+  image,
+}: {
+  variantId: string;
+  title: string;
+  image: string;
+}) {
   const [isSelected, setIsSelected] = useState<PlanType>(PlanType.Monthly);
 
   const handleSelect = (value: PlanType) => {
@@ -100,6 +108,9 @@ export default function PlanSelector({ variantId }: { variantId: string }) {
           variant="pill"
           size="pill-2xl"
           className="w-full"
+          title={title}
+          image={image}
+          price={38.9}
         />
       </div>
     </div>

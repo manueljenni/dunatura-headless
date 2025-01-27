@@ -61,9 +61,11 @@ export default function PacksContent(props: { themenpacks: Tagespack[] }) {
         <div>
           <AddToCartButton
             variantId={pack.shopifyId}
+            title={pack.title}
+            image={pack.images.edges[0]?.node.originalSrc}
+            price={pack.price}
             variant="pill"
             size="pill-xl"
-            className="w-full"
           />
         </div>
       </div>

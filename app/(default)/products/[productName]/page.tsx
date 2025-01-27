@@ -58,7 +58,11 @@ export default async function ProductPage({
 
           <p className="text-gray-600 mb-8">{product.description.slice(0, 200)}</p>
 
-          <PlanSelector variantId={product.variants.edges[0].node.id} />
+          <PlanSelector
+            variantId={product.variants.edges[0].node.id}
+            title={product.title}
+            image={product.images.edges[0]?.node.originalSrc}
+          />
 
           <div className="flex justify-center items-center gap-8 mt-8">
             <div className="text-center flex flex-col items-center">

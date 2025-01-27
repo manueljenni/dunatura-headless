@@ -5,11 +5,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 interface CartItem {
   variantId: string;
   quantity: number;
+  title: string;
+  image: string;
+  price: number;
 }
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (variantId: string) => Promise<void>;
+  addItem: (item: Omit<CartItem, "quantity">) => Promise<void>;
   removeItem: (variantId: string) => Promise<void>;
   updateQuantity: (variantId: string, quantity: number) => Promise<void>;
   cartId: string | null;
@@ -37,13 +40,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const addItem = async (variantId: string) => {
+  const addItem = async (newItem: Omit<CartItem, "quantity">) => {
     try {
       if (!cartId) {
         const response = await fetch("/api/cart/create", { method: "POST" });
         const data = await response.json();
 
-        // Ensure cartId is a string
         const newCartId =
           typeof data.cartId === "object" ? data.cartId.toString() : data.cartId;
 
@@ -57,13 +59,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cartId: cartId,
-          variantId,
+          variantId: newItem.variantId,
         }),
       });
 
-      const newItems = [...items, { variantId, quantity: 1 }];
-      setItems(newItems);
-      localStorage.setItem("cart", JSON.stringify(newItems));
+      const existingItem = items.find((item) => item.variantId === newItem.variantId);
+
+      if (existingItem) {
+        const newItems = items.map((item) =>
+          item.variantId === newItem.variantId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+        setItems(newItems);
+        localStorage.setItem("cart", JSON.stringify(newItems));
+      } else {
+        const newItems = [...items, { ...newItem, quantity: 1 }];
+        setItems(newItems);
+        localStorage.setItem("cart", JSON.stringify(newItems));
+      }
     } catch (error) {
       console.error("Failed to add item to cart:", error);
     }

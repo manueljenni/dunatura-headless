@@ -212,6 +212,8 @@ export async function getAllProducts() {
   return data?.products.edges.map((edge) => edge.node) || [];
 }
 
+export type Product = Awaited<ReturnType<typeof getAllProducts>>[number];
+
 export async function getAllVitamins() {
   const { data } = await client.request(`#graphql
     query GetAllVitamins {

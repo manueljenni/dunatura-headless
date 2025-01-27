@@ -3,6 +3,7 @@ import logoBlack from "@/public/images/logos/logo-black.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import CartSheet from "./custom/cart/CartSheet";
 import MobileHeader from "./MobileHeader";
 import { Button } from "./primitives/button";
 
@@ -42,6 +43,7 @@ export default function Header() {
               </Button>
             </Link>
           </Link>
+          <CartSheet />
           <MobileHeader onToggle={() => {}} />
         </div>
       </nav>

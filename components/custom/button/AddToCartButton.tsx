@@ -7,6 +7,9 @@ import { ShoppingCart } from "lucide-react";
 
 interface AddToCartButtonProps {
   variantId: string;
+  title: string;
+  image: string;
+  price: number;
   variant?: "default" | "pill";
   size?: "default" | "pill-lg" | "pill-xl" | "pill-2xl";
   className?: string;
@@ -14,6 +17,9 @@ interface AddToCartButtonProps {
 
 export default function AddToCartButton({
   variantId,
+  title,
+  image,
+  price,
   variant = "default",
   size = "default",
   className,
@@ -23,7 +29,7 @@ export default function AddToCartButton({
 
   const handleAddToCart = async () => {
     try {
-      await addItem(variantId);
+      await addItem({ variantId, title, image, price });
       toast({
         title: "Produkt hinzugefügt",
         description: "Das Produkt wurde deinem Warenkorb hinzugefügt.",
