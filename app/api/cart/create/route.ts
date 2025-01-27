@@ -4,11 +4,6 @@ import { NextResponse } from "next/server";
 export async function POST() {
   try {
     const { cartId, checkoutUrl } = await createCart();
-
-    // Debug the response
-    console.log("Cart creation API response:", { cartId, checkoutUrl });
-
-    // Ensure we're returning a string for cartId
     return NextResponse.json({
       cartId: cartId,
       checkoutUrl,

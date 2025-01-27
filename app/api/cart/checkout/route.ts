@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    console.log("Checkout request received:", body);
 
     const { cartId } = body;
     if (!cartId) {
@@ -12,7 +11,6 @@ export async function POST(request: Request) {
     }
 
     const checkoutUrl = await getCheckoutUrl(cartId);
-    console.log("Checkout URL generated:", checkoutUrl);
 
     return NextResponse.json({ checkoutUrl });
   } catch (error) {

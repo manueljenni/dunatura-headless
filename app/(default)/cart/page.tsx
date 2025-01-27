@@ -45,16 +45,6 @@ export default function CartPage() {
   // Debug section component
   const DebugSection = () => {
     if (process.env.NODE_ENV === "production") return null;
-
-    console.log("Cart Page Debug:", {
-      cartId,
-      items,
-      localStorage: {
-        cart: localStorage.getItem("cart"),
-        cartId: localStorage.getItem("cartId"),
-      },
-    });
-
     return (
       <div className="mt-8 p-4 bg-gray-50 rounded-lg">
         <h2 className="text-sm font-mono mb-2">Debug Information</h2>

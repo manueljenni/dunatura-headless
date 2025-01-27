@@ -26,38 +26,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("CartContext mounted");
-    // Load cart from localStorage
     const savedCart = localStorage.getItem("cart");
     const savedCartId = localStorage.getItem("cartId");
-
-    console.log("Initial localStorage state:", { savedCart, savedCartId });
 
     if (savedCart) {
       setItems(JSON.parse(savedCart));
     }
     if (savedCartId) {
       setCartId(savedCartId);
-      console.log("Setting cartId from localStorage:", savedCartId);
     }
   }, []);
-
-  useEffect(() => {
-    console.log("cartId changed:", cartId);
-  }, [cartId]);
 
   const addItem = async (variantId: string) => {
     try {
       if (!cartId) {
-        console.log("No cartId, creating new cart...");
         const response = await fetch("/api/cart/create", { method: "POST" });
         const data = await response.json();
-        console.log("Cart creation response:", data);
 
         // Ensure cartId is a string
         const newCartId =
           typeof data.cartId === "object" ? data.cartId.toString() : data.cartId;
-        console.log("Processed cartId:", newCartId);
 
         setCartId(newCartId);
         setCheckoutUrl(data.checkoutUrl);
@@ -129,9 +117,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       const { checkoutUrl: url } = await response.json();
       if (url) {
-        const successUrl = `${window.location.origin}/checkout/success?status=success`;
-        const checkoutUrlWithCallback = `${url}&return_to=${encodeURIComponent(successUrl)}`;
-        window.location.href = checkoutUrlWithCallback;
+        window.location.href = url;
       }
     } catch (error) {
       console.error("Failed to checkout:", error);
@@ -145,8 +131,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem("cart");
     localStorage.removeItem("cartId");
   };
-
-  console.log(cartId);
 
   return (
     <CartContext.Provider

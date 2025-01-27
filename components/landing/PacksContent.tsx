@@ -8,8 +8,6 @@ import AddToCartButton from "../custom/button/AddToCartButton";
 export default function PacksContent(props: { themenpacks: Tagespack[] }) {
   const [selectedCategory, setSelectedCategory] = useState(props.themenpacks[0]);
 
-  console.log(selectedCategory);
-
   function CategoryItem({
     category,
     onClick,

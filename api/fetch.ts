@@ -238,7 +238,6 @@ export async function getAllVitamins() {
 
 export async function createCart() {
   try {
-    console.log("Creating new cart...");
     const { data } = await client.request(`#graphql
       mutation CreateNewCart {
         cartCreate {
@@ -262,8 +261,6 @@ export async function createCart() {
       }
     `);
 
-    console.log("Cart creation response:", data);
-
     if (!data?.cartCreate?.cart?.id) {
       throw new Error("Failed to create cart");
     }
@@ -280,10 +277,6 @@ export async function createCart() {
 
 export async function addToCart(cartId: string, variantId: string, quantity = 1) {
   try {
-    console.log(
-      `Adding to cart - CartID: ${cartId}, VariantID: ${variantId}, Quantity: ${quantity}`,
-    );
-
     const { data } = await client.request(
       `#graphql
       mutation AddItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
@@ -323,7 +316,6 @@ export async function addToCart(cartId: string, variantId: string, quantity = 1)
       },
     );
 
-    console.log("Add to cart response:", data);
     return data;
   } catch (error) {
     console.error("Add to cart failed:", error);
@@ -333,8 +325,6 @@ export async function addToCart(cartId: string, variantId: string, quantity = 1)
 
 export async function getCheckoutUrl(cartId: string) {
   try {
-    console.log(`Getting checkout URL for cart: ${cartId}`);
-
     const { data } = await client.request(
       `#graphql
       query GetCartDetails($cartId: ID!) {
@@ -361,13 +351,7 @@ export async function getCheckoutUrl(cartId: string) {
       },
     );
 
-    console.log("Cart checkout response:", data);
-
     if (!data?.cart?.checkoutUrl) {
-      console.log(
-        "Cart not found or expired, creating new cart and transferring items...",
-      );
-
       const items =
         data?.cart?.lines?.edges?.map((edge: any) => ({
           variantId: edge.node.merchandise.id,
@@ -391,7 +375,6 @@ export async function getCheckoutUrl(cartId: string) {
       }
 
       if (items.length > 0) {
-        console.log("Transferring items to new cart:", items);
         const { data: addItemsData } = await client.request(
           `#graphql
           mutation TransferItemsToCart($cartId: ID!, $lines: [CartLineInput!]!) {
