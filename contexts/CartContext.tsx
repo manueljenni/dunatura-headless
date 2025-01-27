@@ -10,6 +10,11 @@ interface CartItem {
   price: number;
 }
 
+interface ShopifyCartInput {
+  merchandiseId: string;
+  quantity: number;
+}
+
 interface CartContextType {
   items: CartItem[];
   addItem: (item: Omit<CartItem, "quantity">) => Promise<void>;
@@ -28,63 +33,104 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cartId, setCartId] = useState<string | null>(null);
   const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
+  // Debug logging for state changes
   useEffect(() => {
+    console.log("Cart items changed:", items);
+  }, [items]);
+
+  useEffect(() => {
+    console.log("Cart ID changed:", cartId);
+  }, [cartId]);
+
+  // Initial load from localStorage
+  useEffect(() => {
+    console.log("CartProvider mounted, loading from localStorage");
     const savedCart = localStorage.getItem("cart");
     const savedCartId = localStorage.getItem("cartId");
 
+    console.log("localStorage state:", { savedCart, savedCartId });
+
     if (savedCart) {
-      setItems(JSON.parse(savedCart));
+      const parsedCart = JSON.parse(savedCart);
+      console.log("Setting items from localStorage:", parsedCart);
+      setItems(parsedCart);
     }
     if (savedCartId) {
+      console.log("Setting cartId from localStorage:", savedCartId);
       setCartId(savedCartId);
     }
   }, []);
 
   const addItem = async (newItem: Omit<CartItem, "quantity">) => {
     try {
-      if (!cartId) {
+      console.log("Adding item to cart:", newItem);
+      let currentCartId = cartId;
+
+      if (!currentCartId) {
+        console.log("No cartId, creating new cart");
         const response = await fetch("/api/cart/create", { method: "POST" });
         const data = await response.json();
+        console.log("Cart creation response:", data);
 
-        const newCartId =
+        currentCartId =
           typeof data.cartId === "object" ? data.cartId.toString() : data.cartId;
+        console.log("Processed new cartId:", currentCartId);
 
-        setCartId(newCartId);
+        setCartId(currentCartId);
         setCheckoutUrl(data.checkoutUrl);
-        localStorage.setItem("cartId", newCartId);
+        if (currentCartId) {
+          localStorage.setItem("cartId", currentCartId);
+        }
       }
 
-      await fetch("/api/cart/add", {
+      // Send only necessary data to Shopify
+      const shopifyCartInput: ShopifyCartInput = {
+        merchandiseId: newItem.variantId,
+        quantity: 1,
+      };
+
+      console.log("Making API request to add item", shopifyCartInput);
+      const response = await fetch("/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          cartId: cartId,
-          variantId: newItem.variantId,
+          cartId: currentCartId,
+          variantId: shopifyCartInput.merchandiseId,
         }),
       });
+      const data = await response.json();
+      console.log("Add to cart API response:", data);
 
+      // Handle local cart state with full metadata
       const existingItem = items.find((item) => item.variantId === newItem.variantId);
 
       if (existingItem) {
+        console.log("Updating existing item quantity");
         const newItems = items.map((item) =>
           item.variantId === newItem.variantId
             ? { ...item, quantity: item.quantity + 1 }
             : item,
         );
+        console.log("New items state:", newItems);
         setItems(newItems);
         localStorage.setItem("cart", JSON.stringify(newItems));
       } else {
+        console.log("Adding new item to cart");
         const newItems = [...items, { ...newItem, quantity: 1 }];
+        console.log("New items state:", newItems);
         setItems(newItems);
         localStorage.setItem("cart", JSON.stringify(newItems));
       }
     } catch (error) {
       console.error("Failed to add item to cart:", error);
+      throw error;
     }
   };
 
   const removeItem = async (variantId: string) => {
     try {
+      console.log("Removing item from cart:", variantId);
+
       await fetch("/api/cart/remove", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -92,15 +138,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       });
 
       const newItems = items.filter((item) => item.variantId !== variantId);
+      console.log("New items state after removal:", newItems);
       setItems(newItems);
       localStorage.setItem("cart", JSON.stringify(newItems));
     } catch (error) {
       console.error("Failed to remove item from cart:", error);
+      throw error;
     }
   };
 
   const updateQuantity = async (variantId: string, quantity: number) => {
     try {
+      console.log("Updating quantity:", { variantId, quantity });
+
+      if (quantity < 1) {
+        console.log("Quantity < 1, removing item");
+        return removeItem(variantId);
+      }
+
       await fetch("/api/cart/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -110,10 +165,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const newItems = items.map((item) =>
         item.variantId === variantId ? { ...item, quantity } : item,
       );
+      console.log("New items state after quantity update:", newItems);
       setItems(newItems);
       localStorage.setItem("cart", JSON.stringify(newItems));
     } catch (error) {
       console.error("Failed to update cart item:", error);
+      throw error;
     }
   };
 
@@ -139,6 +196,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const clearCart = () => {
+    console.log("Clearing cart");
     setItems([]);
     setCartId(null);
     setCheckoutUrl(null);

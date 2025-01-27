@@ -17,6 +17,8 @@ export default function CartSheet() {
   const { items, removeItem, updateQuantity, checkout, clearCart } = useCart();
   const { toast } = useToast();
 
+  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+
   const handleCheckout = async () => {
     try {
       await checkout();
@@ -44,9 +46,9 @@ export default function CartSheet() {
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <ShoppingCart className="h-5 w-5" />
-          {items.length > 0 && (
+          {totalQuantity > 0 && (
             <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-medium text-white flex items-center justify-center">
-              {items.length}
+              {totalQuantity}
             </span>
           )}
         </Button>
@@ -56,16 +58,6 @@ export default function CartSheet() {
           <SheetHeader>
             <div className="flex justify-between items-center">
               <SheetTitle>Dein Warenkorb</SheetTitle>
-              {/* {items.length > 0 && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleClearCart}
-                  className="text-red-500 hover:text-red-600">
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Warenkorb leeren
-                </Button>
-              )} */}
             </div>
           </SheetHeader>
         </div>
@@ -126,6 +118,17 @@ export default function CartSheet() {
               Zur Kasse
             </Button>
           </div>
+        )}
+
+        {items.length > 0 && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleClearCart}
+            className="text-red-500 hover:text-red-600">
+            <Trash2 className="w-4 h-4 mr-2" />
+            Warenkorb leeren
+          </Button>
         )}
       </SheetContent>
     </Sheet>
