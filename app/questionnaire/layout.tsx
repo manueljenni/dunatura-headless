@@ -1,9 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
-export default function QuestionnaireLayout({ children }: { children: React.ReactNode }) {
+function QuestionnaireLayoutContent({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
   const isCompleted = searchParams.get("step") === "completed";
 
@@ -28,5 +28,13 @@ export default function QuestionnaireLayout({ children }: { children: React.Reac
         />
       </div>
     </div>
+  );
+}
+
+export default function QuestionnaireLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#FBFCF8]" />}>
+      <QuestionnaireLayoutContent>{children}</QuestionnaireLayoutContent>
+    </Suspense>
   );
 }
