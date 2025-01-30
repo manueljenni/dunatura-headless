@@ -261,19 +261,38 @@ export async function getAllVitamins() {
           node {
             id
             title
-            priceRange {
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-            }
             variants(first: 1) {
               edges {
                 node {
                   id
-                  title
                   price {
                     amount
+                  }
+                  sellingPlanAllocations(first: 10) {
+                    edges {
+                      node {
+                        sellingPlan {
+                          id
+                          name
+                          description
+                          options {
+                            name
+                            value
+                          }
+                        }
+                        priceAdjustments {
+                          price {
+                            amount
+                          }
+                          compareAtPrice {
+                            amount
+                          }
+                          perDeliveryPrice {
+                            amount
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -284,12 +303,7 @@ export async function getAllVitamins() {
     }
   `);
 
-  return (
-    data?.products.edges.map((edge: any) => ({
-      ...edge.node,
-      variantId: edge.node.variants.edges[0]?.node.id,
-    })) || []
-  );
+  return data?.products.edges.map((edge) => edge.node);
 }
 
 export async function createCart() {
@@ -517,91 +531,4 @@ export async function getCheckoutUrl(cartId: string) {
 //         }
 //       }
 //     }
-//     `,
-//     { cartId: cartId as never },
-//   );
-
-//   const lineIds = data.cart.lines.edges.map((line: any) => line.node.id);
-
-//   if (lineIds.length > 0) {
-//     const response = await client.request(
-//       `#graphql
-//       mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
-//         cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-//           cart {
-//             id
-//           }
-//           userErrors {
-//             field
-//             message
-//           }
-//         }
-//       }
-//     `,
-//       {
-//         variables: {
-//           cartId,
-//           lineIds,
-//         },
-//       },
-//     );
-//     return response;
-//   }
-
-//   return { message: "Cart is already empty." };
-// }
-
-export async function getCart(cartId: string) {
-  const { data } = await client.request(
-    `#graphql
-    query GetCart($cartId: ID!) {
-      cart(id: $cartId) {
-        id
-        totalQuantity
-        cost {
-          totalAmount {
-            amount
-          }
-        }
-        lines(first: 100) {
-          edges {
-            node {
-              id
-              quantity
-              cost {
-                totalAmount {
-                  amount
-                }
-              }
-              merchandise {
-                ... on ProductVariant {
-                  id
-                  title
-                  product {
-                    title
-                  }
-                }
-              }
-              sellingPlanAllocation {
-                sellingPlan {
-                  id
-                  name
-                }
-              }
-              attributes {
-                key
-                value
-              }
-            }
-          }
-        }
-      }
-    }`,
-    {
-      variables: { cartId },
-    },
-  );
-
-  console.log("Raw cart data:", JSON.stringify(data, null, 2));
-  return data;
-}
+//     `

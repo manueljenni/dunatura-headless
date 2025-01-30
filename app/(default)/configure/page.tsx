@@ -7,6 +7,7 @@ import {
   type Vitamin,
 } from "@/app/questionnaire/types";
 import { useToast } from "@/hooks/use-toast";
+import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { CartItem } from "./_components/CartItem";
@@ -54,7 +55,10 @@ export default function ConfigurePage() {
   const routineRef = useRef<HTMLDivElement>(null);
   const [sellingPlan, setSellingPlan] = useState<SellingPlan | null>(null);
   const [bundleName, setBundleName] = useState<string>("");
-  const [selectedPlan, setSelectedPlan] = useState<PlanType>(PlanType.Monthly);
+  const [selectedPlan, setSelectedPlan] = useState<SellingPlanType>(
+    SellingPlanType.Monthly,
+  );
+  const [discountedTotal, setDiscountedTotal] = useState<number>(0);
 
   const loopBundleData: LoopBundleData = {
     // Flexibles Abonnement (Lieferung alle 4 Wochen)
@@ -273,13 +277,21 @@ export default function ConfigurePage() {
     setSellingPlan({
       id: selectedPlan,
       name:
-        selectedPlan === PlanType.OneTime
+        selectedPlan === SellingPlanType.OneTime
           ? "Einzelkauf"
-          : selectedPlan === PlanType.Monthly
+          : selectedPlan === SellingPlanType.Monthly
             ? "Flexibles Abonnement"
             : "Dreimonats-Paket",
     });
   }, [selectedPlan]);
+
+  const handlePlanSelect = (plan: SellingPlanType) => {
+    setSelectedPlan(plan);
+    const discount = PLAN_DISCOUNTS[plan as SellingPlanType];
+    // Update prices with discount
+    const discountedPrice = totalPrice * (1 - discount / 100);
+    setDiscountedTotal(discountedPrice);
+  };
 
   return (
     <>
@@ -340,7 +352,7 @@ export default function ConfigurePage() {
             bundleName={bundleName}
             onBundleNameChange={setBundleName}
             selectedPlan={selectedPlan}
-            onPlanSelect={setSelectedPlan}
+            onPlanSelect={handlePlanSelect}
           />
           <QuestionnaireCard />
         </div>

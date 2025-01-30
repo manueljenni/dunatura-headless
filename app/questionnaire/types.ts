@@ -83,7 +83,7 @@ export const vitamins = {
       { text: "Immunsystem", icon: Shield },
       { text: "Kollagenbildung", icon: Flower2 },
     ],
-    price: 5.0,
+    price: 5.5,
     variantId: "44615915274504",
   },
   MSM: {
@@ -100,7 +100,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
       { text: "Bindegewebe", icon: Layers },
     ],
-    price: 6.0,
+    price: 8.0,
     variantId: "44615915897096",
   },
   KALIUM: {
@@ -116,7 +116,7 @@ export const vitamins = {
       { text: "Bindegewebe", icon: Layers },
       { text: "Muskeln", icon: Activity },
     ],
-    price: 4.0,
+    price: 6.0,
     variantId: "44615916519688",
   },
   L_ARGININ: {
@@ -132,7 +132,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
       { text: "Bindegewebe", icon: Layers },
     ],
-    price: 5.0,
+    price: 7.0,
     variantId: "44615917142280",
   },
   MAGNESIUM: {
@@ -148,7 +148,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
       { text: "Bindegewebe", icon: Layers },
     ],
-    price: 3.0,
+    price: 6.0,
     variantId: "44615917699336",
   },
   SELEN: {
@@ -164,7 +164,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Haare", icon: CircleUser },
     ],
-    price: 2.0,
+    price: 5.0,
     variantId: "44615918125320",
   },
   EISEN_VIT_C: {
@@ -180,7 +180,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
       { text: "Bindegewebe", icon: Layers },
     ],
-    price: 4.0,
+    price: 5.5,
     variantId: "44615918780680",
   },
   KURKUMA_EXTRACT: {
@@ -196,7 +196,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Gelenke", icon: Activity },
     ],
-    price: 5.0,
+    price: 8.0,
     variantId: "44614531252488",
   },
   OPC_TRAUBENKERNEXTKRAKT: {
@@ -212,7 +212,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Gelenke", icon: Activity },
     ],
-    price: 6.0,
+    price: 7.0,
     variantId: "44615919632648",
   },
   VIT_D3_K2: {
@@ -244,7 +244,7 @@ export const vitamins = {
       { text: "Herzgesundheit", icon: Heart },
       { text: "Muskeln", icon: Activity },
     ],
-    price: 3.0,
+    price: 10.0,
     variantId: "44615922286856",
   },
   ZINK: {
@@ -260,7 +260,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Haare", icon: CircleUser },
     ],
-    price: 2.0,
+    price: 6.0,
     variantId: "44615904035080",
   },
   VIT_B12_KOMPLEX: {
@@ -276,7 +276,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
       { text: "Gelenke", icon: Activity },
     ],
-    price: 5.0,
+    price: 6.0,
     variantId: "44615919993096",
   },
   ASHWAGANDHA: {
@@ -292,7 +292,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Gelenke", icon: Activity },
     ],
-    price: 4.0,
+    price: 8.0,
     variantId: "45230393557256",
   },
 } as const;

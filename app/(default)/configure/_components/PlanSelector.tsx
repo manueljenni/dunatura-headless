@@ -1,3 +1,4 @@
+import { SellingPlanType } from "@/types/selling-plans";
 import { PlanOption } from "../../products/[productName]/PlanSelector";
 
 export enum PlanType {
@@ -7,33 +8,33 @@ export enum PlanType {
 }
 
 interface PlanSelectorProps {
-  selectedPlan: PlanType;
-  onSelect: (plan: PlanType) => void;
+  selectedPlan: SellingPlanType;
+  onSelect: (plan: SellingPlanType) => void;
   price: number;
 }
 
 export function PlanSelector({ selectedPlan, onSelect, price }: PlanSelectorProps) {
   const planDetails: {
-    [key in PlanType]: {
+    [key in SellingPlanType]: {
       title: string;
       priceMultiplier: number;
       priceSubtitle: string | null;
       description: string;
     };
   } = {
-    [PlanType.OneTime]: {
+    [SellingPlanType.OneTime]: {
       title: "Einmaliger Kauf",
       priceMultiplier: 1,
       priceSubtitle: null,
       description: "Einmalige Lieferung",
     },
-    [PlanType.Monthly]: {
+    [SellingPlanType.Monthly]: {
       title: "Flexibles Abonnement",
       priceMultiplier: 0.8,
       priceSubtitle: "pro Monat",
       description: "Lieferung alle 4 Wochen",
     },
-    [PlanType.Quarterly]: {
+    [SellingPlanType.Quarterly]: {
       title: "Dreimonats-Paket",
       priceMultiplier: 0.8,
       priceSubtitle: "pro Monat",
@@ -43,7 +44,7 @@ export function PlanSelector({ selectedPlan, onSelect, price }: PlanSelectorProp
 
   return (
     <div className="space-y-4">
-      {Object.values(PlanType).map((planType) => (
+      {Object.values(SellingPlanType).map((planType) => (
         <PlanOption
           key={planType}
           plan={planType}

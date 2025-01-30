@@ -1,6 +1,7 @@
 import { Button } from "@/components/primitives/button";
+import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
 import { ChevronRight } from "lucide-react";
-import { PlanSelector, PlanType } from "./PlanSelector";
+import { PlanSelector } from "./PlanSelector";
 
 interface RoutineCardProps {
   totalItems: number;
@@ -9,8 +10,8 @@ interface RoutineCardProps {
   onCheckout: () => void;
   bundleName: string;
   onBundleNameChange: (name: string) => void;
-  selectedPlan: PlanType;
-  onPlanSelect: (plan: PlanType) => void;
+  selectedPlan: SellingPlanType;
+  onPlanSelect: (plan: SellingPlanType) => void;
 }
 
 export function RoutineCard({
@@ -23,6 +24,9 @@ export function RoutineCard({
   selectedPlan,
   onPlanSelect,
 }: RoutineCardProps) {
+  const discount = PLAN_DISCOUNTS[selectedPlan];
+  const finalPrice = totalPrice * (1 - discount / 100);
+
   return (
     <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6 space-y-6">
       <div ref={routineRef}>
@@ -75,6 +79,22 @@ export function RoutineCard({
         onSelect={onPlanSelect}
         price={totalPrice}
       />
+
+      {discount > 0 && (
+        <div className="text-green-600">
+          Save {discount}% with{" "}
+          {selectedPlan === SellingPlanType.Monthly ? "Flexible" : "Quarterly"}{" "}
+          subscription
+        </div>
+      )}
+      <div className="text-xl font-bold">
+        €{finalPrice.toFixed(2)}
+        {discount > 0 && (
+          <span className="text-gray-400 line-through ml-2">
+            €{totalPrice.toFixed(2)}
+          </span>
+        )}
+      </div>
     </div>
   );
 }
