@@ -1,27 +1,61 @@
+"use client";
+
 import { Star } from "lucide-react";
 import Image from "next/image";
+import { Button } from "../primitives/button";
 
 interface Review {
-  rating: number;
-  text: string;
+  id: number;
   author: string;
+  location?: string;
+  rating: number;
+  date: string;
+  text: string;
+  verified: boolean;
 }
 
 const reviews: Review[] = [
   {
+    id: 1,
+    author: "Krisztián H.",
+    location: "Bonn",
     rating: 5,
-    text: "Das Spray ist einfach in der Anwendung und schmeckt sehr neutral. Es ist wirklich perfekt zu dosieren. Ein Gamechanger!",
-    author: "Laura",
+    date: "18.11.2024",
+    text: "Schnelle Bearbeitung, schnelle Lieferung. Ich habe meine Bestellung in 1-2 Tagen erhalten. Danke!",
+    verified: true,
   },
   {
+    id: 2,
+    author: "Michaela R.",
+    location: "München",
     rating: 5,
-    text: "Sehr angenehm einzunehmen und die Wirkung ist spürbar. Ich bin begeistert!",
-    author: "Michael",
+    date: "11.05.2024",
+    text: "Endlich muss ich nicht mehr alle diversen Dosen und Pillen mit mir herumschleppen wenn ich unterwegs bin und in der Küche daheim schaut es auch ordentlich aus!",
+    verified: true,
   },
   {
+    id: 3,
+    author: "Anonym",
+    rating: 4,
+    date: "30.07.2024",
+    text: "Was die Bestellung, die Zusendung, den Preis und das Design, sowie die Idee und die Abwicklung des Ganzen betrifft sehr gut - was die Wirkung der Produkte betrifft, kann ich noch keine Bewertung abgeben, da ich sie noch zu kurz konsumiere!",
+    verified: true,
+  },
+  {
+    id: 4,
+    author: "Sophie K.",
     rating: 5,
-    text: "Endlich eine praktische Lösung für die tägliche Nährstoffversorgung. Toll!",
-    author: "Sophie",
+    date: "21.10.2024",
+    text: "Tolle Produkte und super Service. Die Lieferung kam schnell und die Qualität ist erstklassig.",
+    verified: true,
+  },
+  {
+    id: 5,
+    author: "Michael B.",
+    rating: 5,
+    date: "02.11.2024",
+    text: "Alles Bestens!",
+    verified: true,
   },
 ];
 
@@ -55,10 +89,15 @@ export default function Reviews() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="font-medium">{review.author}</span>
-                <span className="text-gray-500">Verified buyer</span>
+                {review.location && (
+                  <span className="text-gray-500">({review.location})</span>
+                )}
+                {review.verified && (
+                  <span className="text-gray-500">Verifizierter Käufer/in</span>
+                )}
               </div>
               <Image
-                src="/images/trusted-shops.svg"
+                src="/images/trusted-shops.png"
                 alt="Trusted Shops"
                 width={100}
                 height={24}
@@ -68,9 +107,19 @@ export default function Reviews() {
         ))}
       </div>
 
-      <button className="mx-auto mt-8 block px-6 py-2 rounded-full border border-[#E2E1DC] hover:bg-[#FCFCF8]">
-        Mehr Bewertungen anzeigen
-      </button>
+      <div className="flex justify-center w-fit mx-auto mt-8">
+        <Button
+          onClick={() =>
+            window.open(
+              "https://www.trustedshops.de/bewertung/info_X74130EC45B7127CCB2895DC010B38040.html",
+              "_blank",
+            )
+          }
+          size="pill-xl"
+          className="w-full lg:w-aut mb-8">
+          Mehr Bewertungen anzeigen
+        </Button>
+      </div>
     </div>
   );
 }
