@@ -1,24 +1,19 @@
 "use client";
 
 import AddToCartButton from "@/components/custom/button/AddToCartButton";
+import { SellingPlanType } from "@/types/selling-plans";
 import { Check } from "lucide-react";
 import { useState } from "react";
 
-enum PlanType {
-  OneTime = "one-time",
-  Monthly = "monthly",
-  Quarterly = "quarterly",
-}
-
 interface PlanOptionProps {
-  plan: PlanType;
+  plan: SellingPlanType;
   details: {
     title: string;
     priceSubtitle: string | null;
     description: string;
   };
   isSelected: boolean;
-  onSelect: (plan: PlanType) => void;
+  onSelect: (plan: SellingPlanType) => void;
   price: number;
 }
 
@@ -77,44 +72,44 @@ export default function PlanSelector({
   price,
   pricePer100g,
 }: PlanSelectorProps) {
-  const [isSelected, setIsSelected] = useState<PlanType>(PlanType.Monthly);
+  const [isSelected, setIsSelected] = useState<SellingPlanType>(SellingPlanType.Monthly);
 
-  const handleSelect = (value: PlanType) => {
+  const handleSelect = (value: SellingPlanType) => {
     setIsSelected(value);
   };
 
   return (
     <div className="space-y-4">
       <PlanOption
-        plan={PlanType.OneTime}
+        plan={SellingPlanType.OneTime}
         details={{
           title: "Einmaliger Kauf",
           priceSubtitle: null,
           description: "",
         }}
-        isSelected={isSelected === PlanType.OneTime}
+        isSelected={isSelected === SellingPlanType.OneTime}
         onSelect={handleSelect}
         price={price}
       />
       <PlanOption
-        plan={PlanType.Monthly}
+        plan={SellingPlanType.Monthly}
         details={{
           title: "Monatliches Abonnement",
           priceSubtitle: "pro Monat",
           description: "28 Packungen, €1/Tag",
         }}
-        isSelected={isSelected === PlanType.Monthly}
+        isSelected={isSelected === SellingPlanType.Monthly}
         onSelect={handleSelect}
         price={price}
       />
       <PlanOption
-        plan={PlanType.Quarterly}
+        plan={SellingPlanType.Quarterly}
         details={{
           title: "3 Monate - Routine",
           priceSubtitle: "pro Monat",
           description: "3x 28 Packungen, €1/Tag",
         }}
-        isSelected={isSelected === PlanType.Quarterly}
+        isSelected={isSelected === SellingPlanType.Quarterly}
         onSelect={handleSelect}
         price={price}
       />
@@ -126,7 +121,7 @@ export default function PlanSelector({
           className="w-full"
           title={title}
           image={image}
-          price={isSelected === PlanType.OneTime ? price : price * 0.8}
+          price={isSelected === SellingPlanType.OneTime ? price : price * 0.8}
         />
       </div>
     </div>

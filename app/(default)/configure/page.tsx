@@ -1,14 +1,15 @@
 "use client";
 
-import { addItemsToCart, createCart, getCheckoutUrl } from "@/api/fetch";
 import {
   vitaminCategories,
   vitaminsArray,
   type Vitamin,
 } from "@/app/questionnaire/types";
+import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
 import { AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CartItem } from "./_components/CartItem";
 import { FloatingPill } from "./_components/FloatingPill";
@@ -49,6 +50,7 @@ enum PlanType {
 
 export default function ConfigurePage() {
   const { toast } = useToast();
+  const router = useRouter();
   const [selectedVitamins, setSelectedVitamins] = useState<SelectedVitamin[]>([]);
   const [showFloatingPill, setShowFloatingPill] = useState(false);
   const checkoutRef = useRef<HTMLDivElement>(null);
@@ -59,6 +61,7 @@ export default function ConfigurePage() {
     SellingPlanType.Monthly,
   );
   const [discountedTotal, setDiscountedTotal] = useState<number>(0);
+  const { items, removeItem, checkout, clearCart, addItem } = useCart();
 
   const loopBundleData: LoopBundleData = {
     // Flexibles Abonnement (Lieferung alle 4 Wochen)
@@ -221,13 +224,15 @@ export default function ConfigurePage() {
 
     try {
       const loopResponseObject = await generateBundleId();
-      const { cartId } = await createCart();
 
-      // Create array of all items
-      const items = selectedVitamins.map((item) => ({
-        id: item.vitamin.variantId,
+      // Convert selected vitamins to cart items
+      const cartItems = selectedVitamins.map((item) => ({
+        variantId: item.vitamin.variantId,
         quantity: item.quantity,
-        selling_plan: sellingPlan?.id ? parseInt(sellingPlan.id) : null,
+        sellingPlanId: sellingPlan?.id ? parseInt(sellingPlan.id) : null,
+        title: item.vitamin.name,
+        price: item.vitamin.price,
+        image: item.vitamin.getImageSrc(),
         properties: {
           _bundleId: loopResponseObject.txnId,
           Name: bundleName,
@@ -235,26 +240,24 @@ export default function ConfigurePage() {
         },
       }));
 
-      console.log("Items to add to cart:", items);
+      // Clear existing cart items first
+      await clearCart();
 
-      // Add all items to cart at once
-      const cart = await addItemsToCart(cartId, items);
-      if (!cart) {
-        throw new Error("Cart not found");
+      // Add all new items
+      for (const item of cartItems) {
+        await addItem({
+          variantId: item.variantId,
+          quantity: item.quantity,
+          sellingPlanId: item.sellingPlanId,
+          title: item.title,
+          price: item.price,
+          image: item.image,
+          properties: item.properties,
+        });
       }
-      if (!cart.lines?.edges) {
-        console.error("Cart structure:", cart);
-        throw new Error("Cart lines not found");
-      }
 
-      const lines = cart.lines.edges.map((edge: any) => edge.node);
-      console.log("Cart lines:", lines);
-      console.log("Final cart state:", cart);
-
-      const checkoutUrl = await getCheckoutUrl(cartId);
-      console.log("Checkout URL:", checkoutUrl);
-
-      window.location.href = checkoutUrl;
+      // Redirect to checkout
+      await checkout();
     } catch (error) {
       console.error("Error during checkout:", error);
       toast({

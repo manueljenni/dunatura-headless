@@ -1,230 +1,145 @@
 "use client";
 
+import { addItemsToCart, createCart, getCheckoutUrl } from "@/api/fetch";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface CartItem {
   variantId: string;
   quantity: number;
+  sellingPlanId: number | null;
   title: string;
-  image: string;
   price: number;
-}
-
-interface ShopifyCartInput {
-  merchandiseId: string;
-  quantity: number;
+  image: string;
+  properties: {
+    _bundleId?: string;
+    Name?: string;
+    Protocol?: string;
+    [key: string]: string | undefined;
+  };
 }
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">) => Promise<void>;
+  cartId: string | null;
+  isLoading: boolean;
+  addItem: (item: CartItem) => Promise<void>;
   removeItem: (variantId: string) => Promise<void>;
   updateQuantity: (variantId: string, quantity: number) => Promise<void>;
-  cartId: string | null;
-  checkoutUrl: string | null;
+  clearCart: () => Promise<void>;
   checkout: () => Promise<void>;
-  clearCart: () => void;
 }
 
-const CartContext = createContext<CartContextType | null>(null);
+const CartContext = createContext<CartContextType>({
+  items: [],
+  cartId: null,
+  isLoading: false,
+  addItem: async () => {},
+  removeItem: async () => {},
+  updateQuantity: async () => {},
+  clearCart: async () => {},
+  checkout: async () => {},
+});
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
   const [cartId, setCartId] = useState<string | null>(null);
-  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
-
-  // Debug logging for state changes
-  useEffect(() => {
-    console.log("Cart items changed:", items);
-  }, [items]);
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Cart ID changed:", cartId);
+    const initializeCart = async () => {
+      try {
+        const { cartId: newCartId } = await createCart();
+        setCartId(newCartId);
+      } catch (error) {
+        console.error("Failed to initialize cart:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (!cartId) {
+      initializeCart();
+    }
   }, [cartId]);
 
-  // Initial load from localStorage
-  useEffect(() => {
-    console.log("CartProvider mounted, loading from localStorage");
-    const savedCart = localStorage.getItem("cart");
-    const savedCartId = localStorage.getItem("cartId");
+  const addItem = async (item: CartItem) => {
+    if (!cartId) return;
 
-    console.log("localStorage state:", { savedCart, savedCartId });
-
-    if (savedCart) {
-      const parsedCart = JSON.parse(savedCart);
-      console.log("Setting items from localStorage:", parsedCart);
-      setItems(parsedCart);
-    }
-    if (savedCartId) {
-      console.log("Setting cartId from localStorage:", savedCartId);
-      setCartId(savedCartId);
-    }
-  }, []);
-
-  const addItem = async (newItem: Omit<CartItem, "quantity">) => {
+    setIsLoading(true);
     try {
-      console.log("Adding item to cart:", newItem);
-      let currentCartId = cartId;
+      const cartItems = [
+        {
+          id: item.variantId,
+          quantity: item.quantity,
+          selling_plan: item.sellingPlanId,
+          properties: item.properties,
+        },
+      ];
 
-      if (!currentCartId) {
-        console.log("No cartId, creating new cart");
-        const response = await fetch("/api/cart/create", { method: "POST" });
-        const data = await response.json();
-        console.log("Cart creation response:", data);
-
-        currentCartId =
-          typeof data.cartId === "object" ? data.cartId.toString() : data.cartId;
-        console.log("Processed new cartId:", currentCartId);
-
-        setCartId(currentCartId);
-        setCheckoutUrl(data.checkoutUrl);
-        if (currentCartId) {
-          localStorage.setItem("cartId", currentCartId);
-        }
-      }
-
-      // Send only necessary data to Shopify
-      const shopifyCartInput: ShopifyCartInput = {
-        merchandiseId: newItem.variantId,
-        quantity: 1,
-      };
-
-      console.log("Making API request to add item", shopifyCartInput);
-      const response = await fetch("/api/cart/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cartId: currentCartId,
-          variantId: shopifyCartInput.merchandiseId,
-        }),
-      });
-      const data = await response.json();
-      console.log("Add to cart API response:", data);
-
-      // Handle local cart state with full metadata
-      const existingItem = items.find((item) => item.variantId === newItem.variantId);
-
-      if (existingItem) {
-        console.log("Updating existing item quantity");
-        const newItems = items.map((item) =>
-          item.variantId === newItem.variantId
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-        console.log("New items state:", newItems);
-        setItems(newItems);
-        localStorage.setItem("cart", JSON.stringify(newItems));
-      } else {
-        console.log("Adding new item to cart");
-        const newItems = [...items, { ...newItem, quantity: 1 }];
-        console.log("New items state:", newItems);
-        setItems(newItems);
-        localStorage.setItem("cart", JSON.stringify(newItems));
-      }
-    } catch (error) {
-      console.error("Failed to add item to cart:", error);
-      throw error;
-    }
-  };
-
-  const removeItem = async (variantId: string) => {
-    try {
-      console.log("Removing item from cart:", variantId);
-
-      await fetch("/api/cart/remove", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartId, variantId }),
-      });
-
-      const newItems = items.filter((item) => item.variantId !== variantId);
-      console.log("New items state after removal:", newItems);
-      setItems(newItems);
-      localStorage.setItem("cart", JSON.stringify(newItems));
-    } catch (error) {
-      console.error("Failed to remove item from cart:", error);
-      throw error;
+      await addItemsToCart(cartId, cartItems);
+      setItems((prev) => [...prev, item]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const updateQuantity = async (variantId: string, quantity: number) => {
+    if (!cartId) return;
+
+    setIsLoading(true);
     try {
-      console.log("Updating quantity:", { variantId, quantity });
+      const cartItems = [
+        {
+          id: variantId,
+          quantity,
+          selling_plan:
+            items.find((item) => item.variantId === variantId)?.sellingPlanId || null,
+          properties:
+            items.find((item) => item.variantId === variantId)?.properties || {},
+        },
+      ];
 
-      if (quantity < 1) {
-        console.log("Quantity < 1, removing item");
-        return removeItem(variantId);
-      }
-
-      await fetch("/api/cart/update", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartId, variantId, quantity }),
-      });
-
-      const newItems = items.map((item) =>
-        item.variantId === variantId ? { ...item, quantity } : item,
+      await addItemsToCart(cartId, cartItems);
+      setItems((prev) =>
+        prev.map((item) => (item.variantId === variantId ? { ...item, quantity } : item)),
       );
-      console.log("New items state after quantity update:", newItems);
-      setItems(newItems);
-      localStorage.setItem("cart", JSON.stringify(newItems));
-    } catch (error) {
-      console.error("Failed to update cart item:", error);
-      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const clearCart = async () => {
+    setIsLoading(true);
+    try {
+      const { cartId: newCartId } = await createCart();
+      setCartId(newCartId);
+      setItems([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const checkout = async () => {
-    try {
-      if (!cartId) return;
-
-      const response = await fetch(`/api/cart/checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          cartId: cartId,
-        }),
-      });
-
-      const { checkoutUrl: url } = await response.json();
-      if (url) {
-        window.location.href = url;
-      }
-    } catch (error) {
-      console.error("Failed to checkout:", error);
-    }
-  };
-
-  const clearCart = () => {
-    console.log("Clearing cart");
-    setItems([]);
-    setCartId(null);
-    setCheckoutUrl(null);
-    localStorage.removeItem("cart");
-    localStorage.removeItem("cartId");
+    if (!cartId) return;
+    const checkoutUrl = await getCheckoutUrl(cartId);
+    window.location.href = checkoutUrl;
   };
 
   return (
     <CartContext.Provider
       value={{
         items,
-        addItem,
-        removeItem,
-        updateQuantity,
         cartId,
-        checkoutUrl,
-        checkout,
+        isLoading,
+        addItem,
+        removeItem: async () => {},
+        updateQuantity,
         clearCart,
+        checkout,
       }}>
       {children}
     </CartContext.Provider>
   );
 }
 
-export function useCart() {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
-  return context;
-}
+export const useCart = () => useContext(CartContext);

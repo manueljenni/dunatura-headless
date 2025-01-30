@@ -35,7 +35,7 @@ export function RoutineCard({
         </h4>
         <input
           type="text"
-          placeholder="Wie heisst du?"
+          placeholder="Wie heißt du?"
           value={bundleName}
           onChange={(e) => onBundleNameChange(e.target.value)}
           className="w-full p-2 border rounded-md"
