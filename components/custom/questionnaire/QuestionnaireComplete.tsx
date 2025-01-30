@@ -1,5 +1,6 @@
 "use client";
 
+import { PlanSelector } from "@/app/(default)/configure/_components/PlanSelector";
 import {
   Answers,
   healthGoalIcons,
@@ -11,6 +12,10 @@ import {
 import { useKeyboardNavigation } from "@/app/utils/hooks";
 import Icon from "@/components/Icon";
 import { Button } from "@/components/primitives/button";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
+import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
+import { ChevronRight, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Goal from "./completed/Goal";
@@ -26,6 +31,28 @@ type QuestionnaireCompleteProps = {
   onBack: () => void;
   name?: string;
   answers: Answers;
+};
+
+interface LoopBundleData {
+  [key: string]: {
+    bundleId: string;
+    boxSizeId: string;
+  };
+}
+
+const loopBundleData: LoopBundleData = {
+  "688728244488": {
+    bundleId: "01HHC69YTENFC277KGK3NB72HH",
+    boxSizeId: "01HHC6A74G56TNXEZ396XV928S",
+  },
+  "688658252040": {
+    bundleId: "01HHC69YJFS1YHF7GN7SWSK814",
+    boxSizeId: "01HHC6A6T6GTRBKD66MY97PQ4G",
+  },
+  "689000841480": {
+    bundleId: "01HHC6A05J6G8FTKWDPTE7RHAK",
+    boxSizeId: "01HHC6A8E7H0HMBWFWGCMR6AHF",
+  },
 };
 
 export default function QuestionnaireComplete({
@@ -63,10 +90,7 @@ export default function QuestionnaireComplete({
       return {
         id: Number(key),
         value: scores[key],
-        explanation:
-          "Weil du uns gesagt hast, dass du Schwierigkeiten beim Schlafen hast, wird " +
-          vitamins[vitaminKey].name +
-          " dir dabei helfen, besser zu schlafen und mehr Energie für den nächsten Tag zu haben.",
+        explanation: null,
       };
     })
     .filter((item): item is NonNullable<typeof item> => !!item)
@@ -76,6 +100,13 @@ export default function QuestionnaireComplete({
   const titleRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState<number | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { addItem, checkout } = useCart();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const bundleName = name;
+  const [selectedPlan, setSelectedPlan] = useState<SellingPlanType>(
+    SellingPlanType.Monthly,
+  );
 
   useEffect(() => {
     const calculateOffset = () => {
@@ -115,11 +146,100 @@ export default function QuestionnaireComplete({
     }
   };
 
+  const basePrice = scoresArray.reduce(
+    (sum, vitamin) => sum + vitamins[vitaminIdToKey[vitamin.id as VitaminId]].price,
+    0,
+  );
+
+  const discount = PLAN_DISCOUNTS[selectedPlan];
+  const finalPrice = basePrice * (1 - discount / 100);
+
+  const generateBundleId = async () => {
+    let boxSizeId = "01HHC6A8E7H0HMBWFWGCMR6AHF";
+    let sellingPlanId = null;
+    let bundleId = "01HHC6A05J6G8FTKWDPTE7RHAK";
+
+    if (selectedPlan) {
+      const data = loopBundleData[selectedPlan];
+      boxSizeId = data.boxSizeId;
+      sellingPlanId = selectedPlan;
+      bundleId = data.bundleId;
+    }
+
+    const requestBody = {
+      boxSizeId,
+      sellingPlanId: sellingPlanId ? parseInt(sellingPlanId) : null,
+      productVariants: [],
+      quantity: 1,
+    };
+
+    const response = await fetch(
+      `https://api.loopsubscriptions.com/storefront/2023-10/bundle/${bundleId}/transaction`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      },
+    );
+
+    const responseData = await response.json();
+    if (!response.ok) throw new Error(`Error generating bundle ID`);
+    return responseData.data;
+  };
+
+  const handleCheckout = async () => {
+    if (!bundleName) return;
+
+    try {
+      setIsLoading(true);
+      const loopResponseObject = await generateBundleId();
+
+      // Convert vitamins to cart items
+      const cartItems = scoresArray.map((vitamin) => ({
+        variantId: vitamins[vitaminIdToKey[vitamin.id as VitaminId]].variantId,
+        quantity: 1,
+        sellingPlanId: selectedPlan ? parseInt(selectedPlan) : null,
+        title: vitamins[vitaminIdToKey[vitamin.id as VitaminId]].name,
+        price: vitamin.value,
+        image: vitamins[vitaminIdToKey[vitamin.id as VitaminId]].getImageSrc(),
+        properties: {
+          _bundleId: loopResponseObject.txnId,
+          Name: bundleName,
+          Protocol: "(28 Tagespacks = 4 Wochen)",
+        },
+      }));
+
+      // Add items to cart
+      for (const item of cartItems) {
+        await addItem({
+          variantId: item.variantId,
+          quantity: item.quantity,
+          sellingPlanId: item.sellingPlanId,
+          title: item.title,
+          price: item.price,
+          image: item.image,
+          properties: item.properties,
+        });
+      }
+
+      await checkout();
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      toast({
+        title: "Fehler",
+        description: "Es ist ein Fehler aufgetreten. Bitte versuche es erneut.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="h-full flex items-start justify-center w-full overflow-hidden">
       <div className="h-full px-4">
         <div className="md:max-w-2xl mx-auto w-full">
-          <div className="space-y-6 py-8">
+          <div className="space-y-6 pt-8">
             <div>
               <h2 className="text-4xl text-primary font-semibold">
                 Hier ist deine Kombination, <br /> basierend auf deinen Zielen
@@ -136,9 +256,6 @@ export default function QuestionnaireComplete({
                   );
                 })}
               </div>
-              <Button variant="pill" size="pill-xl">
-                Weiter
-              </Button>
             </div>
           </div>
         </div>
@@ -221,7 +338,7 @@ export default function QuestionnaireComplete({
                     return (
                       <div
                         key={vitamin.id}
-                        className="pill-item w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border">
+                        className="pill-item w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border shadow-lg">
                         <div className="space-y-4">
                           <div className="space-y-2">
                             <h2 className="text-2xl font-semibold text-primary">
@@ -239,7 +356,7 @@ export default function QuestionnaireComplete({
                           <div className="py-6">
                             <div className="relative h-[100px] w-full">
                               <Image
-                                src={`/images/pills/pill-yellow.png`}
+                                src={vitamins[vitaminKey].getImageSrc()}
                                 alt={vitamins[vitaminKey].name}
                                 fill
                                 className="object-contain"
@@ -260,6 +377,55 @@ export default function QuestionnaireComplete({
               </>
             )}
           </div>
+        </div>
+
+        <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6 space-y-6 max-w-2xl mx-auto">
+          <div>
+            <h4 className="text-2xl text-primary font-medium mb-4 font-denimink">
+              Deine personalisierte Routine
+            </h4>
+          </div>
+
+          <div className="border-t pt-4">
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-gray-500">Tagespreis</span>
+              <span className="font-medium">€{(finalPrice / 28).toFixed(2)}/Tag</span>
+            </div>
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-gray-500">Monatspreis</span>
+              <span className="font-medium">€{finalPrice.toFixed(2)}/Monat</span>
+            </div>
+            <Button
+              className={`w-full transition-all ${
+                bundleName
+                  ? "bg-primary text-white hover:bg-primary/90"
+                  : "bg-background text-[#9CA29E] cursor-not-allowed"
+              }`}
+              disabled={!bundleName || isLoading}
+              onClick={handleCheckout}
+              variant="pill"
+              size="pill-xl">
+              <div className="flex items-center gap-2">
+                {isLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span className="font-medium">Wird hinzugefügt...</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="font-medium">Weiter</span>
+                    <ChevronRight size={16} />
+                  </>
+                )}
+              </div>
+            </Button>
+          </div>
+
+          <PlanSelector
+            selectedPlan={selectedPlan}
+            onSelect={setSelectedPlan}
+            price={basePrice}
+          />
         </div>
       </div>
     </div>

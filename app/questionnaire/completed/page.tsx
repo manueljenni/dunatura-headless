@@ -16,7 +16,7 @@ export default function Completed() {
     11: ["light_issues"],
     12: ["2_3x_week"],
     13: ["important"],
-    14: ["never"]
+    14: ["never"],
   };
 
   const scores: Record<number, number> = {
@@ -39,14 +39,15 @@ export default function Completed() {
     [vitamins.OPC_TRAUBENKERNEXTKRAKT.id]: 4,
     [vitamins.MSM.id]: 4,
     [vitamins.KALIUM.id]: 5, // Taking highest between 4 and 5
-    [vitamins.OMEGA_3.id]: 4 // Taking highest between 4 and 4
+    [vitamins.OMEGA_3.id]: 4, // Taking highest between 4 and 4
   };
 
   return (
-    <QuestionnaireComplete 
-      scores={scores} 
-      answers={randomAnswers} 
-      onBack={() => {}} 
+    <QuestionnaireComplete
+      scores={scores}
+      answers={randomAnswers}
+      onBack={() => {}}
+      name="John Doe"
     />
   );
 }
