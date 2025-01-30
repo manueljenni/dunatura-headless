@@ -110,6 +110,7 @@ export default function QuestionnaireComplete({
   const [selectedPlan, setSelectedPlan] = useState<SellingPlanType>(
     SellingPlanType.Monthly,
   );
+  const [showCheckout, setShowCheckout] = useState(false);
 
   useEffect(() => {
     const calculateOffset = () => {
@@ -262,205 +263,228 @@ export default function QuestionnaireComplete({
 
   return (
     <div className="h-full flex items-start justify-center w-full">
-      <div className="h-full px-4">
-        <div className="md:max-w-2xl mx-auto w-full">
-          <div className="space-y-6 pt-8">
-            <div>
-              <h2 className="text-4xl text-primary font-semibold mb-4">
-                Hier ist deine Kombination, <br /> basierend auf deinen Zielen
-              </h2>
-              <Button
-                onClick={handleCustomize}
-                variant="outline"
-                size="pill-xl"
-                className="w-full lg:w-auto mb-8">
-                Passe deine Kombination an
-              </Button>
-              <div className="flex py-4 space-y-6 lg:space-y-0 pb-8 flex-col lg:flex-row">
-                {goals?.map((goal, index) => {
-                  const IconComponent = goal.icon;
-                  return (
-                    <Goal
-                      key={index}
-                      text={goal.text}
-                      icon={<IconComponent className="w-6 h-6 text-primary" />}
+      <div className="h-full px-4 w-full">
+        {!showCheckout ? (
+          // Results View
+          <div className="md:max-w-2xl mx-auto w-full">
+            <div className="space-y-6 pt-8">
+              <div>
+                <h2 className="text-4xl text-primary font-semibold mb-4">
+                  Hier ist deine Kombination, <br /> basierend auf deinen Zielen
+                </h2>
+                <div className="flex gap-4 w-full lg:w-auto mb-8">
+                  <Button
+                    onClick={() => setShowCheckout(true)}
+                    className="bg-primary text-white hover:bg-primary/90 w-full lg:w-auto"
+                    variant="pill"
+                    size="pill-xl">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">Weiter</span>
+                      <ChevronRight size={16} />
+                    </div>
+                  </Button>
+                </div>
+                <div className="flex py-4 space-y-6 lg:space-y-0 pb-8 flex-col lg:flex-row">
+                  {goals?.map((goal, index) => {
+                    const IconComponent = goal.icon;
+                    return (
+                      <Goal
+                        key={index}
+                        text={goal.text}
+                        icon={<IconComponent className="w-6 h-6 text-primary" />}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="md:max-w-2xl mx-auto w-full mb-4 flex items-center justify-between">
+              <h1 ref={titleRef} className="text-3xl font-medium text-primary">
+                Unsere Empfehlung für dich
+              </h1>
+              <div className="flex gap-2">
+                <button
+                  onClick={handlePrevious}
+                  disabled={currentIndex === 0}
+                  className={`testimonial-nav ${currentIndex === 0 ? "disabled-button" : ""}`}>
+                  <svg
+                    width="40"
+                    height="40"
+                    viewBox="0 0 65 65"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <rect
+                      x="1"
+                      y="0.740967"
+                      width="63"
+                      height="63"
+                      rx="31.5"
+                      stroke="currentColor"
+                      className="text-[#D8DED9]"
                     />
-                  );
-                })}
+                    <path
+                      d="M26.9353 30.9075L34.0873 23.7555L32.2017 21.8699L21.8307 32.2408L32.2017 42.6116L34.0873 40.726L26.9353 33.5742H43.1641V30.9075H26.9353Z"
+                      className="fill-primary"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={currentIndex === scoresArray.length - 1}
+                  className={`testimonial-nav ${
+                    currentIndex === scoresArray.length - 1 ? "disabled-button" : ""
+                  }`}>
+                  <svg
+                    width="40"
+                    height="40"
+                    viewBox="0 0 65 65"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <rect
+                      x="1"
+                      y="0.740967"
+                      width="63"
+                      height="63"
+                      rx="31.5"
+                      stroke="currentColor"
+                      className="text-[#D8DED9]"
+                    />
+                    <path
+                      d="M38.0647 30.9075L30.9127 23.7555L32.7983 21.8699L43.1693 32.2408L32.7983 42.6116L30.9127 40.726L38.0647 33.5742H21.8359V30.9075H38.0647Z"
+                      className="fill-primary"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div className="relative w-screen -ml-4">
+              <div
+                className={`pills-container flex gap-4 overflow-x-auto pb-4 px-4 no-scrollbar transition-opacity duration-500 ${
+                  offset === null ? "opacity-0" : "opacity-100"
+                }`}>
+                {offset !== null && (
+                  <>
+                    <div
+                      className="shrink-0"
+                      style={{ width: offset - 32 }}
+                      aria-hidden="true"
+                    />
+                    {scoresArray.map((vitamin, index) => {
+                      const vitaminKey = vitaminIdToKey[vitamin.id as VitaminId];
+                      if (vitaminKey) {
+                        return (
+                          <div
+                            key={vitamin.id}
+                            className="pill-item w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border shadow-lg">
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <h2 className="text-2xl font-semibold text-primary">
+                                  {vitamins[vitaminKey].name}
+                                </h2>
+                                <div className="flex gap-4 font-medium text-primary">
+                                  {vitamins[vitaminKey].effects.map((effect, index) => (
+                                    <div key={index} className="flex items-center gap-2">
+                                      <Icon
+                                        icon={effect.icon}
+                                        color="#324033"
+                                        size={20}
+                                      />
+                                      <span>{effect.text}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className="py-6">
+                                <div className="relative h-[100px] w-full">
+                                  <Image
+                                    src={vitamins[vitaminKey].getImageSrc()}
+                                    alt={vitamins[vitaminKey].name}
+                                    fill
+                                    className="object-contain"
+                                  />
+                                </div>
+                              </div>
+                              <p className="text-primary font-medium">
+                                {vitamin.explanation}
+                              </p>
+                              {/* <button className="rounded-full bg-[#D8DED9] px-6 py-2 font-medium">
+                                Details
+                              </button> */}
+                            </div>
+                          </div>
+                        );
+                      }
+                    })}
+                  </>
+                )}
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="md:max-w-2xl mx-auto w-full mb-4 flex items-center justify-between">
-          <h1 ref={titleRef} className="text-3xl font-medium text-primary">
-            Unsere Empfehlung für dich
-          </h1>
-          <div className="flex gap-2">
-            <button
-              onClick={handlePrevious}
-              disabled={currentIndex === 0}
-              className={`testimonial-nav ${currentIndex === 0 ? "disabled-button" : ""}`}>
-              <svg
-                width="40"
-                height="40"
-                viewBox="0 0 65 65"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <rect
-                  x="1"
-                  y="0.740967"
-                  width="63"
-                  height="63"
-                  rx="31.5"
-                  stroke="currentColor"
-                  className="text-[#D8DED9]"
-                />
-                <path
-                  d="M26.9353 30.9075L34.0873 23.7555L32.2017 21.8699L21.8307 32.2408L32.2017 42.6116L34.0873 40.726L26.9353 33.5742H43.1641V30.9075H26.9353Z"
-                  className="fill-primary"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={currentIndex === scoresArray.length - 1}
-              className={`testimonial-nav ${
-                currentIndex === scoresArray.length - 1 ? "disabled-button" : ""
-              }`}>
-              <svg
-                width="40"
-                height="40"
-                viewBox="0 0 65 65"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <rect
-                  x="1"
-                  y="0.740967"
-                  width="63"
-                  height="63"
-                  rx="31.5"
-                  stroke="currentColor"
-                  className="text-[#D8DED9]"
-                />
-                <path
-                  d="M38.0647 30.9075L30.9127 23.7555L32.7983 21.8699L43.1693 32.2408L32.7983 42.6116L30.9127 40.726L38.0647 33.5742H21.8359V30.9075H38.0647Z"
-                  className="fill-primary"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div className="relative w-screen -ml-4">
-          <div
-            className={`pills-container flex gap-4 overflow-x-auto pb-4 px-4 no-scrollbar transition-opacity duration-500 ${
-              offset === null ? "opacity-0" : "opacity-100"
-            }`}>
-            {offset !== null && (
-              <>
-                <div
-                  className="shrink-0"
-                  style={{ width: offset - 32 }}
-                  aria-hidden="true"
-                />
-                {scoresArray.map((vitamin, index) => {
-                  const vitaminKey = vitaminIdToKey[vitamin.id as VitaminId];
-                  if (vitaminKey) {
-                    return (
-                      <div
-                        key={vitamin.id}
-                        className="pill-item w-[350px] shrink-0 snap-start rounded-2xl bg-[#FBFCF8] p-6 border shadow-lg">
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <h2 className="text-2xl font-semibold text-primary">
-                              {vitamins[vitaminKey].name}
-                            </h2>
-                            <div className="flex gap-4 font-medium text-primary">
-                              {vitamins[vitaminKey].effects.map((effect, index) => (
-                                <div key={index} className="flex items-center gap-2">
-                                  <Icon icon={effect.icon} color="#324033" size={20} />
-                                  <span>{effect.text}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          <div className="py-6">
-                            <div className="relative h-[100px] w-full">
-                              <Image
-                                src={vitamins[vitaminKey].getImageSrc()}
-                                alt={vitamins[vitaminKey].name}
-                                fill
-                                className="object-contain"
-                              />
-                            </div>
-                          </div>
-                          <p className="text-primary font-medium">
-                            {vitamin.explanation}
-                          </p>
-                          {/* <button className="rounded-full bg-[#D8DED9] px-6 py-2 font-medium">
-                            Details
-                          </button> */}
-                        </div>
-                      </div>
-                    );
-                  }
-                })}
-              </>
-            )}
-          </div>
-        </div>
-
-        <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6 space-y-6 max-w-2xl mx-auto">
-          <div>
-            <h4 className="text-2xl text-primary font-medium mb-4 font-denimink">
-              Deine personalisierte Routine
-            </h4>
-          </div>
-
-          <div className="border-t pt-4">
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-gray-500">Tagespreis</span>
-              <span className="font-medium">€{(finalPrice / 28).toFixed(2)}/Tag</span>
+        ) : (
+          // Checkout View
+          <div className="md:max-w-2xl mx-auto w-full">
+            <div className="space-y-6 py-8">
+              <div>
+                <h2 className="text-4xl text-primary font-semibold mb-4">
+                  Wähle deinen Plan
+                </h2>
+              </div>
             </div>
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-gray-500">Monatspreis</span>
-              <span className="font-medium">€{finalPrice.toFixed(2)}/Monat</span>
-            </div>
-            <div className="flex gap-4">
-              <Button
-                onClick={handleCheckout}
-                className={`w-full transition-all ${
-                  bundleName
-                    ? "bg-primary text-white hover:bg-primary/90"
-                    : "bg-background text-[#9CA29E] cursor-not-allowed"
-                }`}
-                disabled={!bundleName || isLoading}
-                variant="pill"
-                size="pill-xl">
-                <div className="flex items-center gap-2">
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      <span className="font-medium">Wird hinzugefügt...</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="font-medium">Weiter</span>
-                      <ChevronRight size={16} />
-                    </>
-                  )}
+
+            <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6 space-y-6">
+              <div>
+                <h4 className="text-2xl text-primary font-medium mb-4 font-denimink">
+                  Deine personalisierte Routine
+                </h4>
+              </div>
+
+              <div className="border-t pt-4">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-gray-500">Tagespreis</span>
+                  <span className="font-medium">€{(finalPrice / 28).toFixed(2)}/Tag</span>
                 </div>
-              </Button>
+                <div className="flex justify-between items-center mb-6">
+                  <span className="text-gray-500">Monatspreis</span>
+                  <span className="font-medium">€{finalPrice.toFixed(2)}/Monat</span>
+                </div>
+                <div className="flex gap-4">
+                  <Button
+                    onClick={handleCheckout}
+                    className={`w-full transition-all ${
+                      bundleName
+                        ? "bg-primary text-white hover:bg-primary/90"
+                        : "bg-background text-[#9CA29E] cursor-not-allowed"
+                    }`}
+                    disabled={!bundleName || isLoading}
+                    variant="pill"
+                    size="pill-xl">
+                    <div className="flex items-center gap-2">
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span className="font-medium">Wird hinzugefügt...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="font-medium">Weiter</span>
+                          <ChevronRight size={16} />
+                        </>
+                      )}
+                    </div>
+                  </Button>
+                </div>
+              </div>
+
+              <PlanSelector
+                selectedPlan={selectedPlan}
+                onSelect={setSelectedPlan}
+                price={basePrice}
+              />
             </div>
           </div>
-
-          <PlanSelector
-            selectedPlan={selectedPlan}
-            onSelect={setSelectedPlan}
-            price={basePrice}
-          />
-        </div>
+        )}
       </div>
     </div>
   );
