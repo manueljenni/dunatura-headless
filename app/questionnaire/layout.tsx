@@ -1,13 +1,16 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
-export default function layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function QuestionnaireLayout({ children }: { children: React.ReactNode }) {
+  const searchParams = useSearchParams();
+  const isCompleted = searchParams.get("step") === "completed";
+
   return (
     <div className="min-h-screen relative bg-[#FBFCF8]">
-      <div className="relative z-10 w-full overflow-y-scroll">
+      <div
+        className={`relative z-10 w-full ${isCompleted ? "overflow-y-auto h-screen" : "overflow-y-scroll"}`}>
         {children}
       </div>
       <div
@@ -21,7 +24,8 @@ export default function layout({
         }>
         <div
           className="absolute inset-0 h-full"
-          style={{ background: "var(--gradient-overlay)" }}></div>
+          style={{ background: "var(--gradient-overlay)" }}
+        />
       </div>
     </div>
   );

@@ -244,7 +244,7 @@ export default function QuestionnaireComplete({
   };
 
   return (
-    <div className="h-full flex items-start justify-center w-full overflow-hidden">
+    <div className="h-full flex items-start justify-center w-full">
       <div className="h-full px-4">
         <div className="md:max-w-2xl mx-auto w-full">
           <div className="space-y-6 pt-8">

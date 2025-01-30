@@ -4,7 +4,7 @@ import QuestionnaireComplete from "@/components/custom/questionnaire/Questionnai
 import { Button } from "@/components/primitives/button";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
-import router from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { AnimationContext } from "./animationContext";
 import { QuestionRenderer } from "./components/QuestionRenderer";
@@ -15,6 +15,8 @@ import { AnswerType, HistoryItem, QuestionId, questionnaireData } from "./types"
 type History = Partial<Record<QuestionId, HistoryItem<QuestionId>>>;
 
 export default function Questionnaire() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [engine] = useState(
     () => new QuestionnaireEngine({ questions: questionnaireData }),
   );
@@ -40,9 +42,12 @@ export default function Questionnaire() {
         setCurrentQuestionId(nextQuestion.id);
       } else {
         setIsComplete(true);
+        const params = new URLSearchParams(searchParams);
+        params.set("step", "completed");
+        router.push(`/questionnaire?${params.toString()}`);
       }
     },
-    [],
+    [router, searchParams],
   );
 
   const handleName = useCallback((name: string) => {
@@ -123,7 +128,7 @@ export default function Questionnaire() {
               animate="center"
               exit="exit"
               transition={pageTransition}
-              className="absolute w-full">
+              className="w-full h-full overflow-y-auto overflow-x-scroll">
               <QuestionnaireComplete
                 scores={engine.calculateFinalScores()}
                 answers={engine.getAnswers()}

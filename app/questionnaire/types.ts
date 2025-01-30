@@ -381,7 +381,7 @@ export const questionnaireData = [
     maxSteps: 1,
     answers: [],
     conditions: {},
-    chapter: "Allgemeine Informationen Allgemeine Informationen Allgemeine Informationen",
+    chapter: "Allgemeine Informationen",
   },
   {
     id: 6,
