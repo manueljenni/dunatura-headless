@@ -1,14 +1,26 @@
 import { type Vitamin } from "@/app/questionnaire/types";
+import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
 import { motion } from "framer-motion";
+import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 
 interface CartItemProps {
   vitamin: Vitamin;
   quantity: number;
   onUpdateQuantity: (vitamin: Vitamin, delta: number) => void;
+  selectedPlan?: SellingPlanType;
 }
 
-export function CartItem({ vitamin, quantity, onUpdateQuantity }: CartItemProps) {
+export function CartItem({
+  vitamin,
+  quantity,
+  onUpdateQuantity,
+  selectedPlan = SellingPlanType.Monthly,
+}: CartItemProps) {
+  const discount = PLAN_DISCOUNTS[selectedPlan];
+  const discountedPrice = vitamin.price * (1 - discount / 100);
+  const totalPrice = discountedPrice * quantity;
+
   return (
     <motion.div
       layout="position"
@@ -40,9 +52,18 @@ export function CartItem({ vitamin, quantity, onUpdateQuantity }: CartItemProps)
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.15 }}>
           <p className="font-medium font-denimink">{vitamin.name}</p>
-          <p className="text-gray-500 text-sm">
-            €{(vitamin.price * quantity).toFixed(2)}
-          </p>
+          <div className="text-sm text-gray-600">
+            {discount > 0 ? (
+              <span>
+                €{discountedPrice.toFixed(2)}
+                <span className="text-gray-400 line-through ml-2">
+                  €{vitamin.price.toFixed(2)}
+                </span>
+              </span>
+            ) : (
+              `€${vitamin.price.toFixed(2)}`
+            )}
+          </div>
         </motion.div>
       </div>
       <motion.div
@@ -52,14 +73,14 @@ export function CartItem({ vitamin, quantity, onUpdateQuantity }: CartItemProps)
         className="flex items-center gap-2">
         <button
           onClick={() => onUpdateQuantity(vitamin, -1)}
-          className="w-8 h-8 rounded-full bg-[#F6F6F3] flex items-center justify-center text-gray-600 hover:bg-[#EEEEE9]">
-          -
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+          <Minus size={16} />
         </button>
         <span className="w-6 text-center">{quantity}</span>
         <button
           onClick={() => onUpdateQuantity(vitamin, 1)}
-          className="w-8 h-8 rounded-full bg-[#F6F6F3] flex items-center justify-center text-gray-600 hover:bg-[#EEEEE9]">
-          +
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+          <Plus size={16} />
         </button>
       </motion.div>
     </motion.div>

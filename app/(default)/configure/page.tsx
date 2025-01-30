@@ -338,6 +338,7 @@ export default function ConfigurePage() {
                     vitamin={item.vitamin}
                     quantity={item.quantity}
                     onUpdateQuantity={updateQuantity}
+                    selectedPlan={selectedPlan}
                   />
                 ))}
               </AnimatePresence>

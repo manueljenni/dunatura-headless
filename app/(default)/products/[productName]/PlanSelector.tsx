@@ -11,24 +11,24 @@ enum PlanType {
 }
 
 interface PlanOptionProps {
-  plan: SellingPlanType;
+  plan: PlanType;
   details: {
     title: string;
     priceSubtitle: string | null;
     description: string;
   };
   isSelected: boolean;
-  onSelect: (plan: SellingPlanType) => void;
+  onSelect: (plan: PlanType) => void;
   price: number;
 }
 
-export function PlanOption<T>({
+export function PlanOption({
   plan,
   details,
   isSelected,
   onSelect,
   price,
-}: PlanOptionProps<T>) {
+}: PlanOptionProps) {
   const { title, priceSubtitle, description } = details;
   const finalPrice = `€${price.toFixed(2)}`;
 

@@ -35,7 +35,7 @@ export function RoutineCard({
         </h4>
         <input
           type="text"
-          placeholder="Gib deiner Routine einen Namen"
+          placeholder="Wie heisst du?"
           value={bundleName}
           onChange={(e) => onBundleNameChange(e.target.value)}
           className="w-full p-2 border rounded-md"
@@ -79,22 +79,6 @@ export function RoutineCard({
         onSelect={onPlanSelect}
         price={totalPrice}
       />
-
-      {discount > 0 && (
-        <div className="text-green-600">
-          Save {discount}% with{" "}
-          {selectedPlan === SellingPlanType.Monthly ? "Flexible" : "Quarterly"}{" "}
-          subscription
-        </div>
-      )}
-      <div className="text-xl font-bold">
-        €{finalPrice.toFixed(2)}
-        {discount > 0 && (
-          <span className="text-gray-400 line-through ml-2">
-            €{totalPrice.toFixed(2)}
-          </span>
-        )}
-      </div>
     </div>
   );
 }
