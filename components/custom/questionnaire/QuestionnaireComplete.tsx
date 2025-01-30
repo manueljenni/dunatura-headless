@@ -255,7 +255,8 @@ export default function QuestionnaireComplete({
   };
 
   const handleCustomize = () => {
-    const vitaminIds = scoresArray.map((v) => v.id).join(",");
+    // Create the URL with raw values, let the browser handle encoding
+    const vitaminIds = scoresArray.map((vitamin) => `${vitamin.id}:1`).join(",");
     router.push(`/configure?vitamins=${vitaminIds}`);
   };
 

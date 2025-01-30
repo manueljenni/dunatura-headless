@@ -331,20 +331,31 @@ function ConfigureContent({ searchParams }: { searchParams: SearchParams }) {
 
   useEffect(() => {
     if (searchParams.vitamins) {
-      const vitaminPairs = searchParams.vitamins.split(",");
+      console.log("Incoming vitamins:", searchParams.vitamins);
+
+      // Split by comma first
+      const vitaminPairs = decodeURIComponent(searchParams.vitamins).split(",");
+      console.log("Vitamin pairs:", vitaminPairs);
+
       const preSelectedVitamins = vitaminPairs
         .map((pair) => {
           const [id, quantity] = pair.split(":");
+          console.log("Parsing vitamin:", { id, quantity });
+
           const vitamin = vitaminsArray.find((v) => v.id === parseInt(id));
-          return vitamin
-            ? {
-                vitamin,
-                quantity: parseInt(quantity) || 1,
-              }
-            : null;
+          if (!vitamin) {
+            console.log("Vitamin not found for id:", id);
+            return null;
+          }
+
+          return {
+            vitamin,
+            quantity: parseInt(quantity) || 1,
+          };
         })
         .filter((v): v is SelectedVitamin => v !== null);
 
+      console.log("Selected vitamins:", preSelectedVitamins);
       setSelectedVitamins(preSelectedVitamins);
     }
   }, [searchParams.vitamins]);
