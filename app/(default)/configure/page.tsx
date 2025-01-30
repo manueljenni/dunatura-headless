@@ -17,6 +17,8 @@ import { QuestionnaireCard } from "./_components/QuestionnaireCard";
 import { RoutineCard } from "./_components/RoutineCard";
 import { VitaminCard } from "./_components/VitaminCard";
 
+export const dynamic = "force-dynamic";
+
 const minAmountOfProducts = "4";
 
 const categories = Object.values(vitaminCategories).map((category) => ({

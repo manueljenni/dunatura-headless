@@ -14,6 +14,8 @@ import { AnswerType, HistoryItem, QuestionId, questionnaireData } from "./types"
 
 type History = Partial<Record<QuestionId, HistoryItem<QuestionId>>>;
 
+export const dynamic = "force-dynamic";
+
 function QuestionnaireContent() {
   const router = useRouter();
   const searchParams = useSearchParams();

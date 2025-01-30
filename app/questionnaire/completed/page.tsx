@@ -3,6 +3,8 @@
 import QuestionnaireComplete from "@/components/custom/questionnaire/QuestionnaireComplete";
 import { Answers, vitamins } from "../types";
 
+export const dynamic = "force-dynamic";
+
 export default function Completed() {
   const randomAnswers: Answers = {
     1: ["consent"],
