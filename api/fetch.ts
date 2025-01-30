@@ -362,7 +362,9 @@ export async function addItemsToCart(cartId: string, items: CartItem[]) {
   try {
     const validItems = items.filter((item) => item.quantity > 0);
     const lines = validItems.map((item) => ({
-      merchandiseId: `gid://shopify/ProductVariant/${item.id}`,
+      merchandiseId: item.id.startsWith("gid://")
+        ? item.id
+        : `gid://shopify/ProductVariant/${item.id}`,
       quantity: item.quantity,
       sellingPlanId: item.selling_plan
         ? `gid://shopify/SellingPlan/${item.selling_plan}`
@@ -556,17 +558,21 @@ export async function getCart(cartId: string) {
         }
       }
       `,
-      { cartId: `gid://shopify/Cart/${cartId}` },
+      {
+        variables: {
+          cartId: `gid://shopify/Cart/${cartId}`,
+        },
+      },
     );
 
     if (!data?.cart) {
-      // If cart doesn't exist, return null instead of throwing
+      // Cart not found or expired, return null so CartContext can create a new one
       return null;
     }
 
     return data.cart;
   } catch (error) {
-    console.error("Failed to fetch cart:", error);
+    console.error("Failed to get cart:", error);
     return null;
   }
 }

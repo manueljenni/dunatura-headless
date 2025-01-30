@@ -1,5 +1,6 @@
 import { getAllProducts } from "@/api/fetch";
 import { vitamins } from "@/app/questionnaire/types";
+import AddToCartButton from "@/components/custom/button/AddToCartButton";
 import FreeShippingPill from "@/components/custom/free-shipping-pill";
 import Reviews from "@/components/custom/reviews";
 import TagespackFAQ from "@/components/custom/tagespack-faq";
@@ -11,7 +12,6 @@ import {
 } from "@/components/primitives/accordion";
 import { Leaf, MilkOff, Wheat } from "lucide-react";
 import { notFound } from "next/navigation";
-import PlanSelector from "./PlanSelector";
 
 export async function generateStaticParams() {
   const products = await getAllProducts();
@@ -58,12 +58,12 @@ export default async function ProductPage({
 
           <p className="text-gray-600 mb-8">{product.description.slice(0, 200)}</p>
 
-          <PlanSelector
+          <AddToCartButton
             variantId={product.variants.edges[0].node.id}
             title={product.title}
             image={product.images.edges[0]?.node.originalSrc}
             price={product.price}
-            pricePer100g={product.pricePer100g}
+            showSubscriptionOptions={false}
           />
 
           <div className="flex justify-center items-center gap-8 mt-8">

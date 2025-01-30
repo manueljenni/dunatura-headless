@@ -2,13 +2,14 @@
 import logoBlack from "@/public/images/logos/logo-black.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import CartSheet from "./custom/cart/CartSheet";
 import MobileHeader from "./MobileHeader";
 import { Button } from "./primitives/button";
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const isProductsRoute = pathname.startsWith("/products");
   const isConfigureRoute = pathname.startsWith("/configure");
 
@@ -36,13 +37,14 @@ export default function Header() {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/" className="hidden lg:inline-block">
-            <Link href="/questionnaire">
-              <Button asChild variant="pill" size={"pill-lg"}>
-                <a>Jetzt Test starten</a>
-              </Button>
-            </Link>
-          </Link>
+          <div className="hidden lg:inline-block">
+            <Button
+              variant="pill"
+              size="pill-lg"
+              onClick={() => router.push("/questionnaire")}>
+              Jetzt Test starten
+            </Button>
+          </div>
           <CartSheet />
           <MobileHeader onToggle={() => {}} />
         </div>
