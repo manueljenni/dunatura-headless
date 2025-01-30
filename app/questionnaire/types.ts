@@ -45,12 +45,13 @@ export const vitamins = {
     subtitle: "300mg Omega 3",
     longTitle: "Omega 3 - 300mg gesamt mit DHA und EPA",
     headline: "Algenöl mit dem Baustein für Herzfunktion, Blutdruck und Gehirnfunktion.",
-    shopifyId: "omega-3-fettsauren-vegan",
     color: "#00783b",
     effects: [
       { text: "Herzgesundheit", icon: Heart },
       { text: "Gehirnfunktion", icon: Brain },
     ],
+    shopifyId: "8298468442376",
+    price: 8.0,
   },
   HYALURONSAURE: {
     ...baseVitamin,
@@ -59,12 +60,13 @@ export const vitamins = {
     subtitle: "360mg Hyaluronsäure",
     longTitle: "Hyaluronsäure - 360mg",
     headline: "Bestandteil der Haut, des Bindegewebes und der Knorpel.",
-    shopifyId: "hyaluronsaure",
+    shopifyId: "8298473586952",
     color: "#BD9AC8",
     effects: [
       { text: "Hautstraffung", icon: Sparkle },
       { text: "Gelenke", icon: Activity },
     ],
+    price: 7.0,
   },
   VIT_C: {
     ...baseVitamin,
@@ -79,6 +81,7 @@ export const vitamins = {
       { text: "Immunsystem", icon: Shield },
       { text: "Kollagenbildung", icon: Flower2 },
     ],
+    price: 5.0,
   },
   MSM: {
     ...baseVitamin,
@@ -94,6 +97,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
       { text: "Bindegewebe", icon: Layers },
     ],
+    price: 6.0,
   },
   KALIUM: {
     ...baseVitamin,
@@ -108,6 +112,7 @@ export const vitamins = {
       { text: "Bindegewebe", icon: Layers },
       { text: "Muskeln", icon: Activity },
     ],
+    price: 4.0,
   },
   L_ARGININ: {
     ...baseVitamin,
@@ -122,6 +127,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
       { text: "Bindegewebe", icon: Layers },
     ],
+    price: 5.0,
   },
   MAGNESIUM: {
     ...baseVitamin,
@@ -136,6 +142,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
       { text: "Bindegewebe", icon: Layers },
     ],
+    price: 3.0,
   },
   SELEN: {
     ...baseVitamin,
@@ -150,6 +157,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Haare", icon: CircleUser },
     ],
+    price: 2.0,
   },
   EISEN_VIT_C: {
     ...baseVitamin,
@@ -164,6 +172,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
       { text: "Bindegewebe", icon: Layers },
     ],
+    price: 4.0,
   },
   KURKUMA_EXTRACT: {
     ...baseVitamin,
@@ -178,6 +187,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Gelenke", icon: Activity },
     ],
+    price: 5.0,
   },
   OPC_TRAUBENKERNEXTKRAKT: {
     ...baseVitamin,
@@ -192,6 +202,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Gelenke", icon: Activity },
     ],
+    price: 6.0,
   },
   VIT_D3_K2: {
     ...baseVitamin,
@@ -206,6 +217,7 @@ export const vitamins = {
       { text: "Knochen", icon: Activity },
       { text: "Muskeln", icon: Activity },
     ],
+    price: 7.0,
   },
   COENZYM_Q10: {
     ...baseVitamin,
@@ -220,6 +232,7 @@ export const vitamins = {
       { text: "Herzgesundheit", icon: Heart },
       { text: "Muskeln", icon: Activity },
     ],
+    price: 3.0,
   },
   ZINK: {
     ...baseVitamin,
@@ -234,6 +247,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Haare", icon: CircleUser },
     ],
+    price: 2.0,
   },
   VIT_B12_KOMPLEX: {
     ...baseVitamin,
@@ -248,6 +262,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
       { text: "Gelenke", icon: Activity },
     ],
+    price: 5.0,
   },
   ASHWAGANDHA: {
     ...baseVitamin,
@@ -262,6 +277,7 @@ export const vitamins = {
       { text: "Haut", icon: User },
       { text: "Gelenke", icon: Activity },
     ],
+    price: 4.0,
   },
 } as const;
 

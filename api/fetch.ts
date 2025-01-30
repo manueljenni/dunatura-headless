@@ -253,6 +253,7 @@ export async function getAllProducts() {
 
 export type Product = Awaited<ReturnType<typeof getAllProducts>>[number];
 
+// DO NOT USE THIS for the page
 export async function getAllVitamins() {
   const { data } = await client.request(`#graphql
     query GetAllVitamins {
@@ -261,11 +262,10 @@ export async function getAllVitamins() {
           node {
             id
             title
-            images(first: 10) {
-              edges {
-                node {
-                  originalSrc
-                }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
               }
             }
           }

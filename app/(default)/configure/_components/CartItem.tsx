@@ -40,7 +40,9 @@ export function CartItem({ vitamin, quantity, onUpdateQuantity }: CartItemProps)
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.15 }}>
           <p className="font-medium font-denimink">{vitamin.name}</p>
-          <p className="text-gray-500 text-sm">€{(7.2 * quantity).toFixed(2)}</p>
+          <p className="text-gray-500 text-sm">
+            €{(vitamin.price * quantity).toFixed(2)}
+          </p>
         </motion.div>
       </div>
       <motion.div

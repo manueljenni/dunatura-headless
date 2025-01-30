@@ -106,7 +106,10 @@ export default function ConfigurePage() {
   const isVitaminSelected = (vitamin: Vitamin) =>
     selectedVitamins.some((v) => v.vitamin.id === vitamin.id);
 
-  const totalPrice = selectedVitamins.reduce((sum, item) => sum + 7.2 * item.quantity, 0);
+  const totalPrice = selectedVitamins.reduce(
+    (sum, item) => sum + item.vitamin.price * item.quantity,
+    0,
+  );
   const totalItems = getTotalItems();
 
   return (
