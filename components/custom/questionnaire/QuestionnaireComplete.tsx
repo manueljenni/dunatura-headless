@@ -113,23 +113,39 @@ export default function QuestionnaireComplete({
 
   useEffect(() => {
     const calculateOffset = () => {
-      if (titleRef.current) {
-        const titleLeft = titleRef.current.getBoundingClientRect().left;
-        setOffset(titleLeft);
+      const container = document.querySelector(".pills-container");
+      if (titleRef.current && container) {
+        const containerRect = container.getBoundingClientRect();
+        const titleRect = titleRef.current.getBoundingClientRect();
+        // Only set offset if we have valid measurements
+        if (containerRect.width > 0 && titleRect.width > 0) {
+          setOffset(titleRect.left - containerRect.left);
+        }
       }
     };
 
-    calculateOffset();
+    // Initial calculation after a short delay to ensure DOM is ready
+    const timer = setTimeout(calculateOffset, 100);
+
+    // Recalculate on resize
     window.addEventListener("resize", calculateOffset);
-    return () => window.removeEventListener("resize", calculateOffset);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", calculateOffset);
+    };
   }, []);
 
   const scrollToIndex = (index: number) => {
     const container = document.querySelector(".pills-container");
     const items = container?.querySelectorAll(".pill-item");
     if (container && items && items[index]) {
+      const containerRect = container.getBoundingClientRect();
+      const itemRect = items[index].getBoundingClientRect();
+      const scrollOffset = itemRect.left - containerRect.left + container.scrollLeft;
+
       container.scrollTo({
-        left: items[index].getBoundingClientRect().left - offset! + container.scrollLeft,
+        left: scrollOffset,
         behavior: "smooth",
       });
     }
@@ -381,9 +397,9 @@ export default function QuestionnaireComplete({
                           <p className="text-primary font-medium">
                             {vitamin.explanation}
                           </p>
-                          <button className="rounded-full bg-[#D8DED9] px-6 py-2 font-medium">
+                          {/* <button className="rounded-full bg-[#D8DED9] px-6 py-2 font-medium">
                             Details
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     );

@@ -128,7 +128,7 @@ export default function Questionnaire() {
               animate="center"
               exit="exit"
               transition={pageTransition}
-              className="w-full h-full overflow-y-auto overflow-x-scroll">
+              className="w-full h-full overflow-y-auto overflow-x-hidden">
               <QuestionnaireComplete
                 scores={engine.calculateFinalScores()}
                 answers={engine.getAnswers()}
