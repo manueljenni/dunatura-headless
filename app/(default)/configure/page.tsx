@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
 import { AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { CartItem } from "./_components/CartItem";
 import { FloatingPill } from "./_components/FloatingPill";
 import { QuestionnaireCard } from "./_components/QuestionnaireCard";
@@ -54,7 +54,7 @@ interface SearchParams {
   vitamins?: string; // Format: "id1,id2,id3"
 }
 
-export default function ConfigurePage({ searchParams }: { searchParams: SearchParams }) {
+function ConfigureContent({ searchParams }: { searchParams: SearchParams }) {
   const { toast } = useToast();
   const router = useRouter();
   const searchParamsObj = useSearchParams();
@@ -422,5 +422,13 @@ export default function ConfigurePage({ searchParams }: { searchParams: SearchPa
         onClick={scrollToRoutine}
       />
     </>
+  );
+}
+
+export default function ConfigurePage({ searchParams }: { searchParams: SearchParams }) {
+  return (
+    <Suspense fallback={<div className="h-screen w-full" />}>
+      <ConfigureContent searchParams={searchParams} />
+    </Suspense>
   );
 }
