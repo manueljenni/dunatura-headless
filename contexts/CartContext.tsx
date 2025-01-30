@@ -151,8 +151,38 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const checkout = async () => {
     if (!cartId) return;
-    const checkoutUrl = await getCheckoutUrl(cartId);
-    window.location.href = checkoutUrl;
+
+    try {
+      const checkoutUrl = await getCheckoutUrl(cartId);
+
+      // Store current cart items before redirecting
+      const currentItems = items;
+
+      // Listen for return from checkout
+      const handleReturn = () => {
+        // Create new cart with same items
+        const recreateCart = async () => {
+          const { cartId: newCartId } = await createCart();
+          setCartId(newCartId);
+          localStorage.setItem("cartId", newCartId);
+
+          // Re-add items to new cart
+          for (const item of currentItems) {
+            await addItem(item);
+          }
+        };
+
+        recreateCart();
+        window.removeEventListener("focus", handleReturn);
+      };
+
+      window.addEventListener("focus", handleReturn);
+
+      // Redirect to checkout
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.error("Checkout failed:", error);
+    }
   };
 
   return (

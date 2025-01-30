@@ -64,6 +64,9 @@ export default async function ProductPage({
             image={product.images.edges[0]?.node.originalSrc}
             price={product.price}
             showSubscriptionOptions={false}
+            variant="pill"
+            size="pill-2xl"
+            className="w-full"
           />
 
           <div className="flex justify-center items-center gap-8 mt-8">
