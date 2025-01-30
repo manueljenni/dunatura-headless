@@ -5,7 +5,7 @@ import { Button } from "@/components/primitives/button";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import { AnimationContext } from "./animationContext";
 import { QuestionRenderer } from "./components/QuestionRenderer";
 import { useQuestionAnimation } from "./hooks/useQuestionAnimation";
@@ -14,7 +14,7 @@ import { AnswerType, HistoryItem, QuestionId, questionnaireData } from "./types"
 
 type History = Partial<Record<QuestionId, HistoryItem<QuestionId>>>;
 
-export default function Questionnaire() {
+function QuestionnaireContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [engine] = useState(
@@ -180,5 +180,13 @@ export default function Questionnaire() {
         </div>
       )} */}
     </div>
+  );
+}
+
+export default function QuestionnairePage() {
+  return (
+    <Suspense fallback={<div className="h-screen w-full" />}>
+      <QuestionnaireContent />
+    </Suspense>
   );
 }
