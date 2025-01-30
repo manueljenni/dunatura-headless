@@ -253,7 +253,6 @@ export async function getAllProducts() {
 
 export type Product = Awaited<ReturnType<typeof getAllProducts>>[number];
 
-// DO NOT USE THIS for the page
 export async function getAllVitamins() {
   const { data } = await client.request(`#graphql
     query GetAllVitamins {
@@ -268,13 +267,29 @@ export async function getAllVitamins() {
                 currencyCode
               }
             }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                  title
+                  price {
+                    amount
+                  }
+                }
+              }
+            }
           }
         }
       }
     }
   `);
 
-  return data?.products.edges.map((edge) => edge.node) || [];
+  return (
+    data?.products.edges.map((edge: any) => ({
+      ...edge.node,
+      variantId: edge.node.variants.edges[0]?.node.id,
+    })) || []
+  );
 }
 
 export async function createCart() {
@@ -316,48 +331,86 @@ export async function createCart() {
   }
 }
 
-export async function addToCart(cartId: string, variantId: string, quantity = 1) {
+interface CartLineProperties {
+  _bundleId?: string;
+  Name?: string;
+  Protocol?: string;
+}
+
+interface CartItem {
+  id: string;
+  quantity: number;
+  selling_plan: number | null;
+  properties: CartLineProperties;
+}
+
+export async function addItemsToCart(cartId: string, items: CartItem[]) {
   try {
-    const { data } = await client.request(
-      `#graphql
-      mutation AddItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
-        cartLinesAdd(cartId: $cartId, lines: $lines) {
-          cart {
-            id
-            lines(first: 10) {
-              edges {
-                node {
-                  quantity
-                  merchandise {
-                    ... on ProductVariant {
-                      id
-                    }
+    const validItems = items.filter((item) => item.quantity > 0);
+    const lines = validItems.map((item) => ({
+      merchandiseId: `gid://shopify/ProductVariant/${item.id}`,
+      quantity: item.quantity,
+      sellingPlanId: item.selling_plan
+        ? `gid://shopify/SellingPlan/${item.selling_plan}`
+        : undefined,
+      attributes: Object.entries(item.properties).map(([key, value]) => ({
+        key,
+        value: String(value),
+      })),
+    }));
+
+    console.log("Adding items to cart:", { cartId, lines });
+
+    try {
+      const { data, errors } = await client.request(
+        `#graphql
+        mutation AddItemsToCart($cartId: ID!, $lines: [CartLineInput!]!) {
+          cartLinesAdd(cartId: $cartId, lines: $lines) {
+            cart {
+              id
+              totalQuantity
+              lines(first: 100) {
+                edges {
+                  node {
+                    id
+                    quantity
                   }
                 }
               }
             }
-          }
-          userErrors {
-            field
-            message
+            userErrors {
+              field
+              message
+              code
+            }
           }
         }
-      }
-    `,
-      {
-        variables: {
-          cartId,
-          lines: [
-            {
-              merchandiseId: variantId,
-              quantity,
-            },
-          ],
+      `,
+        {
+          variables: {
+            cartId,
+            lines,
+          },
         },
-      },
-    );
+      );
 
-    return data;
+      console.log("GraphQL errors:", errors);
+      console.log("Raw response:", { data, errors });
+
+      if (errors) {
+        throw new Error(`GraphQL Errors: ${JSON.stringify(errors)}`);
+      }
+
+      const cart = data?.cartLinesAdd?.cart;
+      if (!cart) {
+        throw new Error("Cart data missing from response");
+      }
+
+      return cart;
+    } catch (graphqlError) {
+      console.error("GraphQL request failed:", graphqlError);
+      throw graphqlError;
+    }
   } catch (error) {
     console.error("Add to cart failed:", error);
     throw error;
@@ -497,3 +550,58 @@ export async function getCheckoutUrl(cartId: string) {
 
 //   return { message: "Cart is already empty." };
 // }
+
+export async function getCart(cartId: string) {
+  const { data } = await client.request(
+    `#graphql
+    query GetCart($cartId: ID!) {
+      cart(id: $cartId) {
+        id
+        totalQuantity
+        cost {
+          totalAmount {
+            amount
+          }
+        }
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              quantity
+              cost {
+                totalAmount {
+                  amount
+                }
+              }
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  product {
+                    title
+                  }
+                }
+              }
+              sellingPlanAllocation {
+                sellingPlan {
+                  id
+                  name
+                }
+              }
+              attributes {
+                key
+                value
+              }
+            }
+          }
+        }
+      }
+    }`,
+    {
+      variables: { cartId },
+    },
+  );
+
+  console.log("Raw cart data:", JSON.stringify(data, null, 2));
+  return data;
+}

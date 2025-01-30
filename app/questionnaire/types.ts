@@ -51,6 +51,7 @@ export const vitamins = {
       { text: "Gehirnfunktion", icon: Brain },
     ],
     shopifyId: "8298468442376",
+    variantId: "44615904887048",
     price: 8.0,
   },
   HYALURONSAURE: {
@@ -67,6 +68,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
     ],
     price: 7.0,
+    variantId: "44615914488072",
   },
   VIT_C: {
     ...baseVitamin,
@@ -82,6 +84,7 @@ export const vitamins = {
       { text: "Kollagenbildung", icon: Flower2 },
     ],
     price: 5.0,
+    variantId: "44615915274504",
   },
   MSM: {
     ...baseVitamin,
@@ -98,6 +101,7 @@ export const vitamins = {
       { text: "Bindegewebe", icon: Layers },
     ],
     price: 6.0,
+    variantId: "44615915897096",
   },
   KALIUM: {
     ...baseVitamin,
@@ -113,6 +117,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
     ],
     price: 4.0,
+    variantId: "44615916519688",
   },
   L_ARGININ: {
     ...baseVitamin,
@@ -128,6 +133,7 @@ export const vitamins = {
       { text: "Bindegewebe", icon: Layers },
     ],
     price: 5.0,
+    variantId: "44615917142280",
   },
   MAGNESIUM: {
     ...baseVitamin,
@@ -143,6 +149,7 @@ export const vitamins = {
       { text: "Bindegewebe", icon: Layers },
     ],
     price: 3.0,
+    variantId: "44615917699336",
   },
   SELEN: {
     ...baseVitamin,
@@ -158,6 +165,7 @@ export const vitamins = {
       { text: "Haare", icon: CircleUser },
     ],
     price: 2.0,
+    variantId: "44615918125320",
   },
   EISEN_VIT_C: {
     ...baseVitamin,
@@ -173,6 +181,7 @@ export const vitamins = {
       { text: "Bindegewebe", icon: Layers },
     ],
     price: 4.0,
+    variantId: "44615918780680",
   },
   KURKUMA_EXTRACT: {
     ...baseVitamin,
@@ -188,6 +197,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
     ],
     price: 5.0,
+    variantId: "44614531252488",
   },
   OPC_TRAUBENKERNEXTKRAKT: {
     ...baseVitamin,
@@ -203,6 +213,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
     ],
     price: 6.0,
+    variantId: "44615919632648",
   },
   VIT_D3_K2: {
     ...baseVitamin,
@@ -218,6 +229,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
     ],
     price: 7.0,
+    variantId: "44615909900552",
   },
   COENZYM_Q10: {
     ...baseVitamin,
@@ -233,6 +245,7 @@ export const vitamins = {
       { text: "Muskeln", icon: Activity },
     ],
     price: 3.0,
+    variantId: "44615922286856",
   },
   ZINK: {
     ...baseVitamin,
@@ -248,6 +261,7 @@ export const vitamins = {
       { text: "Haare", icon: CircleUser },
     ],
     price: 2.0,
+    variantId: "44615904035080",
   },
   VIT_B12_KOMPLEX: {
     ...baseVitamin,
@@ -263,6 +277,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
     ],
     price: 5.0,
+    variantId: "44615919993096",
   },
   ASHWAGANDHA: {
     ...baseVitamin,
@@ -278,6 +293,7 @@ export const vitamins = {
       { text: "Gelenke", icon: Activity },
     ],
     price: 4.0,
+    variantId: "45230393557256",
   },
 } as const;
 

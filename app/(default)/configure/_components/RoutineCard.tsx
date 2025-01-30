@@ -1,19 +1,41 @@
 import { Button } from "@/components/primitives/button";
 import { ChevronRight } from "lucide-react";
+import { PlanSelector, PlanType } from "./PlanSelector";
 
 interface RoutineCardProps {
   totalItems: number;
   totalPrice: number;
   routineRef: React.RefObject<HTMLDivElement>;
+  onCheckout: () => void;
+  bundleName: string;
+  onBundleNameChange: (name: string) => void;
+  selectedPlan: PlanType;
+  onPlanSelect: (plan: PlanType) => void;
 }
 
-export function RoutineCard({ totalItems, totalPrice, routineRef }: RoutineCardProps) {
+export function RoutineCard({
+  totalItems,
+  totalPrice,
+  routineRef,
+  onCheckout,
+  bundleName,
+  onBundleNameChange,
+  selectedPlan,
+  onPlanSelect,
+}: RoutineCardProps) {
   return (
     <div className="bg-[#FCFCF8] rounded-3xl border border-[#E2E1DC] p-6 space-y-6">
       <div ref={routineRef}>
         <h4 className="text-2xl text-primary font-medium mb-4 font-denimink">
           Deine Routine
         </h4>
+        <input
+          type="text"
+          placeholder="Gib deiner Routine einen Namen"
+          value={bundleName}
+          onChange={(e) => onBundleNameChange(e.target.value)}
+          className="w-full p-2 border rounded-md"
+        />
       </div>
 
       <div className="border-t pt-4">
@@ -28,11 +50,12 @@ export function RoutineCard({ totalItems, totalPrice, routineRef }: RoutineCardP
         <Button
           className={`w-full transition-all
             ${
-              totalItems >= 4
+              totalItems >= 4 && bundleName
                 ? "bg-primary text-white hover:bg-primary/90"
                 : "bg-background text-[#9CA29E] cursor-not-allowed"
             }`}
-          disabled={totalItems < 4}
+          disabled={totalItems < 4 || !bundleName}
+          onClick={onCheckout}
           variant="pill"
           size="pill-xl">
           <div className="flex items-center gap-2">
@@ -46,6 +69,12 @@ export function RoutineCard({ totalItems, totalPrice, routineRef }: RoutineCardP
           </p>
         )}
       </div>
+
+      <PlanSelector
+        selectedPlan={selectedPlan}
+        onSelect={onPlanSelect}
+        price={totalPrice}
+      />
     </div>
   );
 }

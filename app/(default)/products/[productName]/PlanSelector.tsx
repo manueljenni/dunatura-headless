@@ -10,48 +10,27 @@ enum PlanType {
   Quarterly = "quarterly",
 }
 
-interface PlanOptionProps {
-  planType: PlanType;
+interface PlanOptionProps<T> {
+  plan: T;
+  details: {
+    title: string;
+    priceMultiplier: number;
+    priceSubtitle: string | null;
+    description: string;
+  };
   isSelected: boolean;
-  onSelect: (planType: PlanType) => void;
+  onSelect: (plan: T) => void;
   price: number;
 }
 
-const PlanOption: React.FC<PlanOptionProps> = ({
-  planType,
+export function PlanOption<T>({
+  plan,
+  details,
   isSelected,
   onSelect,
   price,
-}) => {
-  const planDetails: {
-    [key in PlanType]: {
-      title: string;
-      priceMultiplier: number;
-      priceSubtitle: string | null;
-      description: string;
-    };
-  } = {
-    [PlanType.OneTime]: {
-      title: "Einmaliger Kauf",
-      priceMultiplier: 1,
-      priceSubtitle: null,
-      description: "",
-    },
-    [PlanType.Monthly]: {
-      title: "Monatliches Abonnement",
-      priceMultiplier: 0.8,
-      priceSubtitle: "pro Monat",
-      description: "28 Packungen, €1/Tag",
-    },
-    [PlanType.Quarterly]: {
-      title: "3 Monate - Routine",
-      priceMultiplier: 0.8,
-      priceSubtitle: "pro Monat",
-      description: "3x 28 Packungen, €1/Tag",
-    },
-  };
-
-  const { title, priceMultiplier, priceSubtitle, description } = planDetails[planType];
+}: PlanOptionProps<T>) {
+  const { title, priceMultiplier, priceSubtitle, description } = details;
   const finalPrice = `€${(price * priceMultiplier).toFixed(2)}`;
 
   return (
@@ -59,7 +38,7 @@ const PlanOption: React.FC<PlanOptionProps> = ({
       className={`block cursor-pointer p-4 rounded-2xl shadow-sm transition-all duration-300 border-2 ${
         isSelected ? "bg-[#F2F7F3] border-primary" : "bg-[#FCFCF8] border-transparent"
       }`}
-      onClick={() => onSelect(planType)}>
+      onClick={() => onSelect(plan)}>
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4 w-2/3">
           <div
@@ -82,7 +61,7 @@ const PlanOption: React.FC<PlanOptionProps> = ({
       </div>
     </label>
   );
-};
+}
 
 interface PlanSelectorProps {
   variantId: string;
@@ -108,19 +87,37 @@ export default function PlanSelector({
   return (
     <div className="space-y-4">
       <PlanOption
-        planType={PlanType.OneTime}
+        plan={PlanType.OneTime}
+        details={{
+          title: "Einmaliger Kauf",
+          priceMultiplier: 1,
+          priceSubtitle: null,
+          description: "",
+        }}
         isSelected={isSelected === PlanType.OneTime}
         onSelect={handleSelect}
         price={price}
       />
       <PlanOption
-        planType={PlanType.Monthly}
+        plan={PlanType.Monthly}
+        details={{
+          title: "Monatliches Abonnement",
+          priceMultiplier: 0.8,
+          priceSubtitle: "pro Monat",
+          description: "28 Packungen, €1/Tag",
+        }}
         isSelected={isSelected === PlanType.Monthly}
         onSelect={handleSelect}
         price={price}
       />
       <PlanOption
-        planType={PlanType.Quarterly}
+        plan={PlanType.Quarterly}
+        details={{
+          title: "3 Monate - Routine",
+          priceMultiplier: 0.8,
+          priceSubtitle: "pro Monat",
+          description: "3x 28 Packungen, €1/Tag",
+        }}
         isSelected={isSelected === PlanType.Quarterly}
         onSelect={handleSelect}
         price={price}
