@@ -10,7 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/primitives/accordion";
-import { Leaf, MilkOff, Wheat } from "lucide-react";
+import { Leaf, MilkOff, Star, Wheat } from "lucide-react";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
@@ -54,7 +54,16 @@ export default async function ProductPage({
         <div className="w-full md:w-1/2">
           <h1 className="text-4xl font-medium mb-2">{product.title}</h1>
 
-          <p className="mb-4 text-secondary">11'234+ mal bestellt</p>
+          <p className="mb-4 text-secondary flex items-center gap-1">
+            <div className="flex text-yellow-400">
+              <Star className="w-5 h-5 fill-current" />
+              <Star className="w-5 h-5 fill-current" />
+              <Star className="w-5 h-5 fill-current" />
+              <Star className="w-5 h-5 fill-current" />
+              <Star className="w-5 h-5 fill-current/50" />
+            </div>
+            4,72 Sehr gut
+          </p>
 
           <p className="text-gray-600 mb-8">{product.description.slice(0, 200)}</p>
 
