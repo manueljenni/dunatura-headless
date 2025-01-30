@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
 import { ChevronRight, Loader2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Goal from "./completed/Goal";
 
@@ -64,6 +65,8 @@ export default function QuestionnaireComplete({
   useKeyboardNavigation({
     onBack: () => onBack(),
   });
+
+  const router = useRouter();
 
   const goals = answers[2]
     ?.map((goalValue) => {
@@ -235,15 +238,27 @@ export default function QuestionnaireComplete({
     }
   };
 
+  const handleCustomize = () => {
+    const vitaminIds = scoresArray.map((v) => v.id).join(",");
+    router.push(`/configure?vitamins=${vitaminIds}`);
+  };
+
   return (
     <div className="h-full flex items-start justify-center w-full overflow-hidden">
       <div className="h-full px-4">
         <div className="md:max-w-2xl mx-auto w-full">
           <div className="space-y-6 pt-8">
             <div>
-              <h2 className="text-4xl text-primary font-semibold">
+              <h2 className="text-4xl text-primary font-semibold mb-4">
                 Hier ist deine Kombination, <br /> basierend auf deinen Zielen
               </h2>
+              <Button
+                onClick={handleCustomize}
+                variant="outline"
+                size="pill-xl"
+                className="w-full lg:w-auto mb-8">
+                Passe deine Kombination an
+              </Button>
               <div className="flex py-4 space-y-6 lg:space-y-0 pb-8 flex-col lg:flex-row">
                 {goals?.map((goal, index) => {
                   const IconComponent = goal.icon;
@@ -395,30 +410,32 @@ export default function QuestionnaireComplete({
               <span className="text-gray-500">Monatspreis</span>
               <span className="font-medium">€{finalPrice.toFixed(2)}/Monat</span>
             </div>
-            <Button
-              className={`w-full transition-all ${
-                bundleName
-                  ? "bg-primary text-white hover:bg-primary/90"
-                  : "bg-background text-[#9CA29E] cursor-not-allowed"
-              }`}
-              disabled={!bundleName || isLoading}
-              onClick={handleCheckout}
-              variant="pill"
-              size="pill-xl">
-              <div className="flex items-center gap-2">
-                {isLoading ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span className="font-medium">Wird hinzugefügt...</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="font-medium">Weiter</span>
-                    <ChevronRight size={16} />
-                  </>
-                )}
-              </div>
-            </Button>
+            <div className="flex gap-4">
+              <Button
+                onClick={handleCheckout}
+                className={`w-full transition-all ${
+                  bundleName
+                    ? "bg-primary text-white hover:bg-primary/90"
+                    : "bg-background text-[#9CA29E] cursor-not-allowed"
+                }`}
+                disabled={!bundleName || isLoading}
+                variant="pill"
+                size="pill-xl">
+                <div className="flex items-center gap-2">
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span className="font-medium">Wird hinzugefügt...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-medium">Weiter</span>
+                      <ChevronRight size={16} />
+                    </>
+                  )}
+                </div>
+              </Button>
+            </div>
           </div>
 
           <PlanSelector

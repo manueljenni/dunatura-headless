@@ -9,7 +9,7 @@ import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
 import { AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CartItem } from "./_components/CartItem";
 import { FloatingPill } from "./_components/FloatingPill";
@@ -48,9 +48,14 @@ enum PlanType {
   Quarterly = "688658252040", // Dreimonats-Paket ID
 }
 
-export default function ConfigurePage() {
+interface SearchParams {
+  vitamins?: string; // Format: "id1,id2,id3"
+}
+
+export default function ConfigurePage({ searchParams }: { searchParams: SearchParams }) {
   const { toast } = useToast();
   const router = useRouter();
+  const searchParamsObj = useSearchParams();
   const [selectedVitamins, setSelectedVitamins] = useState<SelectedVitamin[]>([]);
   const [showFloatingPill, setShowFloatingPill] = useState(false);
   const checkoutRef = useRef<HTMLDivElement>(null);
@@ -105,24 +110,46 @@ export default function ConfigurePage() {
   const getTotalItems = () =>
     selectedVitamins.reduce((sum, item) => sum + item.quantity, 0);
 
+  const updateURL = (vitamins: SelectedVitamin[]) => {
+    const vitaminParams = vitamins.map((v) => `${v.vitamin.id}:${v.quantity}`).join(",");
+
+    // Use router.replace only if the URL would actually change
+    const currentParams = new URLSearchParams(searchParamsObj);
+    const currentVitamins = currentParams.get("vitamins") || "";
+
+    if (vitaminParams !== currentVitamins) {
+      const newParams = new URLSearchParams(searchParamsObj);
+      if (vitaminParams) {
+        newParams.set("vitamins", vitaminParams);
+      } else {
+        newParams.delete("vitamins");
+      }
+
+      router.replace(`/configure?${newParams.toString()}`, { scroll: false });
+    }
+  };
+
   const handleVitaminSelect = (vitamin: Vitamin) => {
     setSelectedVitamins((prev) => {
       const existing = prev.find((v) => v.vitamin.id === vitamin.id);
+      let newVitamins;
 
       if (existing) {
-        return prev.filter((v) => v.vitamin.id !== vitamin.id);
+        newVitamins = prev.filter((v) => v.vitamin.id !== vitamin.id);
+      } else {
+        if (getTotalItems() >= 8) {
+          toast({
+            title: "Maximum erreicht",
+            description: "Du kannst maximal 8 Produkte auswählen.",
+            variant: "default",
+          });
+          return prev;
+        }
+        newVitamins = [...prev, { vitamin, quantity: 1 }];
       }
 
-      if (getTotalItems() >= 8) {
-        toast({
-          title: "Maximum erreicht",
-          description: "Du kannst maximal 8 Produkte auswählen.",
-          variant: "default",
-        });
-        return prev;
-      }
-
-      return [...prev, { vitamin, quantity: 1 }];
+      updateURL(newVitamins);
+      return newVitamins;
     });
   };
 
@@ -130,7 +157,7 @@ export default function ConfigurePage() {
     setSelectedVitamins((prev) => {
       const totalItems = getTotalItems();
 
-      return prev.reduce<SelectedVitamin[]>((acc, item) => {
+      const newVitamins = prev.reduce<SelectedVitamin[]>((acc, item) => {
         if (item.vitamin.id === vitamin.id) {
           const newQuantity = item.quantity + delta;
 
@@ -151,6 +178,9 @@ export default function ConfigurePage() {
         }
         return [...acc, item];
       }, []);
+
+      updateURL(newVitamins);
+      return newVitamins;
     });
   };
 
@@ -296,6 +326,26 @@ export default function ConfigurePage() {
     const discountedPrice = totalPrice * (1 - discount / 100);
     setDiscountedTotal(discountedPrice);
   };
+
+  useEffect(() => {
+    if (searchParams.vitamins) {
+      const vitaminPairs = searchParams.vitamins.split(",");
+      const preSelectedVitamins = vitaminPairs
+        .map((pair) => {
+          const [id, quantity] = pair.split(":");
+          const vitamin = vitaminsArray.find((v) => v.id === parseInt(id));
+          return vitamin
+            ? {
+                vitamin,
+                quantity: parseInt(quantity) || 1,
+              }
+            : null;
+        })
+        .filter((v): v is SelectedVitamin => v !== null);
+
+      setSelectedVitamins(preSelectedVitamins);
+    }
+  }, [searchParams.vitamins]);
 
   return (
     <>
