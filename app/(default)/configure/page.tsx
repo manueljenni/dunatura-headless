@@ -240,10 +240,7 @@ export default function ConfigurePage() {
         },
       }));
 
-      // Clear existing cart items first
-      await clearCart();
-
-      // Add all new items
+      // Add new items to existing cart
       for (const item of cartItems) {
         await addItem({
           variantId: item.variantId,

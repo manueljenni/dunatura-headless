@@ -517,6 +517,60 @@ export async function getCheckoutUrl(cartId: string) {
   }
 }
 
+export async function getCart(cartId: string) {
+  try {
+    const { data } = await client.request(
+      `#graphql
+      query GetCart($cartId: ID!) {
+        cart(id: $cartId) {
+          id
+          lines(first: 100) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    price {
+                      amount
+                    }
+                    image {
+                      url
+                    }
+                    product {
+                      title
+                    }
+                  }
+                }
+                sellingPlan {
+                  id
+                }
+                attributes {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+      `,
+      { cartId: `gid://shopify/Cart/${cartId}` },
+    );
+
+    if (!data?.cart) {
+      // If cart doesn't exist, return null instead of throwing
+      return null;
+    }
+
+    return data.cart;
+  } catch (error) {
+    console.error("Failed to fetch cart:", error);
+    return null;
+  }
+}
+
 // export async function clearCart(cartId: string) {
 //   const { data, errors } = await client.request(
 //     `#graphql

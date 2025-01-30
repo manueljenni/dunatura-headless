@@ -1,6 +1,6 @@
 "use client";
 
-import { addItemsToCart, createCart, getCheckoutUrl } from "@/api/fetch";
+import { addItemsToCart, createCart, getCart, getCheckoutUrl } from "@/api/fetch";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface CartItem {
@@ -48,8 +48,39 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const initializeCart = async () => {
       try {
+        // Try to get existing cart from localStorage
+        const existingCartId = localStorage.getItem("cartId");
+
+        if (existingCartId) {
+          // Load existing cart
+          const cart = await getCart(existingCartId);
+          if (cart) {
+            setCartId(existingCartId);
+            // Transform cart lines to CartItems
+            const cartItems = cart.lines.edges.map(({ node }: any) => ({
+              variantId: node.merchandise.id.split("/").pop(),
+              quantity: node.quantity,
+              sellingPlanId: node.sellingPlan?.id ? parseInt(node.sellingPlan.id) : null,
+              title: node.merchandise.product.title,
+              price: parseFloat(node.merchandise.price.amount),
+              image: node.merchandise.image.url,
+              properties: node.attributes.reduce(
+                (acc: any, attr: any) => ({
+                  ...acc,
+                  [attr.key]: attr.value,
+                }),
+                {},
+              ),
+            }));
+            setItems(cartItems);
+            return;
+          }
+        }
+
+        // Create new cart if none exists
         const { cartId: newCartId } = await createCart();
         setCartId(newCartId);
+        localStorage.setItem("cartId", newCartId);
       } catch (error) {
         console.error("Failed to initialize cart:", error);
       } finally {
@@ -57,10 +88,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    if (!cartId) {
-      initializeCart();
-    }
-  }, [cartId]);
+    initializeCart();
+  }, []); // Remove cartId dependency
 
   const addItem = async (item: CartItem) => {
     if (!cartId) return;
@@ -113,6 +142,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       const { cartId: newCartId } = await createCart();
       setCartId(newCartId);
+      localStorage.setItem("cartId", newCartId);
       setItems([]);
     } finally {
       setIsLoading(false);
