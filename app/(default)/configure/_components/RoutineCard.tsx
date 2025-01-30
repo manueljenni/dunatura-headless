@@ -1,6 +1,6 @@
 import { Button } from "@/components/primitives/button";
 import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Loader2 } from "lucide-react";
 import { PlanSelector } from "./PlanSelector";
 
 interface RoutineCardProps {
@@ -12,6 +12,7 @@ interface RoutineCardProps {
   onBundleNameChange: (name: string) => void;
   selectedPlan: SellingPlanType;
   onPlanSelect: (plan: SellingPlanType) => void;
+  isLoading?: boolean;
 }
 
 export function RoutineCard({
@@ -23,6 +24,7 @@ export function RoutineCard({
   onBundleNameChange,
   selectedPlan,
   onPlanSelect,
+  isLoading = false,
 }: RoutineCardProps) {
   const discount = PLAN_DISCOUNTS[selectedPlan];
   const finalPrice = totalPrice * (1 - discount / 100);
@@ -52,19 +54,27 @@ export function RoutineCard({
           <span className="font-medium">€{totalPrice.toFixed(2)}/Monat</span>
         </div>
         <Button
-          className={`w-full transition-all
-            ${
-              totalItems >= 4 && bundleName
-                ? "bg-primary text-white hover:bg-primary/90"
-                : "bg-background text-[#9CA29E] cursor-not-allowed"
-            }`}
-          disabled={totalItems < 4 || !bundleName}
+          className={`w-full transition-all ${
+            totalItems >= 4 && bundleName
+              ? "bg-primary text-white hover:bg-primary/90"
+              : "bg-background text-[#9CA29E] cursor-not-allowed"
+          }`}
+          disabled={totalItems < 4 || !bundleName || isLoading}
           onClick={onCheckout}
           variant="pill"
           size="pill-xl">
           <div className="flex items-center gap-2">
-            <span className="font-medium">Weiter</span>
-            <ChevronRight size={16} />
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span className="font-medium">Wird hinzugefügt...</span>
+              </>
+            ) : (
+              <>
+                <span className="font-medium">Weiter</span>
+                <ChevronRight size={16} />
+              </>
+            )}
           </div>
         </Button>
         {totalItems < 4 && (

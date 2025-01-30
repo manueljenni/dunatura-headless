@@ -62,6 +62,7 @@ export default function ConfigurePage() {
   );
   const [discountedTotal, setDiscountedTotal] = useState<number>(0);
   const { items, removeItem, checkout, clearCart, addItem } = useCart();
+  const [isLoading, setIsLoading] = useState(false);
 
   const loopBundleData: LoopBundleData = {
     // Flexibles Abonnement (Lieferung alle 4 Wochen)
@@ -223,6 +224,7 @@ export default function ConfigurePage() {
     if (selectedVitamins.length < parseInt(minAmountOfProducts)) return;
 
     try {
+      setIsLoading(true);
       const loopResponseObject = await generateBundleId();
 
       // Convert selected vitamins to cart items
@@ -262,6 +264,8 @@ export default function ConfigurePage() {
         description: "Es ist ein Fehler aufgetreten. Bitte versuche es erneut.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -354,6 +358,7 @@ export default function ConfigurePage() {
             onBundleNameChange={setBundleName}
             selectedPlan={selectedPlan}
             onPlanSelect={handlePlanSelect}
+            isLoading={isLoading}
           />
           <QuestionnaireCard />
         </div>
