@@ -1,4 +1,4 @@
-import { SellingPlanType } from "@/types/selling-plans";
+import { PLAN_DISCOUNTS, SellingPlanType } from "@/types/selling-plans";
 import { PlanOption } from "../../products/[productName]/PlanSelector";
 
 export enum PlanType {
@@ -17,29 +17,31 @@ export function PlanSelector({ selectedPlan, onSelect, price }: PlanSelectorProp
   const planDetails: {
     [key in SellingPlanType]: {
       title: string;
-      priceMultiplier: number;
       priceSubtitle: string | null;
       description: string;
     };
   } = {
     [SellingPlanType.OneTime]: {
       title: "Einmaliger Kauf",
-      priceMultiplier: 1,
       priceSubtitle: null,
       description: "Einmalige Lieferung",
     },
     [SellingPlanType.Monthly]: {
       title: "Flexibles Abonnement",
-      priceMultiplier: 0.8,
       priceSubtitle: "pro Monat",
       description: "Lieferung alle 4 Wochen",
     },
     [SellingPlanType.Quarterly]: {
       title: "Dreimonats-Paket",
-      priceMultiplier: 0.8,
       priceSubtitle: "pro Monat",
       description: "3x 28 Packungen",
     },
+  };
+
+  // Calculate price using PLAN_DISCOUNTS instead of hardcoded multipliers
+  const getDiscountedPrice = (plan: SellingPlanType) => {
+    const discount = PLAN_DISCOUNTS[plan];
+    return price * (1 - discount / 100);
   };
 
   return (
@@ -51,7 +53,7 @@ export function PlanSelector({ selectedPlan, onSelect, price }: PlanSelectorProp
           details={planDetails[planType]}
           isSelected={selectedPlan === planType}
           onSelect={onSelect}
-          price={price}
+          price={getDiscountedPrice(planType)}
         />
       ))}
     </div>

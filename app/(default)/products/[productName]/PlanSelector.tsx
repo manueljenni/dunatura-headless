@@ -10,16 +10,15 @@ enum PlanType {
   Quarterly = "quarterly",
 }
 
-interface PlanOptionProps<T> {
-  plan: T;
+interface PlanOptionProps {
+  plan: SellingPlanType;
   details: {
     title: string;
-    priceMultiplier: number;
     priceSubtitle: string | null;
     description: string;
   };
   isSelected: boolean;
-  onSelect: (plan: T) => void;
+  onSelect: (plan: SellingPlanType) => void;
   price: number;
 }
 
@@ -30,8 +29,8 @@ export function PlanOption<T>({
   onSelect,
   price,
 }: PlanOptionProps<T>) {
-  const { title, priceMultiplier, priceSubtitle, description } = details;
-  const finalPrice = `€${(price * priceMultiplier).toFixed(2)}`;
+  const { title, priceSubtitle, description } = details;
+  const finalPrice = `€${price.toFixed(2)}`;
 
   return (
     <label
@@ -90,7 +89,6 @@ export default function PlanSelector({
         plan={PlanType.OneTime}
         details={{
           title: "Einmaliger Kauf",
-          priceMultiplier: 1,
           priceSubtitle: null,
           description: "",
         }}
@@ -102,7 +100,6 @@ export default function PlanSelector({
         plan={PlanType.Monthly}
         details={{
           title: "Monatliches Abonnement",
-          priceMultiplier: 0.8,
           priceSubtitle: "pro Monat",
           description: "28 Packungen, €1/Tag",
         }}
@@ -114,7 +111,6 @@ export default function PlanSelector({
         plan={PlanType.Quarterly}
         details={{
           title: "3 Monate - Routine",
-          priceMultiplier: 0.8,
           priceSubtitle: "pro Monat",
           description: "3x 28 Packungen, €1/Tag",
         }}
